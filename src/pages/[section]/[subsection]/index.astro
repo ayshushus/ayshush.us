@@ -1,0 +1,75 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/Container.astro";
+import ArrowCard from "@components/ArrowCard.astro";
+import BackToPrevious from "@components/BackToPrevious.astro";
+import { NAV } from "@consts";
+import type { NavSection, NavSubsection } from "@types";
+
+export async function getStaticPaths() {
+  return NAV.flatMap((section) =>
+    section.subsections.map((sub) => ({
+      params: { section: section.slug, subsection: sub.slug },
+      props: { section, sub },
+    })),
+  );
+}
+
+type Props = { section: NavSection; sub: NavSubsection };
+const { section, sub } = Astro.props;
+
+const all = await getCollection(section.slug as any, ({ data }: any) => !data.draft);
+const posts = all
+  .filter((e: any) => e.id.split("/")[0] === sub.slug)
+  .sort((a: any, b: any) => b.data.date.valueOf() - a.data.date.valueOf());
+
+type ByYear = Record<string, typeof posts>;
+const byYear = posts.reduce((acc: ByYear, post: any) => {
+  const year = post.data.date.getFullYear().toString();
+  (acc[year] ||= [] as any).push(post);
+  return acc;
+}, {} as ByYear);
+
+const years = Object.keys(byYear).sort((a, b) => parseInt(b) - parseInt(a));
+---
+
+<Layout
+  title={`${sub.name} | ${section.name}`}
+  description={`${sub.name} posts in ${section.name}.`}
+>
+  <Container>
+    <aside data-pagefind-ignore>
+      <div class="space-y-10">
+        <div class="animate">
+          <BackToPrevious href={`/${section.slug}`}>
+            Back to {section.name}
+          </BackToPrevious>
+        </div>
+        <h1 class="animate font-semibold text-black dark:text-white">
+          {sub.name}
+        </h1>
+        {posts.length === 0 ? (
+          <p class="animate text-sm opacity-70">No posts yet.</p>
+        ) : (
+          <div class="space-y-4">
+            {years.map((year) => (
+              <section class="animate space-y-4">
+                <div class="font-semibold text-black dark:text-white">
+                  {year}
+                </div>
+                <ul class="not-prose flex flex-col gap-4">
+                  {byYear[year].map((post: any) => (
+                    <li>
+                      <ArrowCard entry={post} />
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ))}
+          </div>
+        )}
+      </div>
+    </aside>
+  </Container>
+</Layout>

@@ -1,26 +1,28 @@
 ---
 import Container from "@components/Container.astro";
 import Link from "@components/Link.astro";
-import { SITE } from "@consts";
+import NavDropdown from "@components/NavDropdown.astro";
+import { NAV, SITE } from "@consts";
 ---
 
 <header transition:persist>
   <Container>
-    <div class="flex flex-wrap justify-between gap-y-2">
+    <div class="flex flex-wrap items-center justify-between gap-y-2">
       <Link href="/" underline={false}>
         <div class="font-semibold">
           {SITE.TITLE}
         </div>
       </Link>
-      <nav class="flex items-center gap-1 text-sm">
-        <Link href="/blog">blog</Link>
-        <span>
-          {`/`}
-        </span>
-        <Link href="/projects">projects</Link>
-        <span>
-          {`/`}
-        </span>
+      <nav class="flex flex-wrap items-center gap-x-1 gap-y-2 text-sm">
+        {
+          NAV.map((section, i) => (
+            <>
+              <NavDropdown section={section} size="sm" />
+              {i < NAV.length - 1 && <span aria-hidden="true">/</span>}
+            </>
+          ))
+        }
+        <span aria-hidden="true">/</span>
         <button
           id="magnifying-glass"
           aria-label="Search"
@@ -44,3 +46,61 @@ import { SITE } from "@consts";
     </div>
   </Container>
 </header>
+
+<script>
+  function setupDropdowns() {
+    const dropdowns = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-dropdown]"),
+    );
+
+    const closeAll = (except: HTMLElement | null) => {
+      for (const d of dropdowns) {
+        if (d === except) continue;
+        const trigger = d.querySelector<HTMLButtonElement>(
+          "[data-dropdown-trigger]",
+        );
+        const menu = d.querySelector<HTMLElement>("[data-dropdown-menu]");
+        const chevron = d.querySelector<HTMLElement>("[data-dropdown-chevron]");
+        trigger?.setAttribute("aria-expanded", "false");
+        menu?.setAttribute("hidden", "");
+        chevron?.setAttribute("data-open", "false");
+      }
+    };
+
+    for (const d of dropdowns) {
+      const trigger = d.querySelector<HTMLButtonElement>(
+        "[data-dropdown-trigger]",
+      );
+      const menu = d.querySelector<HTMLElement>("[data-dropdown-menu]");
+      const chevron = d.querySelector<HTMLElement>("[data-dropdown-chevron]");
+      if (!trigger || !menu) continue;
+      if (trigger.dataset.dropdownWired === "1") continue;
+      trigger.dataset.dropdownWired = "1";
+
+      trigger.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const isOpen = trigger.getAttribute("aria-expanded") === "true";
+        closeAll(d);
+        if (isOpen) {
+          trigger.setAttribute("aria-expanded", "false");
+          menu.setAttribute("hidden", "");
+          chevron?.setAttribute("data-open", "false");
+        } else {
+          trigger.setAttribute("aria-expanded", "true");
+          menu.removeAttribute("hidden");
+          chevron?.setAttribute("data-open", "true");
+        }
+      });
+
+      menu.addEventListener("click", (e) => e.stopPropagation());
+    }
+
+    document.addEventListener("click", () => closeAll(null));
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeAll(null);
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", setupDropdowns);
+  document.addEventListener("astro:after-swap", setupDropdowns);
+</script>

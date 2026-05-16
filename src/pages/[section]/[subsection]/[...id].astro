@@ -1,0 +1,95 @@
+---
+import { getCollection, render } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/Container.astro";
+import FormattedDate from "@components/FormattedDate.astro";
+import { readingTime } from "@lib/utils";
+import BackToPrevious from "@components/BackToPrevious.astro";
+import PostNavigation from "@components/PostNavigation.astro";
+import TableOfContents from "@components/TableOfContents.astro";
+import Giscus from "@components/Giscus.astro";
+import { NAV } from "@consts";
+import type { NavSection, NavSubsection } from "@types";
+
+export async function getStaticPaths() {
+  const paths: any[] = [];
+  for (const section of NAV) {
+    const entries = await getCollection(
+      section.slug as any,
+      ({ data }: any) => !data.draft,
+    );
+    for (const entry of entries) {
+      const segments = entry.id.split("/");
+      const subSlug = segments[0];
+      const subsection = section.subsections.find((s) => s.slug === subSlug);
+      if (!subsection) continue;
+      const id = segments.slice(1).join("/");
+      if (!id) continue;
+      paths.push({
+        params: { section: section.slug, subsection: subSlug, id },
+        props: { section, subsection, post: entry },
+      });
+    }
+  }
+  return paths;
+}
+
+type Props = { section: NavSection; subsection: NavSubsection; post: any };
+const { section, subsection, post } = Astro.props;
+const { Content, headings } = await render(post);
+
+const all = await getCollection(section.slug as any, ({ data }: any) => !data.draft);
+const peers = all
+  .filter((e: any) => e.id.split("/")[0] === subsection.slug)
+  .sort((a: any, b: any) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const idx = peers.findIndex((p: any) => p.id === post.id);
+const prevPost = idx > 0 ? peers[idx - 1] : undefined;
+const nextPost = idx >= 0 && idx < peers.length - 1 ? peers[idx + 1] : undefined;
+---
+
+<Layout title={post.data.title} description={post.data.description}>
+  <Container>
+    <div class="animate">
+      <BackToPrevious href={`/${section.slug}/${subsection.slug}`}>
+        Back to {subsection.name}
+      </BackToPrevious>
+    </div>
+    <div class="my-10 space-y-1">
+      <div class="animate flex items-center gap-1.5">
+        <div class="font-base text-sm">
+          <FormattedDate date={post.data.date} />
+        </div>
+        &bull;
+        {post.body && (
+          <div class="font-base text-sm">{readingTime(post.body)}</div>
+        )}
+      </div>
+      <h1 class="animate text-3xl font-semibold text-black dark:text-white">
+        {post.data.title}
+      </h1>
+      {post.data.tags && post.data.tags.length > 0 && (
+        <div class="animate flex gap-2 pt-1">
+          {post.data.tags.map((tag: string) => (
+            <a
+              href={`/tags/${tag}`}
+              class="rounded-sm border border-black/15 px-2 py-1 text-sm transition-colors duration-300 ease-in-out hover:bg-black/5 hover:text-black focus-visible:bg-black/5 focus-visible:text-black dark:border-white/20 dark:hover:bg-white/5 dark:hover:text-white dark:focus-visible:bg-white/5 dark:focus-visible:text-white"
+            >
+              {tag}
+            </a>
+          ))}
+        </div>
+      )}
+    </div>
+    {headings.length > 0 && <TableOfContents headings={headings} />}
+    <article class="animate">
+      <Content />
+      <div class="mt-24">
+        <PostNavigation prevPost={prevPost} nextPost={nextPost} />
+      </div>
+      <div class="mt-24">
+        <Giscus />
+      </div>
+    </article>
+  </Container>
+</Layout>

@@ -4,18 +4,21 @@ import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
 import ArrowCard from "@components/ArrowCard.astro";
 import BackToPrevious from "@components/BackToPrevious.astro";
+import { NAV } from "@consts";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog", ({ data }) => !data.draft);
+  const groups = await Promise.all(
+    NAV.map((s) =>
+      getCollection(s.slug as any, ({ data }: any) => !data.draft),
+    ),
+  );
+  const posts = groups.flat();
+  const tags = [...new Set(posts.flatMap((p: any) => p.data.tags || []))];
 
-  // Get unique tags
-  const tags = [...new Set(posts.flatMap((post) => post.data.tags || []))];
-
-  // Create paths for each tag
   return tags.map((tag) => ({
     params: { id: tag },
     props: {
-      posts: posts.filter((post) => post.data.tags?.includes(tag)),
+      posts: posts.filter((p: any) => p.data.tags?.includes(tag)),
     },
   }));
 }
@@ -23,8 +26,7 @@ export async function getStaticPaths() {
 const { id } = Astro.params;
 const { posts } = Astro.props;
 
-// Sort posts by date, most recent first
-const sortedPosts = posts.sort(
+const sortedPosts = (posts as any[]).sort(
   (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime(),
 );
 ---
@@ -37,7 +39,7 @@ const sortedPosts = posts.sort(
         Posts tagged with "{id}"
       </h1>
       <ul class="animate flex flex-col gap-4">
-        {sortedPosts.map((post) => <ArrowCard entry={post} />)}
+        {sortedPosts.map((post: any) => <ArrowCard entry={post} />)}
       </ul>
     </div>
   </Container>

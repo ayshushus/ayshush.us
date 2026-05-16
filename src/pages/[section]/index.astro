@@ -1,0 +1,58 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/Container.astro";
+import Link from "@components/Link.astro";
+import { NAV } from "@consts";
+import type { NavSection } from "@types";
+
+export async function getStaticPaths() {
+  return NAV.map((section) => ({
+    params: { section: section.slug },
+    props: { section },
+  }));
+}
+
+type Props = { section: NavSection };
+const { section } = Astro.props;
+
+const entries = await getCollection(section.slug as any, ({ data }: any) => !data.draft);
+const counts: Record<string, number> = Object.fromEntries(
+  section.subsections.map((sub) => [
+    sub.slug,
+    entries.filter((e: any) => e.id.split("/")[0] === sub.slug).length,
+  ]),
+);
+---
+
+<Layout
+  title={section.name}
+  description={section.description ?? `${section.name} sections.`}
+>
+  <Container>
+    <aside data-pagefind-ignore>
+      <div class="space-y-10">
+        <div class="space-y-2">
+          <h1 class="animate font-semibold text-black capitalize dark:text-white">
+            {section.name}
+          </h1>
+          {section.description && (
+            <p class="animate text-sm">{section.description}</p>
+          )}
+        </div>
+        <ul class="animate not-prose flex flex-col gap-2">
+          {section.subsections.map((sub) => (
+            <li>
+              <Link href={`/${section.slug}/${sub.slug}`}>
+                {sub.name}
+                <span class="ml-1 text-sm opacity-60">
+                  ({counts[sub.slug]})
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </aside>
+  </Container>
+</Layout>

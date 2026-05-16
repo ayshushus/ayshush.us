@@ -1,0 +1,83 @@
+---
+import type { NavSection } from "@types";
+
+type Props = {
+  section: NavSection;
+  size?: "sm" | "md";
+};
+
+const { section, size = "sm" } = Astro.props;
+
+const triggerClass =
+  size === "md"
+    ? "flex items-center gap-2 rounded-md border border-black/15 px-3 py-2 text-base capitalize hover:bg-black/5 focus-visible:bg-black/5 dark:border-white/20 dark:hover:bg-white/5 dark:focus-visible:bg-white/5"
+    : "flex items-center gap-1 rounded-sm px-1 py-0.5 hover:underline focus-visible:underline";
+
+const menuClass =
+  size === "md"
+    ? "absolute left-0 top-full z-50 mt-1 min-w-48 rounded-md border border-black/15 bg-neutral-100 p-1 text-sm shadow-md dark:border-white/20 dark:bg-neutral-900"
+    : "absolute right-0 top-full z-50 mt-1 min-w-36 rounded-md border border-black/15 bg-neutral-100 p-1 text-sm shadow-md dark:border-white/20 dark:bg-neutral-900";
+---
+
+<div class="relative inline-block" data-dropdown>
+  <button
+    type="button"
+    aria-expanded="false"
+    aria-haspopup="menu"
+    aria-controls={`menu-${section.slug}`}
+    data-dropdown-trigger
+    class={triggerClass}
+  >
+    <span>{section.name}</span>
+    <svg
+      width="10"
+      height="10"
+      viewBox="0 0 10 10"
+      aria-hidden="true"
+      class="transition-transform duration-200 data-[open=true]:rotate-180"
+      data-dropdown-chevron
+    >
+      <path
+        d="M2 4l3 3 3-3"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </button>
+  <ul
+    id={`menu-${section.slug}`}
+    role="menu"
+    data-dropdown-menu
+    hidden
+    class={menuClass}
+  >
+    {
+      section.subsections.map((sub) => (
+        <li role="none">
+          <a
+            role="menuitem"
+            href={`/${section.slug}/${sub.slug}`}
+            class="block rounded-sm px-2 py-1 hover:bg-black/5 focus-visible:bg-black/5 dark:hover:bg-white/5 dark:focus-visible:bg-white/5"
+          >
+            {sub.name}
+          </a>
+        </li>
+      ))
+    }
+    <li
+      role="none"
+      class="mt-1 border-t border-black/10 pt-1 dark:border-white/10"
+    >
+      <a
+        role="menuitem"
+        href={`/${section.slug}`}
+        class="block rounded-sm px-2 py-1 text-xs italic opacity-80 hover:bg-black/5 focus-visible:bg-black/5 dark:hover:bg-white/5 dark:focus-visible:bg-white/5"
+      >
+        all {section.name}
+      </a>
+    </li>
+  </ul>
+</div>
