@@ -8,50 +8,59 @@ import BackToPrevious from "@components/BackToPrevious.astro";
 import PostNavigation from "@components/PostNavigation.astro";
 import TableOfContents from "@components/TableOfContents.astro";
 import Giscus from "@components/Giscus.astro";
-import { NAV } from "@consts";
-import type { NavSection, NavSubsection } from "@types";
+import { entryHref, getResolvedNav, isNumericName, sortPosts } from "@lib/nav";
 
 export async function getStaticPaths() {
+  const nav = await getResolvedNav();
   const paths: any[] = [];
-  for (const section of NAV) {
+  for (const section of nav) {
     const entries = await getCollection(
       section.slug as any,
       ({ data }: any) => !data.draft,
     );
-    for (const entry of entries as any[]) {
-      const segments = entry.id.split("/");
-      const subSlug = segments[0];
-      const subsection = section.subsections.find((s) => s.slug === subSlug);
-      if (!subsection) continue;
-      const id = segments.slice(1).join("/");
-      if (!id) continue;
-      paths.push({
-        params: { section: section.slug, subsection: subSlug, id },
-        props: { section, subsection, post: entry },
-      });
+    for (const sub of section.subsections) {
+      for (const entry of entries as any[]) {
+        const segments = String(entry.id).split("/");
+        if (segments[0] !== sub.dirName) continue;
+        const localId = segments.slice(1).join("/");
+        if (!localId) continue;
+        if (sub.rules.pdfOnNumericName && isNumericName(localId)) continue;
+        paths.push({
+          params: { section: section.slug, subsection: sub.urlSlug, id: localId },
+          props: { section, subsection: sub, post: entry },
+        });
+      }
     }
   }
   return paths;
 }
 
-type Props = { section: NavSection; subsection: NavSubsection; post: any };
 const { section, subsection, post } = Astro.props;
 const { Content, headings } = await render(post);
 
-const all = await getCollection(section.slug as any, ({ data }: any) => !data.draft);
-const peers = all
-  .filter((e: any) => e.id.split("/")[0] === subsection.slug)
-  .sort((a: any, b: any) => b.data.date.valueOf() - a.data.date.valueOf());
+const all = await getCollection(
+  section.slug as any,
+  ({ data }: any) => !data.draft,
+);
+const peers = sortPosts(
+  (all as any[]).filter((e) => e.id.split("/")[0] === subsection.dirName),
+  subsection.rules.sortBy ?? "date",
+);
 
+const nav = await getResolvedNav();
 const idx = peers.findIndex((p: any) => p.id === post.id);
-const prevPost = idx > 0 ? peers[idx - 1] : undefined;
-const nextPost = idx >= 0 && idx < peers.length - 1 ? peers[idx + 1] : undefined;
+const toNavPost = (p: any) =>
+  p ? { href: entryHref(p, nav), title: p.data.title } : undefined;
+const prevPost = toNavPost(idx > 0 ? peers[idx - 1] : undefined);
+const nextPost = toNavPost(
+  idx >= 0 && idx < peers.length - 1 ? peers[idx + 1] : undefined,
+);
 ---
 
 <Layout title={post.data.title} description={post.data.description}>
   <Container>
     <div class="animate">
-      <BackToPrevious href={`/${section.slug}/${subsection.slug}`}>
+      <BackToPrevious href={subsection.url}>
         Back to {subsection.name}
       </BackToPrevious>
     </div>

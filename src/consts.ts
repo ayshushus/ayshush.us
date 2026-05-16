@@ -15,7 +15,7 @@ export const HOME: Metadata = {
 export const NAV: Nav = [
   {
     slug: "experience",
-    name: "experience",
+    name: "Experience",
     description: "Roles and places I've worked.",
     subsections: [
       { slug: "jamesway", name: "JamesWay" },
@@ -28,7 +28,7 @@ export const NAV: Nav = [
   },
   {
     slug: "projects",
-    name: "projects",
+    name: "Projects",
     description: "Things I've built.",
     subsections: [
       { slug: "soopy", name: "Soopy" },
@@ -36,21 +36,10 @@ export const NAV: Nav = [
       { slug: "botboy", name: "Botboy" },
       { slug: "typer", name: "Typer" },
     ],
-    
-  },
-  {
-    slug: "blog",
-    name: "blog",
-    description: "Notes I keep on things I read and solve.",
-    subsections: [
-      { slug: "leetcode", name: "LeetCode" },
-      { slug: "books", name: "Books" },
-      { slug: "papers", name: "Papers" },
-    ],
   },
   {
     slug: "research",
-    name: "research",
+    name: "Research",
     description: "Topics I'm digging into.",
     subsections: [
       { slug: "ai", name: "AI" },

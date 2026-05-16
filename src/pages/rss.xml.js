@@ -1,6 +1,7 @@
 import rss from "@astrojs/rss";
 import { SITE, NAV } from "@consts";
 import { getCollection } from "astro:content";
+import { entryHref, getResolvedNav } from "@lib/nav";
 
 export async function GET(context) {
   const groups = await Promise.all(
@@ -17,6 +18,8 @@ export async function GET(context) {
         new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf(),
     );
 
+  const nav = await getResolvedNav();
+
   return rss({
     title: SITE.TITLE,
     description: SITE.DESCRIPTION,
@@ -25,7 +28,7 @@ export async function GET(context) {
       title: item.data.title,
       description: item.data.description,
       pubDate: item.data.date,
-      link: `/${item.collection}/${item.id}/`,
+      link: entryHref(item, nav),
     })),
   });
 }

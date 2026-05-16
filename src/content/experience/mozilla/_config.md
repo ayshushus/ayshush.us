@@ -1,0 +1,4 @@
+---
+slug: mozilla
+title: Mozilla
+---

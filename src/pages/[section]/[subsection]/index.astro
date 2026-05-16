@@ -2,72 +2,93 @@
 import { getCollection } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
-import ArrowCard from "@components/ArrowCard.astro";
 import BackToPrevious from "@components/BackToPrevious.astro";
-import { NAV } from "@consts";
-import type { NavSection, NavSubsection } from "@types";
+import { getResolvedNav, postHref, sortPosts } from "@lib/nav";
 
 export async function getStaticPaths() {
-  return NAV.flatMap((section) =>
+  const nav = await getResolvedNav();
+  return nav.flatMap((section) =>
     section.subsections.map((sub) => ({
-      params: { section: section.slug, subsection: sub.slug },
+      params: { section: section.slug, subsection: sub.urlSlug },
       props: { section, sub },
     })),
   );
 }
 
-type Props = { section: NavSection; sub: NavSubsection };
 const { section, sub } = Astro.props;
 
-const all = await getCollection(section.slug as any, ({ data }: any) => !data.draft);
-const posts = all
-  .filter((e: any) => e.id.split("/")[0] === sub.slug)
-  .sort((a: any, b: any) => b.data.date.valueOf() - a.data.date.valueOf());
-
-type ByYear = Record<string, typeof posts>;
-const byYear = posts.reduce((acc: ByYear, post: any) => {
-  const year = post.data.date.getFullYear().toString();
-  (acc[year] ||= [] as any).push(post);
-  return acc;
-}, {} as ByYear);
-
-const years = Object.keys(byYear).sort((a, b) => parseInt(b) - parseInt(a));
+const all = await getCollection(
+  section.slug as any,
+  ({ data }: any) => !data.draft,
+);
+const filtered = (all as any[]).filter(
+  (e) => e.id.split("/")[0] === sub.dirName,
+);
+const posts = sortPosts(filtered, sub.rules.sortBy ?? "date");
 ---
 
 <Layout
   title={`${sub.name} | ${section.name}`}
-  description={`${sub.name} posts in ${section.name}.`}
+  description={sub.description ?? `${sub.name} posts in ${section.name}.`}
 >
   <Container>
     <aside data-pagefind-ignore>
       <div class="space-y-10">
         <div class="animate">
-          <BackToPrevious href={`/${section.slug}`}>
+          <BackToPrevious href={section.url}>
             Back to {section.name}
           </BackToPrevious>
         </div>
-        <h1 class="animate font-semibold text-black dark:text-white">
-          {sub.name}
-        </h1>
+        <div class="space-y-2">
+          <h1 class="animate font-semibold text-black dark:text-white">
+            {sub.name}
+          </h1>
+          {sub.description && (
+            <p class="animate text-sm">{sub.description}</p>
+          )}
+        </div>
         {posts.length === 0 ? (
           <p class="animate text-sm opacity-70">No posts yet.</p>
         ) : (
-          <div class="space-y-4">
-            {years.map((year) => (
-              <section class="animate space-y-4">
-                <div class="font-semibold text-black dark:text-white">
-                  {year}
-                </div>
-                <ul class="not-prose flex flex-col gap-4">
-                  {byYear[year].map((post: any) => (
-                    <li>
-                      <ArrowCard entry={post} />
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            ))}
-          </div>
+          <ul class="not-prose flex flex-col gap-4">
+            {posts.map((post: any) => {
+              const href = postHref(section.slug, sub, post.id);
+              const isPdf = href.endsWith(".pdf");
+              return (
+                <li>
+                  <a
+                    href={href}
+                    {...(isPdf
+                      ? { target: "_blank", rel: "noopener noreferrer" }
+                      : {})}
+                    class="not-prose group relative flex flex-nowrap rounded-lg border border-black/15 px-4 py-3 pr-10 transition-colors duration-300 ease-in-out hover:bg-black/5 hover:text-black focus-visible:bg-black/5 focus-visible:text-black dark:border-white/20 dark:hover:bg-white/5 dark:hover:text-white dark:focus-visible:bg-white/5 dark:focus-visible:text-white"
+                  >
+                    <div class="flex flex-1 flex-col truncate">
+                      <div class="font-semibold">{post.data.title}</div>
+                      <div class="text-sm">{post.data.description}</div>
+                    </div>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      class="absolute right-2 top-1/2 size-5 -translate-y-1/2 fill-none stroke-current stroke-2"
+                    >
+                      <line
+                        x1="5"
+                        y1="12"
+                        x2="19"
+                        y2="12"
+                        class="translate-x-3 scale-x-0 transition-transform duration-300 ease-in-out group-hover:translate-x-0 group-hover:scale-x-100 group-focus-visible:translate-x-0 group-focus-visible:scale-x-100"
+                      />
+                      <polyline
+                        points="12 5 19 12 12 19"
+                        class="-translate-x-1 transition-transform duration-300 ease-in-out group-hover:translate-x-0 group-focus-visible:translate-x-0"
+                      />
+                    </svg>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
         )}
       </div>
     </aside>

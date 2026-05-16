@@ -1,17 +1,16 @@
 ---
-const { prevPost, nextPost } = Astro.props;
-
-const hrefFor = (post: any) =>
-  post ? `/${post.collection}/${post.id}` : undefined;
-const prevHref = hrefFor(prevPost);
-const nextHref = hrefFor(nextPost);
+type NavPost = { href: string; title: string } | undefined;
+const { prevPost, nextPost } = Astro.props as {
+  prevPost: NavPost;
+  nextPost: NavPost;
+};
 ---
 
 <div class="grid grid-cols-2 gap-1.5 sm:gap-3">
   {
-    prevHref ? (
+    prevPost ? (
       <a
-        href={prevHref}
+        href={prevPost.href}
         class="group relative flex flex-nowrap rounded-lg border border-black/15 px-4 py-3 pl-10 no-underline transition-colors duration-300 ease-in-out hover:bg-black/5 hover:text-black focus-visible:bg-black/5 focus-visible:text-black dark:border-white/20 dark:hover:bg-white/5 dark:hover:text-white dark:focus-visible:bg-white/5 dark:focus-visible:text-white"
       >
         <svg
@@ -31,7 +30,7 @@ const nextHref = hrefFor(nextPost);
             class="translate-x-1 transition-transform duration-300 ease-in-out group-hover:translate-x-0 group-focus-visible:translate-x-0"
           />
         </svg>
-        <div class="flex items-center text-sm">{prevPost?.data.title}</div>
+        <div class="flex items-center text-sm">{prevPost.title}</div>
       </a>
     ) : (
       <div class="invisible" />
@@ -39,9 +38,9 @@ const nextHref = hrefFor(nextPost);
   }
 
   {
-    nextHref ? (
+    nextPost ? (
       <a
-        href={nextHref}
+        href={nextPost.href}
         class="group relative flex grow flex-row-reverse flex-nowrap rounded-lg border border-black/15 px-4 py-4 pr-10 no-underline transition-colors duration-300 ease-in-out hover:bg-black/5 hover:text-black focus-visible:bg-black/5 focus-visible:text-black dark:border-white/20 dark:hover:bg-white/5 dark:hover:text-white dark:focus-visible:bg-white/5 dark:focus-visible:text-white"
       >
         <svg
@@ -61,7 +60,7 @@ const nextHref = hrefFor(nextPost);
             class="-translate-x-1 transition-transform duration-300 ease-in-out group-hover:translate-x-0 group-focus-visible:translate-x-0"
           />
         </svg>
-        <div class="flex items-center text-sm">{nextPost?.data.title}</div>
+        <div class="flex items-center text-sm">{nextPost.title}</div>
       </a>
     ) : (
       <div class="invisible" />

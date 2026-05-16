@@ -1,8 +1,8 @@
 ---
-import type { NavSection } from "@types";
+import type { ResolvedSection } from "@types";
 
 type Props = {
-  section: NavSection;
+  section: ResolvedSection;
   size?: "sm" | "md";
 };
 
@@ -10,8 +10,8 @@ const { section, size = "sm" } = Astro.props;
 
 const triggerClass =
   size === "md"
-    ? "flex items-center gap-2 rounded-md border border-black/15 px-3 py-2 text-base capitalize hover:bg-black/5 focus-visible:bg-black/5 dark:border-white/20 dark:hover:bg-white/5 dark:focus-visible:bg-white/5"
-    : "flex items-center gap-1 rounded-sm px-1 py-0.5 hover:underline focus-visible:underline";
+    ? "flex items-center gap-2 rounded-md border border-black/15 px-3 py-2 text-base hover:bg-black/5 focus-visible:bg-black/5 dark:border-white/20 dark:hover:bg-white/5 dark:focus-visible:bg-white/5"
+    : "flex items-center gap-1 rounded-sm px-1 py-0.5 hover:text-black focus-visible:text-black dark:hover:text-white dark:focus-visible:text-white";
 
 const menuClass =
   size === "md"
@@ -59,7 +59,7 @@ const menuClass =
         <li role="none">
           <a
             role="menuitem"
-            href={`/${section.slug}/${sub.slug}`}
+            href={sub.url}
             class="block rounded-sm px-2 py-1 hover:bg-black/5 focus-visible:bg-black/5 dark:hover:bg-white/5 dark:focus-visible:bg-white/5"
           >
             {sub.name}
@@ -73,10 +73,10 @@ const menuClass =
     >
       <a
         role="menuitem"
-        href={`/${section.slug}`}
+        href={section.url}
         class="block rounded-sm px-2 py-1 text-xs italic opacity-80 hover:bg-black/5 focus-visible:bg-black/5 dark:hover:bg-white/5 dark:focus-visible:bg-white/5"
       >
-        all {section.name}
+        all {section.name.toLowerCase()}
       </a>
     </li>
   </ul>

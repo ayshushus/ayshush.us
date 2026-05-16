@@ -2,37 +2,32 @@
 import Container from "@components/Container.astro";
 import Link from "@components/Link.astro";
 import NavDropdown from "@components/NavDropdown.astro";
-import { NAV, SITE } from "@consts";
+import { SITE } from "@consts";
+import { getResolvedNav } from "@lib/nav";
+
+const nav = await getResolvedNav();
 ---
 
 <header transition:persist>
   <Container>
-    <div class="flex flex-wrap items-center justify-between gap-y-2">
+    <div class="flex flex-wrap items-center justify-between gap-y-3">
       <Link href="/" underline={false}>
-        <div class="font-semibold">
+        <div class="font-semibold tracking-tight">
           {SITE.TITLE}
         </div>
       </Link>
-      <nav class="flex flex-wrap items-center gap-x-1 gap-y-2 text-sm">
-        {
-          NAV.map((section, i) => (
-            <>
-              <NavDropdown section={section} size="sm" />
-              {i < NAV.length - 1 && <span aria-hidden="true">/</span>}
-            </>
-          ))
-        }
-        <span aria-hidden="true">/</span>
+      <nav class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+        {nav.map((section) => <NavDropdown section={section} size="sm" />)}
         <button
           id="magnifying-glass"
           aria-label="Search"
-          class="flex items-center rounded-sm border border-black/15 bg-neutral-100 px-2 py-1 text-xs transition-colors duration-300 ease-in-out hover:bg-black/5 hover:text-black focus-visible:bg-black/5 focus-visible:text-black dark:border-white/20 dark:bg-neutral-900 dark:hover:bg-white/5 dark:hover:text-white dark:focus-visible:bg-white/5 dark:focus-visible:text-white"
+          class="flex items-center rounded-md border border-black/15 bg-neutral-100 px-2.5 py-1 text-xs transition-colors duration-300 ease-in-out hover:bg-black/5 hover:text-black focus-visible:bg-black/5 focus-visible:text-black dark:border-white/20 dark:bg-neutral-900 dark:hover:bg-white/5 dark:hover:text-white dark:focus-visible:bg-white/5 dark:focus-visible:text-white"
         >
           <svg
-            height="16"
+            height="14"
             stroke-linejoin="round"
             viewBox="0 0 16 16"
-            width="16"
+            width="14"
             style="color: currentcolor;"
             ><path
               fill-rule="evenodd"

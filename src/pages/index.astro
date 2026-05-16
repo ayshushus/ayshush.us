@@ -1,9 +1,11 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
-import NavDropdown from "@components/NavDropdown.astro";
 import Link from "@components/Link.astro";
-import { SITE, HOME, SOCIALS, NAV } from "@consts";
+import { SITE, HOME, SOCIALS } from "@consts";
+import { getResolvedNav } from "@lib/nav";
+
+const nav = await getResolvedNav();
 ---
 
 <Layout title={HOME.TITLE} description={HOME.DESCRIPTION}>
@@ -23,17 +25,54 @@ import { SITE, HOME, SOCIALS, NAV } from "@consts";
           </article>
         </section>
 
-        <section class="animate space-y-4">
-          <ul class="not-prose flex flex-col gap-3">
-            {
-              NAV.map((section) => (
-                <li>
-                  <NavDropdown section={section} size="md" />
-                </li>
-              ))
-            }
-          </ul>
-        </section>
+        {
+          nav.map((section) => (
+            <section class="animate space-y-6">
+              <div class="flex flex-wrap items-center justify-between gap-y-2">
+                <h2 class="font-semibold text-black dark:text-white">
+                  {section.name}
+                </h2>
+                <Link href={section.url}>
+                  See all {section.name.toLowerCase()}
+                </Link>
+              </div>
+              <ul class="not-prose flex flex-col gap-4">
+                {section.subsections.map((sub) => (
+                  <li>
+                    <a
+                      href={sub.url}
+                      class="not-prose group relative flex flex-nowrap rounded-lg border border-black/15 px-4 py-3 pr-10 transition-colors duration-300 ease-in-out hover:bg-black/5 hover:text-black focus-visible:bg-black/5 focus-visible:text-black dark:border-white/20 dark:hover:bg-white/5 dark:hover:text-white dark:focus-visible:bg-white/5 dark:focus-visible:text-white"
+                    >
+                      <div class="flex flex-1 flex-col truncate">
+                        <div class="font-semibold">{sub.name}</div>
+                        {sub.description && (
+                          <div class="text-sm">{sub.description}</div>
+                        )}
+                      </div>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        class="absolute right-2 top-1/2 size-5 -translate-y-1/2 fill-none stroke-current stroke-2"
+                      >
+                        <line
+                          x1="5"
+                          y1="12"
+                          x2="19"
+                          y2="12"
+                          class="translate-x-3 scale-x-0 transition-transform duration-300 ease-in-out group-hover:translate-x-0 group-hover:scale-x-100 group-focus-visible:translate-x-0 group-focus-visible:scale-x-100"
+                        />
+                        <polyline
+                          points="12 5 19 12 12 19"
+                          class="-translate-x-1 transition-transform duration-300 ease-in-out group-hover:translate-x-0 group-focus-visible:translate-x-0"
+                        />
+                      </svg>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ))
+        }
 
         <section class="animate space-y-4">
           <h2 class="font-semibold text-black dark:text-white">

@@ -29,3 +29,28 @@ export type NavSection = {
 };
 
 export type Nav = NavSection[];
+
+export type SortBy = "date" | "name" | "numeric";
+
+export type SubsectionRules = {
+  pdfOnNumericName?: boolean;
+  sortBy?: SortBy;
+  hidden?: boolean;
+};
+
+export type ResolvedSubsection = {
+  dirName: string;
+  urlSlug: string;
+  name: string;
+  description?: string;
+  url: string;
+  rules: SubsectionRules;
+};
+
+export type ResolvedSection = {
+  slug: string;
+  name: string;
+  description?: string;
+  url: string;
+  subsections: ResolvedSubsection[];
+};
