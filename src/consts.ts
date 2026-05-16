@@ -36,6 +36,7 @@ export const NAV: Nav = [
       { slug: "botboy", name: "Botboy" },
       { slug: "typer", name: "Typer" },
     ],
+    
   },
   {
     slug: "blog",

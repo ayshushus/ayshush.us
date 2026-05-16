@@ -18,7 +18,7 @@ export async function getStaticPaths() {
       section.slug as any,
       ({ data }: any) => !data.draft,
     );
-    for (const entry of entries) {
+    for (const entry of entries as any[]) {
       const segments = entry.id.split("/");
       const subSlug = segments[0];
       const subsection = section.subsections.find((s) => s.slug === subSlug);
