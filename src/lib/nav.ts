@@ -22,6 +22,7 @@ async function loadConfigs(): Promise<Map<string, ConfigData>> {
     map.set(key, entry.data as ConfigData);
   }
   return map;
+  
 }
 
 export async function getResolvedNav(): Promise<ResolvedSection[]> {
