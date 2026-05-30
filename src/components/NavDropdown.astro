@@ -54,6 +54,14 @@ const menuClass =
     hidden
     class={menuClass}
   >
+    {section.description && (
+      <li
+        role="none"
+        class="border-b border-black/10 px-2 pb-1 pt-0.5 text-xs italic opacity-80 dark:border-white/10"
+      >
+        {section.description}
+      </li>
+    )}
     {
       section.subsections.map((sub) => (
         <li role="none">
@@ -62,7 +70,10 @@ const menuClass =
             href={sub.url}
             class="block rounded-sm px-2 py-1 hover:bg-black/5 focus-visible:bg-black/5 dark:hover:bg-white/5 dark:focus-visible:bg-white/5"
           >
-            {sub.name}
+            <div>{sub.name}</div>
+            {sub.description && (
+              <div class="text-xs opacity-70">{sub.description}</div>
+            )}
           </a>
         </li>
       ))

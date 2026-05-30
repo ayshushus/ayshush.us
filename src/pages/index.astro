@@ -29,15 +29,22 @@ const nav = await getResolvedNav();
           nav.map((section) => (
             <section class="animate space-y-6">
               <div class="flex flex-wrap items-center justify-between gap-y-2">
-                <h2 class="font-semibold text-black dark:text-white">
-                  {section.name}
-                </h2>
+                <div class="space-y-0.5">
+                  <h2 class="font-semibold text-black dark:text-white">
+                    {section.name}
+                  </h2>
+                  {section.description && (
+                    <p class="text-sm opacity-80">{section.description}</p>
+                  )}
+                </div>
                 <Link href={section.url}>
                   See all {section.name.toLowerCase()}
                 </Link>
               </div>
               <ul class="not-prose flex flex-col gap-4">
-                {section.subsections.map((sub) => (
+                {section.subsections
+                  .slice(0, SITE.NUM_POSTS_PER_SECTION_ON_HOMEPAGE)
+                  .map((sub) => (
                   <li>
                     <a
                       href={sub.url}

@@ -51,6 +51,9 @@ const counts: Record<string, number> = Object.fromEntries(
                   ({counts[sub.dirName]})
                 </span>
               </Link>
+              {sub.description && (
+                <p class="text-sm opacity-70">{sub.description}</p>
+              )}
             </li>
           ))}
         </ul>
