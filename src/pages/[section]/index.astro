@@ -1,8 +1,7 @@
 ---
-import { getCollection } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
-import Link from "@components/Link.astro";
+import ArrowCard from "@components/ArrowCard.astro";
 import { getResolvedNav } from "@lib/nav";
 
 export async function getStaticPaths() {
@@ -14,17 +13,6 @@ export async function getStaticPaths() {
 }
 
 const { section } = Astro.props;
-
-const entries = await getCollection(
-  section.slug as any,
-  ({ data }: any) => !data.draft,
-);
-const counts: Record<string, number> = Object.fromEntries(
-  section.subsections.map((sub) => [
-    sub.dirName,
-    (entries as any[]).filter((e) => e.id.split("/")[0] === sub.dirName).length,
-  ]),
-);
 ---
 
 <Layout
@@ -39,21 +27,17 @@ const counts: Record<string, number> = Object.fromEntries(
             {section.name}
           </h1>
           {section.description && (
-            <p class="animate text-sm">{section.description}</p>
+            <p class="animate text-sm opacity-80">{section.description}</p>
           )}
         </div>
-        <ul class="animate not-prose flex flex-col gap-2">
+        <ul class="animate not-prose flex flex-col gap-4">
           {section.subsections.map((sub) => (
             <li>
-              <Link href={sub.url}>
-                {sub.name}
-                <span class="ml-1 text-sm opacity-60">
-                  ({counts[sub.dirName]})
-                </span>
-              </Link>
-              {sub.description && (
-                <p class="text-sm opacity-70">{sub.description}</p>
-              )}
+              <ArrowCard
+                href={sub.url}
+                title={sub.name}
+                description={sub.description}
+              />
             </li>
           ))}
         </ul>

@@ -1,4 +1,5 @@
 ---
+import { SITE } from "@consts";
 import type { ResolvedSection } from "@types";
 
 type Props = {
@@ -7,6 +8,11 @@ type Props = {
 };
 
 const { section, size = "sm" } = Astro.props;
+const visibleSubs = section.subsections.slice(
+  0,
+  SITE.NUM_POSTS_PER_SECTION_ON_HOMEPAGE,
+);
+const hasMore = section.subsections.length > visibleSubs.length;
 
 const triggerClass =
   size === "md"
@@ -63,7 +69,7 @@ const menuClass =
       </li>
     )}
     {
-      section.subsections.map((sub) => (
+      visibleSubs.map((sub) => (
         <li role="none">
           <a
             role="menuitem"
@@ -87,7 +93,7 @@ const menuClass =
         href={section.url}
         class="block rounded-sm px-2 py-1 text-xs italic opacity-80 hover:bg-black/5 focus-visible:bg-black/5 dark:hover:bg-white/5 dark:focus-visible:bg-white/5"
       >
-        all {section.name.toLowerCase()}
+        {hasMore ? `all ${section.name.toLowerCase()}` : `see ${section.name.toLowerCase()} page`}
       </a>
     </li>
   </ul>

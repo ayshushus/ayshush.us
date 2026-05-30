@@ -17,14 +17,10 @@ export type Socials = {
 
 export type NavSubsection = {
   slug: string;
-  name: string;
-  description?: string;
 };
 
 export type NavSection = {
   slug: string;
-  name: string;
-  description?: string;
   hideFromHomepage?: boolean;
   subsections: NavSubsection[];
 };

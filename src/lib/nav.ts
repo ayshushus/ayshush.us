@@ -25,10 +25,18 @@ async function loadConfigs(): Promise<Map<string, ConfigData>> {
   
 }
 
+function titleCase(slug: string): string {
+  return slug
+    .split("-")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+}
+
 export async function getResolvedNav(): Promise<ResolvedSection[]> {
   const configs = await loadConfigs();
 
   return NAV.map((section) => {
+    const sectionCfg = configs.get(section.slug) ?? {};
     const subsections: ResolvedSubsection[] = section.subsections
       .map((sub) => {
         const cfg = configs.get(`${section.slug}/${sub.slug}`) ?? {};
@@ -37,8 +45,8 @@ export async function getResolvedNav(): Promise<ResolvedSection[]> {
         return {
           dirName: sub.slug,
           urlSlug,
-          name: cfg.title ?? sub.name,
-          description: cfg.description ?? sub.description,
+          name: cfg.title ?? titleCase(sub.slug),
+          description: cfg.description,
           url: `/${section.slug}/${urlSlug}`,
           rules,
         };
@@ -47,8 +55,8 @@ export async function getResolvedNav(): Promise<ResolvedSection[]> {
 
     return {
       slug: section.slug,
-      name: section.name,
-      description: section.description,
+      name: sectionCfg.title ?? titleCase(section.slug),
+      description: sectionCfg.description,
       url: `/${section.slug}`,
       subsections,
     };

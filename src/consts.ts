@@ -12,40 +12,37 @@ export const HOME: Metadata = {
   DESCRIPTION: "Ayush Ranjan's personal website.",
 };
 
+// Section / subsection display names and descriptions live in each folder's
+// _config.md frontmatter under src/content. Slugs here drive routing and
+// collection definitions only — edit titles/descriptions in MD.
 export const NAV: Nav = [
   {
     slug: "work",
-    name: "Work",
-    description: "Roles and places I've worked.",
     subsections: [
-      { slug: "jamesway", name: "JamesWay", description: "Software engineering." },
-      { slug: "mozilla", name: "Mozilla", description: "Software engineering." },
-      { slug: "healthlytics", name: "Healthlytics", description: "Software engineering." },
-      { slug: "grant-thornton", name: "Grant Thornton", description: "Software engineering." },
-      { slug: "uoft", name: "UofT", description: "Teaching and research." },
-      { slug: "tueely", name: "Tueely", description: "Software engineering." },
+      { slug: "jamesway" },
+      { slug: "mozilla" },
+      { slug: "healthlytics" },
+      { slug: "grant-thornton" },
+      { slug: "uoft" },
+      { slug: "tueely" },
     ],
   },
   {
     slug: "make",
-    name: "Make",
-    description: "Things I've built.",
     subsections: [
-      { slug: "soopy", name: "Soopy", description: "A thing I built." },
-      { slug: "pendi", name: "Pendi", description: "A thing I built." },
-      { slug: "botboy", name: "Botboy", description: "A thing I built." },
-      { slug: "typer", name: "Typer", description: "A thing I built." },
+      { slug: "soopy" },
+      { slug: "pendi" },
+      { slug: "botboy" },
+      { slug: "typer" },
     ],
   },
   {
     slug: "know",
-    name: "Know",
-    description: "Topics I'm digging into.",
     subsections: [
-      { slug: "ai", name: "AI", description: "Models, agents, and tooling." },
-      { slug: "algorithms", name: "Algorithms", description: "Patterns and proofs." },
-      { slug: "frameworks", name: "Frameworks", description: "Stacks and primitives." },
-      { slug: "systems", name: "Systems", description: "Distributed and low-level." },
+      { slug: "ai" },
+      { slug: "algorithms" },
+      { slug: "frameworks" },
+      { slug: "systems" },
     ],
   },
 ];
