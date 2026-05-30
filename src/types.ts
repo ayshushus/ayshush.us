@@ -18,6 +18,7 @@ export type Socials = {
 export type NavSubsection = {
   slug: string;
   name: string;
+  description?: string;
 };
 
 export type NavSection = {

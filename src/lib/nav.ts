@@ -38,7 +38,7 @@ export async function getResolvedNav(): Promise<ResolvedSection[]> {
           dirName: sub.slug,
           urlSlug,
           name: cfg.title ?? sub.name,
-          description: cfg.description,
+          description: cfg.description ?? sub.description,
           url: `/${section.slug}/${urlSlug}`,
           rules,
         };
