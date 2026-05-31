@@ -3,16 +3,14 @@ interface Props {
   type?: "default" | "info" | "warning" | "error";
 }
 const { type = "default" } = Astro.props;
-let emoji = "💡";
-if (type === "info") {
-  emoji = "ℹ️";
-} else if (type === "warning") {
-  emoji = "⚠️";
-} else if (type === "error") {
-  emoji = "🚨";
-}
+const label = {
+  default: "Note",
+  info: "Info",
+  warning: "Warning",
+  error: "Error",
+}[type];
 
-const baseClasses = "relative my-4 flex rounded border p-3";
+const baseClasses = "relative my-4 flex gap-3 rounded border p-3";
 const typeClasses = {
   default:
     "border-orange-800 bg-orange-100 text-orange-950 dark:border-orange-200/20 dark:bg-orange-950/20 dark:text-orange-200",
@@ -25,6 +23,8 @@ const typeClasses = {
 ---
 
 <div class:list={["not-prose", baseClasses, typeClasses[type]]}>
-  <span class="pointer-events-none pr-3 text-xl select-none">{emoji}</span>
-  <slot />
+  <span class="pointer-events-none shrink-0 text-xs font-semibold uppercase tracking-wide select-none">
+    {label}
+  </span>
+  <div class="flex-1"><slot /></div>
 </div>

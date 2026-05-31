@@ -1,6 +1,7 @@
 import { getCollection } from "astro:content";
 import { NAV } from "@consts";
 import type {
+  ConflictClaim,
   ResolvedSection,
   ResolvedSubsection,
   SortBy,
@@ -11,6 +12,7 @@ type ConfigData = {
   slug?: string;
   title?: string;
   description?: string;
+  order?: number;
   rules?: SubsectionRules;
 };
 
@@ -22,7 +24,6 @@ async function loadConfigs(): Promise<Map<string, ConfigData>> {
     map.set(key, entry.data as ConfigData);
   }
   return map;
-  
 }
 
 function titleCase(slug: string): string {
@@ -34,36 +35,65 @@ function titleCase(slug: string): string {
 
 export async function getResolvedNav(): Promise<ResolvedSection[]> {
   const configs = await loadConfigs();
+  const claims = new Map<string, ConflictClaim[]>();
+  const claim = (slug: string, c: ConflictClaim) => {
+    if (!claims.has(slug)) claims.set(slug, []);
+    claims.get(slug)!.push(c);
+  };
 
-  return NAV.map((section) => {
+  const sections: ResolvedSection[] = NAV.map((section) => {
     const sectionCfg = configs.get(section.slug) ?? {};
+    const sectionName = sectionCfg.title ?? titleCase(section.slug);
+    claim(section.slug, {
+      label: `Section "${sectionName}"`,
+      source: `src/content/${section.slug}/_config.md`,
+    });
+
     const subsections: ResolvedSubsection[] = section.subsections
       .map((sub) => {
         const cfg = configs.get(`${section.slug}/${sub.slug}`) ?? {};
         const urlSlug = cfg.slug ?? sub.slug;
         const rules: SubsectionRules = cfg.rules ?? {};
+        const name = cfg.title ?? titleCase(sub.slug);
+        claim(urlSlug, {
+          label: `Subsection "${name}" in ${sectionName}`,
+          source: `src/content/${section.slug}/${sub.slug}/_config.md`,
+        });
         return {
           dirName: sub.slug,
           urlSlug,
-          name: cfg.title ?? titleCase(sub.slug),
+          name,
           description: cfg.description,
-          url: `/${section.slug}/${urlSlug}`,
+          order: cfg.order ?? 0,
+          url: `/${urlSlug}`,
           rules,
         };
       })
-      .filter((sub) => !sub.rules.hidden);
+      .filter((sub) => !sub.rules.hidden)
+      .sort((a, b) => b.order - a.order);
 
     return {
       slug: section.slug,
-      name: sectionCfg.title ?? titleCase(section.slug),
+      name: sectionName,
       description: sectionCfg.description,
       url: `/${section.slug}`,
       subsections,
     };
   });
+
+  for (const section of sections) {
+    const list = claims.get(section.slug);
+    if (list && list.length > 1) section.conflict = list;
+    for (const sub of section.subsections) {
+      const subList = claims.get(sub.urlSlug);
+      if (subList && subList.length > 1) sub.conflict = subList;
+    }
+  }
+
+  return sections;
 }
 
-export function sortPosts<T extends { id: string; data: { date: Date } }>(
+export function sortPosts<T extends { id: string; data: { date: Date; order?: number } }>(
   posts: T[],
   by: SortBy = "date",
 ): T[] {
@@ -77,7 +107,11 @@ export function sortPosts<T extends { id: string; data: { date: Date } }>(
       return copy;
     case "date":
     default:
-      copy.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+      copy.sort((a, b) => {
+        const orderDiff = (b.data.order ?? 0) - (a.data.order ?? 0);
+        if (orderDiff !== 0) return orderDiff;
+        return b.data.date.valueOf() - a.data.date.valueOf();
+      });
       return copy;
   }
 }
@@ -104,7 +138,7 @@ export function postHref(
   if (sub.rules.pdfOnNumericName && isNumericName(localId)) {
     return `/pdfs/${sectionSlug}/${sub.dirName}/${localId}.pdf`;
   }
-  return `/${sectionSlug}/${sub.urlSlug}/${localId}`;
+  return `/${sub.urlSlug}/${localId}`;
 }
 
 export function entryHref(
@@ -112,9 +146,9 @@ export function entryHref(
   nav: ResolvedSection[],
 ): string {
   const section = nav.find((s) => s.slug === entry.collection);
-  if (!section) return `/${entry.collection}/${entry.id}`;
+  if (!section) return `/${entry.id}`;
   const dirName = String(entry.id).split("/")[0];
   const sub = section.subsections.find((s) => s.dirName === dirName);
-  if (!sub) return `/${entry.collection}/${entry.id}`;
+  if (!sub) return `/${entry.id}`;
   return postHref(section.slug, sub, String(entry.id));
 }

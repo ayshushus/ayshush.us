@@ -7,6 +7,8 @@ tags: [sample, tutorial]
 
 This file lives at `src/content/work/mozilla/sample.md`. It's a sample post inside the **Mozilla** subsection of the **Work** section.
 
+For a code walkthrough of the patterns mentioned in this post, see [this YouTube video](https://www.youtube.com/) — placeholder; swap in the actual link.
+
 Three levels of editable content sit above this file:
 
 1. **Section** — title and description for `Work` itself live in `src/content/work/_config.md`. That controls the heading and subtitle you see on `/` and `/work`.

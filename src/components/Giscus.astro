@@ -1,20 +1,42 @@
-<div class="giscus"></div>
+<div id="giscus-comments" data-pagefind-ignore></div>
 
-<script
-  is:inline
-  data-astro-rerun
-  src="https://giscus.app/client.js"
-  data-repo="ayshushus/ayshush.us"
-  data-repo-id="R_kgDOScqcpw"
-  data-category="General"
-  data-category-id="DIC_kwDOScqcp84C9KHH"
-  data-mapping="pathname"
-  data-strict="0"
-  data-reactions-enabled="1"
-  data-emit-metadata="0"
-  data-input-position="top"
-  data-theme="preferred_color_scheme"
-  data-lang="en"
-  data-loading="lazy"
-  crossorigin="anonymous"
-  async></script>
+<script is:inline>
+  (function () {
+    if (window.__giscusLoaderRegistered) return;
+    window.__giscusLoaderRegistered = true;
+
+    function loadGiscus() {
+      const container = document.getElementById("giscus-comments");
+      if (!container) return;
+      // Clear any iframe / script left over from a previous navigation.
+      container.innerHTML = "";
+
+      const script = document.createElement("script");
+      script.src = "https://giscus.app/client.js";
+      script.async = true;
+      script.crossOrigin = "anonymous";
+
+      const isDark = document.documentElement.classList.contains("dark");
+      const attrs = {
+        "data-repo": "ayshushus/ayshush.us",
+        "data-repo-id": "R_kgDOScqcpw",
+        "data-category": "General",
+        "data-category-id": "DIC_kwDOScqcp84C9KHH",
+        "data-mapping": "pathname",
+        "data-strict": "0",
+        "data-reactions-enabled": "1",
+        "data-emit-metadata": "0",
+        "data-input-position": "top",
+        "data-theme": isDark ? "dark" : "light",
+        "data-lang": "en",
+        "data-loading": "lazy",
+      };
+      for (const [k, v] of Object.entries(attrs)) {
+        script.setAttribute(k, v);
+      }
+      container.appendChild(script);
+    }
+
+    document.addEventListener("astro:page-load", loadGiscus);
+  })();
+</script>

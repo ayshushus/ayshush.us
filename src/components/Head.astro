@@ -35,10 +35,9 @@ const { title, description, image = "/astro-micro.jpg" } = Astro.props;
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 <link
   rel="icon"
-  href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤡</text></svg>"
+  href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📖</text></svg>"
 />
 <meta name="generator" content={Astro.generator} />
 
@@ -213,7 +212,7 @@ const { title, description, image = "/astro-micro.jpg" } = Astro.props;
   }
 
   function addCopyCodeButtons() {
-    let copyButtonLabel = "📋";
+    let copyButtonLabel = "Copy";
     let codeBlocks = Array.from(document.querySelectorAll("pre"));
 
     async function copyCode(codeBlock, copyButton) {
@@ -222,7 +221,7 @@ const { title, description, image = "/astro-micro.jpg" } = Astro.props;
       const textToCopy = codeText.replace(buttonText, "");
 
       await navigator.clipboard.writeText(textToCopy);
-      copyButton.innerText = "✅";
+      copyButton.innerText = "Copied";
 
       setTimeout(() => {
         copyButton.innerText = copyButtonLabel;

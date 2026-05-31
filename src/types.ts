@@ -35,13 +35,20 @@ export type SubsectionRules = {
   hidden?: boolean;
 };
 
+export type ConflictClaim = {
+  label: string;
+  source: string;
+};
+
 export type ResolvedSubsection = {
   dirName: string;
   urlSlug: string;
   name: string;
   description?: string;
+  order: number;
   url: string;
   rules: SubsectionRules;
+  conflict?: ConflictClaim[];
 };
 
 export type ResolvedSection = {
@@ -50,4 +57,5 @@ export type ResolvedSection = {
   description?: string;
   url: string;
   subsections: ResolvedSubsection[];
+  conflict?: ConflictClaim[];
 };

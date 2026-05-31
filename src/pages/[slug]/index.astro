@@ -1,0 +1,141 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/Container.astro";
+import ArrowCard from "@components/ArrowCard.astro";
+import BackToPrevious from "@components/BackToPrevious.astro";
+import { getResolvedNav, postHref, sortPosts } from "@lib/nav";
+
+export async function getStaticPaths() {
+  const nav = await getResolvedNav();
+  const seen = new Set<string>();
+  const paths: any[] = [];
+
+  for (const section of nav) {
+    if (!seen.has(section.slug)) {
+      seen.add(section.slug);
+      paths.push({
+        params: { slug: section.slug },
+        props: { kind: "section", section, sub: null },
+      });
+    }
+    for (const sub of section.subsections) {
+      if (seen.has(sub.urlSlug)) continue;
+      seen.add(sub.urlSlug);
+      paths.push({
+        params: { slug: sub.urlSlug },
+        props: { kind: "subsection", section, sub },
+      });
+    }
+  }
+  return paths;
+}
+
+const { kind, section, sub } = Astro.props;
+const slug = Astro.params.slug;
+
+let posts: any[] = [];
+let parentSection = section;
+if (kind === "subsection" && sub) {
+  const all = await getCollection(
+    section.slug as any,
+    ({ data }: any) => !data.draft,
+  );
+  const filtered = (all as any[]).filter(
+    (e) => e.id.split("/")[0] === sub.dirName,
+  );
+  posts = sortPosts(filtered, sub.rules.sortBy ?? "date");
+}
+
+const conflict = kind === "section" ? section.conflict : sub?.conflict;
+const pageTitle = kind === "section" ? section.name : sub!.name;
+const pageDescription =
+  kind === "section"
+    ? section.description ?? `${section.name} sections.`
+    : sub!.description ?? `${sub!.name} posts.`;
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  <Container>
+    <aside data-pagefind-ignore>
+      <div class="space-y-10">
+        {kind === "subsection" && (
+          <div class="animate">
+            <BackToPrevious href={parentSection.url}>
+              Back to {parentSection.name}
+            </BackToPrevious>
+          </div>
+        )}
+
+        {conflict && (
+          <div class="animate space-y-2 rounded-lg border border-red-500/50 bg-red-500/10 p-4 text-sm">
+            <div class="font-semibold text-red-700 dark:text-red-300">
+              Slug conflict on <code>/{slug}</code>
+            </div>
+            <p>
+              Multiple entries claim this URL. Rename one of them by editing
+              its <code>_config.md</code>:
+            </p>
+            <ul class="list-disc pl-5">
+              {conflict.map((c: any) => (
+                <li>
+                  <span>{c.label}</span>
+                  {" — "}
+                  <code class="text-xs">{c.source}</code>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <div class="space-y-2">
+          <h1 class="animate font-semibold text-black dark:text-white">
+            {pageTitle}
+          </h1>
+          {kind === "section" && section.description && (
+            <p class="animate text-sm opacity-80">{section.description}</p>
+          )}
+          {kind === "subsection" && sub!.description && (
+            <p class="animate text-sm opacity-80">{sub!.description}</p>
+          )}
+        </div>
+
+        {kind === "section" && (
+          <ul class="animate not-prose flex flex-col gap-4">
+            {section.subsections.map((s: any) => (
+              <li>
+                <ArrowCard
+                  href={s.url}
+                  title={s.name}
+                  description={s.description}
+                />
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {kind === "subsection" && (
+          posts.length === 0 ? (
+            <p class="animate text-sm opacity-70">No posts yet.</p>
+          ) : (
+            <ul class="animate not-prose flex flex-col gap-4">
+              {posts.map((post: any) => {
+                const href = postHref(parentSection.slug, sub!, post.id);
+                return (
+                  <li>
+                    <ArrowCard
+                      href={href}
+                      title={post.data.title}
+                      description={post.data.description}
+                      external={href.endsWith(".pdf")}
+                    />
+                  </li>
+                );
+              })}
+            </ul>
+          )
+        )}
+      </div>
+    </aside>
+  </Container>
+</Layout>

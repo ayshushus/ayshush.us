@@ -12,52 +12,58 @@ const nav = await getResolvedNav();
 <Layout title={HOME.TITLE} description={HOME.DESCRIPTION}>
   <Container>
     <aside data-pagefind-ignore>
-      <h1 class="font-semibold text-black dark:text-white">
-        Ayush Ranjan
-      </h1>
+      <h1 class="font-semibold text-black dark:text-white">Ayush Ranjan</h1>
       <div class="space-y-16">
-        <section>
+        <section class="animate">
           <article class="space-y-4">
-            <span>
-              <p>
-                Welcome to Ayush Ranjan's personal website.
-              </p>
-            </span>
+            <p>
+              Welcome. This is my corner of the internet — a small index of
+              what I've worked on, what I've made, and what I'm currently
+              digging into.
+            </p>
           </article>
         </section>
 
-        {
-          nav.map((section) => (
-            <section class="animate space-y-6">
-              <div class="flex flex-wrap items-center justify-between gap-y-2">
-                <div class="space-y-0.5">
-                  <h2 class="font-semibold text-black dark:text-white">
-                    {section.name}
-                  </h2>
-                  {section.description && (
-                    <p class="text-sm opacity-80">{section.description}</p>
-                  )}
-                </div>
-                <Link href={section.url}>
-                  See all {section.name.toLowerCase()}
-                </Link>
-              </div>
-              <ul class="not-prose flex flex-col gap-4">
-                {section.subsections
-                  .slice(0, SITE.NUM_POSTS_PER_SECTION_ON_HOMEPAGE)
-                  .map((sub) => (
-                    <li>
-                      <ArrowCard
-                        href={sub.url}
-                        title={sub.name}
-                        description={sub.description}
-                      />
-                    </li>
-                  ))}
-              </ul>
-            </section>
-          ))
-        }
+        <section class="animate space-y-6">
+          <h2 class="font-semibold text-black dark:text-white">Explore</h2>
+          <ul class="not-prose flex flex-col gap-4">
+            {nav.map((section) => (
+              <li>
+                <ArrowCard
+                  href={section.url}
+                  title={section.name}
+                  description={section.description}
+                />
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section class="animate space-y-4">
+          <h2 class="font-semibold text-black dark:text-white">About</h2>
+          <article class="space-y-4">
+            <p>
+              I'm Ayush Ranjan, a software engineer. My path has zig-zagged
+              across firmware, data pipelines, clinical analytics, audit
+              automation, and teaching — picking up something new at each
+              stop and carrying it forward.
+            </p>
+            <p>
+              Lately I spend my time at Mozilla, where I work on
+              observability and the systems that keep our products honest.
+              Outside of work I tinker on small side projects, take notes on
+              papers and frameworks that catch my attention, and try to
+              write down what I learn so future-me doesn't have to relearn
+              it.
+            </p>
+            <p>
+              I care about clarity over cleverness, durable interfaces over
+              flashy ones, and shipping things that hold up after the demo
+              is over. If any of that resonates with you, I'd love to hear
+              from you.
+            </p>
+          </article>
+        </section>
 
         <section class="animate space-y-4">
           <h2 class="font-semibold text-black dark:text-white">
@@ -65,7 +71,7 @@ const nav = await getResolvedNav();
           </h2>
           <article>
             <p>
-              If you want to get in touch with me about something or just to say
+              If you want to get in touch about something, or just to say
               hi, reach out on social media or send me an email.
             </p>
           </article>

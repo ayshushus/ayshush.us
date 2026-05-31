@@ -19,6 +19,7 @@ export async function getStaticPaths() {
       ({ data }: any) => !data.draft,
     );
     for (const sub of section.subsections) {
+      if (sub.conflict) continue;
       for (const entry of entries as any[]) {
         const segments = String(entry.id).split("/");
         if (segments[0] !== sub.dirName) continue;
@@ -26,7 +27,7 @@ export async function getStaticPaths() {
         if (!localId) continue;
         if (sub.rules.pdfOnNumericName && isNumericName(localId)) continue;
         paths.push({
-          params: { section: section.slug, subsection: sub.urlSlug, id: localId },
+          params: { slug: sub.urlSlug, id: localId },
           props: { section, subsection: sub, post: entry },
         });
       }

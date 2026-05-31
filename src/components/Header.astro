@@ -1,7 +1,6 @@
 ---
 import Container from "@components/Container.astro";
 import Link from "@components/Link.astro";
-import NavDropdown from "@components/NavDropdown.astro";
 import { SITE } from "@consts";
 import { getResolvedNav } from "@lib/nav";
 
@@ -17,7 +16,14 @@ const nav = await getResolvedNav();
         </div>
       </Link>
       <nav class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-        {nav.map((section) => <NavDropdown section={section} size="sm" />)}
+        {nav.map((section) => (
+          <a
+            href={section.url}
+            class="rounded-sm px-1 py-0.5 hover:text-black focus-visible:text-black dark:hover:text-white dark:focus-visible:text-white"
+          >
+            {section.name}
+          </a>
+        ))}
         <button
           id="magnifying-glass"
           aria-label="Search"
@@ -41,61 +47,3 @@ const nav = await getResolvedNav();
     </div>
   </Container>
 </header>
-
-<script>
-  function setupDropdowns() {
-    const dropdowns = Array.from(
-      document.querySelectorAll<HTMLElement>("[data-dropdown]"),
-    );
-
-    const closeAll = (except: HTMLElement | null) => {
-      for (const d of dropdowns) {
-        if (d === except) continue;
-        const trigger = d.querySelector<HTMLButtonElement>(
-          "[data-dropdown-trigger]",
-        );
-        const menu = d.querySelector<HTMLElement>("[data-dropdown-menu]");
-        const chevron = d.querySelector<HTMLElement>("[data-dropdown-chevron]");
-        trigger?.setAttribute("aria-expanded", "false");
-        menu?.setAttribute("hidden", "");
-        chevron?.setAttribute("data-open", "false");
-      }
-    };
-
-    for (const d of dropdowns) {
-      const trigger = d.querySelector<HTMLButtonElement>(
-        "[data-dropdown-trigger]",
-      );
-      const menu = d.querySelector<HTMLElement>("[data-dropdown-menu]");
-      const chevron = d.querySelector<HTMLElement>("[data-dropdown-chevron]");
-      if (!trigger || !menu) continue;
-      if (trigger.dataset.dropdownWired === "1") continue;
-      trigger.dataset.dropdownWired = "1";
-
-      trigger.addEventListener("click", (e) => {
-        e.stopPropagation();
-        const isOpen = trigger.getAttribute("aria-expanded") === "true";
-        closeAll(d);
-        if (isOpen) {
-          trigger.setAttribute("aria-expanded", "false");
-          menu.setAttribute("hidden", "");
-          chevron?.setAttribute("data-open", "false");
-        } else {
-          trigger.setAttribute("aria-expanded", "true");
-          menu.removeAttribute("hidden");
-          chevron?.setAttribute("data-open", "true");
-        }
-      });
-
-      menu.addEventListener("click", (e) => e.stopPropagation());
-    }
-
-    document.addEventListener("click", () => closeAll(null));
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape") closeAll(null);
-    });
-  }
-
-  document.addEventListener("DOMContentLoaded", setupDropdowns);
-  document.addEventListener("astro:after-swap", setupDropdowns);
-</script>
