@@ -2,5 +2,5 @@
 slug: tueely
 title: Tueely
 description: Software engineering.
-order: 10
+order: 5
 ---
