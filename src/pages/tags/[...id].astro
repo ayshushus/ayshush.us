@@ -4,13 +4,13 @@ import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
 import ArrowCard from "@components/ArrowCard.astro";
 import BackToPrevious from "@components/BackToPrevious.astro";
-import { NAV } from "@consts";
+import { discoverSectionSlugs } from "@lib/content-fs";
 import { entryHref, getResolvedNav } from "@lib/nav";
 
 export async function getStaticPaths() {
   const groups = await Promise.all(
-    NAV.map((s) =>
-      getCollection(s.slug as any, ({ data }: any) => !data.draft),
+    discoverSectionSlugs().map((slug) =>
+      getCollection(slug as any, ({ data }: any) => !data.draft),
     ),
   );
   const posts = groups.flat();

@@ -1,6 +1,6 @@
 import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
-import { NAV } from "./consts";
+import { discoverSectionSlugs } from "./lib/content-fs";
 
 const postSchema = z.object({
   title: z.string(),
@@ -28,12 +28,12 @@ const subsectionConfigSchema = z.object({
 });
 
 const sectionCollections = Object.fromEntries(
-  NAV.map((section) => [
-    section.slug,
+  discoverSectionSlugs().map((slug) => [
+    slug,
     defineCollection({
       loader: glob({
         pattern: ["**/*.{md,mdx}", "!**/_*.{md,mdx}"],
-        base: `./src/content/${section.slug}`,
+        base: `./src/content/${slug}`,
       }),
       schema: postSchema,
     }),

@@ -2,11 +2,11 @@
 import { getCollection } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
-import { NAV } from "@consts";
+import { discoverSectionSlugs } from "@lib/content-fs";
 
 const groups = await Promise.all(
-  NAV.map((s) =>
-    getCollection(s.slug as any, ({ data }: any) => !data.draft),
+  discoverSectionSlugs().map((slug) =>
+    getCollection(slug as any, ({ data }: any) => !data.draft),
   ),
 );
 const posts = groups.flat();

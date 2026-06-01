@@ -1,5 +1,5 @@
 import { getCollection } from "astro:content";
-import { NAV } from "@consts";
+import { discoverSectionSlugs, discoverSubsectionSlugs } from "@lib/content-fs";
 import type {
   ConflictClaim,
   ResolvedSection,
@@ -41,45 +41,50 @@ export async function getResolvedNav(): Promise<ResolvedSection[]> {
     claims.get(slug)!.push(c);
   };
 
-  const sections: ResolvedSection[] = NAV.map((section) => {
-    const sectionCfg = configs.get(section.slug) ?? {};
-    const sectionName = sectionCfg.title ?? titleCase(section.slug);
-    claim(section.slug, {
-      label: `Section "${sectionName}"`,
-      source: `src/content/${section.slug}/_config.md`,
-    });
+  const sections: ResolvedSection[] = discoverSectionSlugs()
+    .map((sectionSlug) => {
+      const sectionCfg = configs.get(sectionSlug) ?? {};
+      const sectionName = sectionCfg.title ?? titleCase(sectionSlug);
+      claim(sectionSlug, {
+        label: `Section "${sectionName}"`,
+        source: `src/content/${sectionSlug}/_config.md`,
+      });
 
-    const subsections: ResolvedSubsection[] = section.subsections
-      .map((sub) => {
-        const cfg = configs.get(`${section.slug}/${sub.slug}`) ?? {};
-        const urlSlug = cfg.slug ?? sub.slug;
-        const rules: SubsectionRules = cfg.rules ?? {};
-        const name = cfg.title ?? titleCase(sub.slug);
-        claim(urlSlug, {
-          label: `Subsection "${name}" in ${sectionName}`,
-          source: `src/content/${section.slug}/${sub.slug}/_config.md`,
-        });
-        return {
-          dirName: sub.slug,
-          urlSlug,
-          name,
-          description: cfg.description,
-          order: cfg.order ?? 0,
-          url: `/${urlSlug}`,
-          rules,
-        };
-      })
-      .filter((sub) => !sub.rules.hidden)
-      .sort((a, b) => b.order - a.order);
+      const subsections: ResolvedSubsection[] = discoverSubsectionSlugs(
+        sectionSlug,
+      )
+        .map((dirName) => {
+          const cfg = configs.get(`${sectionSlug}/${dirName}`) ?? {};
+          const urlSlug = cfg.slug ?? dirName;
+          const rules: SubsectionRules = cfg.rules ?? {};
+          const name = cfg.title ?? titleCase(dirName);
+          claim(urlSlug, {
+            label: `Subsection "${name}" in ${sectionName}`,
+            source: `src/content/${sectionSlug}/${dirName}/_config.md`,
+          });
+          return {
+            dirName,
+            urlSlug,
+            name,
+            description: cfg.description,
+            order: cfg.order ?? 0,
+            url: `/${urlSlug}`,
+            rules,
+          };
+        })
+        .filter((sub) => !sub.rules.hidden)
+        .sort((a, b) => b.order - a.order);
 
-    return {
-      slug: section.slug,
-      name: sectionName,
-      description: sectionCfg.description,
-      url: `/${section.slug}`,
-      subsections,
-    };
-  });
+      return {
+        slug: sectionSlug,
+        name: sectionName,
+        description: sectionCfg.description,
+        order: sectionCfg.order ?? 0,
+        url: `/${sectionSlug}`,
+        subsections,
+      };
+    })
+    .sort((a, b) => b.order - a.order);
 
   for (const section of sections) {
     const list = claims.get(section.slug);

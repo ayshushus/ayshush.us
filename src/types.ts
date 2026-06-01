@@ -15,18 +15,6 @@ export type Socials = {
   HREF: string;
 }[];
 
-export type NavSubsection = {
-  slug: string;
-};
-
-export type NavSection = {
-  slug: string;
-  hideFromHomepage?: boolean;
-  subsections: NavSubsection[];
-};
-
-export type Nav = NavSection[];
-
 export type SortBy = "date" | "name" | "numeric";
 
 export type SubsectionRules = {
@@ -55,6 +43,7 @@ export type ResolvedSection = {
   slug: string;
   name: string;
   description?: string;
+  order: number;
   url: string;
   subsections: ResolvedSubsection[];
   conflict?: ConflictClaim[];
