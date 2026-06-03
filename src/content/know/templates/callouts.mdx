@@ -1,0 +1,60 @@
+---
+title: Callouts · note, info, warning, error
+description: The Callout component for admonitions — requires an .mdx file.
+date: 2026-05-20
+order: 50
+tags: [sample, template, callout, mdx]
+---
+
+import Callout from "@components/Callout.astro";
+
+Callouts pull a reader's eye to something important. They live in the `Callout`
+component, so a post that uses them **must be an `.mdx` file** (not `.md`) and
+must import the component at the top:
+
+```mdx
+---
+title: My post
+description: ...
+date: 2026-01-01
+---
+
+import Callout from "@components/Callout.astro";
+
+<Callout type="info">Heads up — this is worth knowing.</Callout>
+```
+
+## The four types
+
+<Callout>
+  The default callout, labeled **Note**. Use it for neutral asides and extra
+  context that doesn't fit the main flow.
+</Callout>
+
+<Callout type="info">
+  An **Info** callout. Good for tips, definitions, and "by the way" details.
+  You can put [links](/know/templates/links-and-resources) and `inline code`
+  inside it.
+</Callout>
+
+<Callout type="warning">
+  A **Warning** callout. Use it for gotchas and easy-to-miss footguns —
+  "this silently truncates if the input is over 256 chars," that sort of thing.
+</Callout>
+
+<Callout type="error">
+  An **Error** callout. Reserve it for things that will break: deprecations,
+  data loss, "do not run this in production."
+</Callout>
+
+## Multi-line content
+
+Callouts can hold full blocks, including lists:
+
+<Callout type="info">
+  Steps to reproduce:
+
+  1. Open the file.
+  2. Change the flag.
+  3. Watch it fail.
+</Callout>
