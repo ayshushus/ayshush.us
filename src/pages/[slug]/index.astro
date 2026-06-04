@@ -67,6 +67,14 @@ const pageDescription =
           </div>
         )}
 
+        {kind === "section" && (
+          <div class="animate">
+            <BackToPrevious href="/">
+              Back to Home
+            </BackToPrevious>
+          </div>
+        )}
+
         {conflict && (
           <div class="animate space-y-2 rounded-lg border border-red-500/50 bg-red-500/10 p-4 text-sm">
             <div class="font-semibold text-red-700 dark:text-red-300">
