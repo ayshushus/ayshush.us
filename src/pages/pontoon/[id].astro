@@ -1,0 +1,49 @@
+---
+import fs from "node:fs";
+import path from "node:path";
+import Layout from "@layouts/Layout.astro";
+
+// Drop-in PDF viewer. Any *.pdf placed in public/pontoon/ is served statically
+// at /pontoon/<name>.pdf and gets a clean, extensionless page here at
+// /pontoon/<name> that embeds it. To add one, just drop the file in the folder.
+export function getStaticPaths() {
+  const dir = path.resolve("public/pontoon");
+  if (!fs.existsSync(dir)) return [];
+  return fs
+    .readdirSync(dir)
+    .filter((name) => name.toLowerCase().endsWith(".pdf"))
+    .map((name) => {
+      const id = name.slice(0, -".pdf".length);
+      return { params: { id }, props: { file: `/pontoon/${name}` } };
+    });
+}
+
+const { file } = Astro.props;
+const { id } = Astro.params;
+---
+
+<Layout title={id!} description={`PDF: ${id}`}>
+  <div class="pdf-viewer">
+    <object data={file} type="application/pdf" class="pdf-frame">
+      <iframe src={file} class="pdf-frame" title={id}></iframe>
+      <p class="p-4 text-sm">
+        Your browser can't display this PDF inline.
+        <a href={file} class="underline">Download {id}.pdf</a>.
+      </p>
+    </object>
+  </div>
+</Layout>
+
+<style>
+  .pdf-viewer {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+  }
+  .pdf-frame {
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+</style>

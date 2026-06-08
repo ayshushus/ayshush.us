@@ -1,0 +1,47 @@
+---
+import fs from "node:fs";
+import path from "node:path";
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/Container.astro";
+import ArrowCard from "@components/ArrowCard.astro";
+import BackToPrevious from "@components/BackToPrevious.astro";
+
+const dir = path.resolve("public/pontoon");
+const ids = fs.existsSync(dir)
+  ? fs
+      .readdirSync(dir)
+      .filter((name) => name.toLowerCase().endsWith(".pdf"))
+      .map((name) => name.slice(0, -".pdf".length))
+      .sort()
+  : [];
+---
+
+<Layout title="Pontoon" description="PDFs.">
+  <Container>
+    <aside data-pagefind-ignore>
+      <div class="space-y-10">
+        <div class="animate">
+          <BackToPrevious href="/">Back to Home</BackToPrevious>
+        </div>
+
+        <div class="space-y-2">
+          <h1 class="animate font-semibold text-black dark:text-white">
+            Pontoon
+          </h1>
+        </div>
+
+        {ids.length === 0 ? (
+          <p class="animate text-sm opacity-70">No PDFs yet.</p>
+        ) : (
+          <ul class="animate not-prose flex flex-col gap-4">
+            {ids.map((id) => (
+              <li>
+                <ArrowCard href={`/pontoon/${id}`} title={id} />
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </aside>
+  </Container>
+</Layout>
