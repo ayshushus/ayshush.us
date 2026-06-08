@@ -1,0 +1,42 @@
+---
+// Layout for pontoon research notes (markdown pages under src/pages/pontoon/**).
+// Set it from a note's frontmatter:
+//   layout: ../../../layouts/PontoonDoc.astro
+//   title: ...
+//   description: ...
+//   back: /pontoon/autocomplete      (optional, defaults to /pontoon)
+//   backLabel: Back to Autocomplete  (optional)
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/Container.astro";
+import BackToPrevious from "@components/BackToPrevious.astro";
+import TableOfContents from "@components/TableOfContents.astro";
+
+const { frontmatter, headings = [] } = Astro.props;
+const title = frontmatter?.title ?? "Untitled";
+const description = frontmatter?.description ?? "";
+const back = frontmatter?.back ?? "/pontoon";
+const backLabel = frontmatter?.backLabel ?? "Back to Pontoon";
+---
+
+<Layout title={title} description={description}>
+  <Container>
+    <div class="animate">
+      <BackToPrevious href={back}>{backLabel}</BackToPrevious>
+    </div>
+
+    <div class="my-8 space-y-2">
+      <h1 class="animate text-3xl font-semibold text-black dark:text-white">
+        {title}
+      </h1>
+      {description && (
+        <p class="animate text-sm opacity-80">{description}</p>
+      )}
+    </div>
+
+    {headings.length > 0 && <TableOfContents headings={headings} />}
+
+    <article class="animate">
+      <slot />
+    </article>
+  </Container>
+</Layout>

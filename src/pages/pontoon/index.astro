@@ -6,17 +6,33 @@ import Container from "@components/Container.astro";
 import ArrowCard from "@components/ArrowCard.astro";
 import BackToPrevious from "@components/BackToPrevious.astro";
 
-const dir = path.resolve("public/pontoon");
-const ids = fs.existsSync(dir)
+function titleCase(slug: string): string {
+  return slug
+    .split("-")
+    .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+    .join(" ");
+}
+
+// Projects = subfolders of src/pages/pontoon (each has its own index.astro).
+const pagesDir = path.resolve("src/pages/pontoon");
+const projects = fs
+  .readdirSync(pagesDir, { withFileTypes: true })
+  .filter((e) => e.isDirectory())
+  .map((e) => ({ slug: e.name, title: titleCase(e.name) }))
+  .sort((a, b) => a.title.localeCompare(b.title));
+
+// PDFs = anything dropped in public/pontoon/*.pdf (clean, extensionless URLs).
+const pdfDir = path.resolve("public/pontoon");
+const pdfs = fs.existsSync(pdfDir)
   ? fs
-      .readdirSync(dir)
+      .readdirSync(pdfDir)
       .filter((name) => name.toLowerCase().endsWith(".pdf"))
       .map((name) => name.slice(0, -".pdf".length))
       .sort()
   : [];
 ---
 
-<Layout title="Pontoon" description="PDFs.">
+<Layout title="Pontoon" description="Projects and PDFs.">
   <Container>
     <aside data-pagefind-ignore>
       <div class="space-y-10">
@@ -30,16 +46,38 @@ const ids = fs.existsSync(dir)
           </h1>
         </div>
 
-        {ids.length === 0 ? (
-          <p class="animate text-sm opacity-70">No PDFs yet.</p>
-        ) : (
-          <ul class="animate not-prose flex flex-col gap-4">
-            {ids.map((id) => (
-              <li>
-                <ArrowCard href={`/pontoon/${id}`} title={id} />
-              </li>
-            ))}
-          </ul>
+        {projects.length > 0 && (
+          <div class="space-y-4">
+            <h2 class="animate text-sm font-semibold tracking-wide uppercase opacity-70">
+              Projects
+            </h2>
+            <ul class="animate not-prose flex flex-col gap-4">
+              {projects.map((p) => (
+                <li>
+                  <ArrowCard href={`/pontoon/${p.slug}`} title={p.title} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {pdfs.length > 0 && (
+          <div class="space-y-4">
+            <h2 class="animate text-sm font-semibold tracking-wide uppercase opacity-70">
+              PDFs
+            </h2>
+            <ul class="animate not-prose flex flex-col gap-4">
+              {pdfs.map((id) => (
+                <li>
+                  <ArrowCard href={`/pontoon/${id}`} title={id} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {projects.length === 0 && pdfs.length === 0 && (
+          <p class="animate text-sm opacity-70">Nothing here yet.</p>
         )}
       </div>
     </aside>
