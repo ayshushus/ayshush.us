@@ -2,6 +2,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import Layout from "@layouts/Layout.astro";
+import BackToPrevious from "@components/BackToPrevious.astro";
 
 // Drop-in PDF viewer. Any *.pdf placed in public/pontoon/ is served statically
 // at /pontoon/<name>.pdf and gets a clean, extensionless page here at
@@ -20,30 +21,63 @@ export function getStaticPaths() {
 
 const { file } = Astro.props;
 const { id } = Astro.params;
+
+const buttonClass =
+  "not-prose flex items-center gap-1.5 rounded-sm border border-black/15 px-3 py-1.5 text-sm transition-colors duration-300 ease-in-out hover:bg-black/5 hover:text-black focus-visible:bg-black/5 focus-visible:text-black dark:border-white/20 dark:hover:bg-white/5 dark:hover:text-white dark:focus-visible:bg-white/5 dark:focus-visible:text-white";
 ---
 
 <Layout title={id!} description={`PDF: ${id}`}>
-  <div class="pdf-viewer">
-    <object data={file} type="application/pdf" class="pdf-frame">
-      <iframe src={file} class="pdf-frame" title={id}></iframe>
-      <p class="p-4 text-sm">
-        Your browser can't display this PDF inline.
-        <a href={file} class="underline">Download {id}.pdf</a>.
-      </p>
-    </object>
+  <div class="mx-auto w-full max-w-5xl px-3">
+    <div
+      class="animate flex flex-wrap items-center justify-between gap-3"
+    >
+      <BackToPrevious href="/pontoon">Back to Pontoon</BackToPrevious>
+      <div class="flex items-center gap-2">
+        <a class={buttonClass} href={file} target="_blank" rel="noopener noreferrer">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-none stroke-current stroke-2">
+            <path d="M15 3h6v6"></path>
+            <path d="M10 14 21 3"></path>
+            <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path>
+          </svg>
+          Open
+        </a>
+        <a class={buttonClass} href={file} download>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-none stroke-current stroke-2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <path d="M7 10l5 5 5-5"></path>
+            <path d="M12 15V3"></path>
+          </svg>
+          Download
+        </a>
+      </div>
+    </div>
+
+    <h1 class="animate mt-6 text-2xl font-semibold text-black dark:text-white">
+      {id}
+    </h1>
+
+    <div
+      class="animate mt-6 overflow-hidden rounded-lg border border-black/15 bg-white dark:border-white/20 dark:bg-neutral-950"
+    >
+      <object data={file} type="application/pdf" class="pdf-frame">
+        <iframe src={file} class="pdf-frame" title={id}></iframe>
+        <div class="p-6 text-sm">
+          Your browser can't display this PDF inline.{" "}
+          <a href={file} class="underline">Download {id}.pdf</a>.
+        </div>
+      </object>
+    </div>
   </div>
 </Layout>
 
 <style>
-  .pdf-viewer {
-    position: fixed;
-    inset: 0;
-    width: 100vw;
-    height: 100vh;
-  }
   .pdf-frame {
+    display: block;
     width: 100%;
-    height: 100%;
+    /* Fill most of the viewport but leave room for the toolbar/title above and
+       breathing room for the footer below — so neither overlaps the PDF. */
+    height: calc(100vh - 18rem);
+    min-height: 28rem;
     border: 0;
   }
 </style>
