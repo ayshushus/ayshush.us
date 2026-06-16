@@ -1,9 +1,9 @@
 ---
-layout: ../../../layouts/PontoonDoc.astro
+layout: ../../../layouts/MozillaDoc.astro
 title: N-gram language models
 description: The classic statistical baseline — predict the next token from the previous n−1.
 order: 10
-back: /pontoon/autocomplete
+back: /mozilla/autocomplete
 backLabel: Back to Autocomplete
 ---
 

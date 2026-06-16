@@ -1,9 +1,9 @@
 ---
-layout: ../../../layouts/PontoonDoc.astro
+layout: ../../../layouts/MozillaDoc.astro
 title: CNNs for sequences
 description: Convolutional models that read local windows in parallel.
 order: 30
-back: /pontoon/autocomplete
+back: /mozilla/autocomplete
 backLabel: Back to Autocomplete
 ---
 

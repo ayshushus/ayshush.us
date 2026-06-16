@@ -1,0 +1,43 @@
+---
+import fs from "node:fs";
+import path from "node:path";
+import { Code } from "astro:components";
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/Container.astro";
+import BackToPrevious from "@components/BackToPrevious.astro";
+
+// Renders the autocomplete spec source at /mozilla/autocomplete/code/specs.
+// The `code` folder has no index, so /mozilla/autocomplete/code is not browsable
+// and this page is not linked from anywhere — reachable only by direct URL.
+const TITLE = "specs.py";
+const DESCRIPTION =
+  "Specs for the source+TM-conditioned autocomplete models (en-CA baseline + French projection).";
+
+const source = fs.readFileSync(
+  path.resolve("src/pages/mozilla/autocomplete/code/specs.py"),
+  "utf-8",
+);
+---
+
+<Layout title={TITLE} description={DESCRIPTION}>
+  <Container>
+    <div class="space-y-6">
+      <div class="animate">
+        <BackToPrevious href="/mozilla/autocomplete">
+          Back to Autocomplete
+        </BackToPrevious>
+      </div>
+
+      <div class="animate space-y-2">
+        <h1 class="text-2xl font-semibold text-black dark:text-white">
+          {TITLE}
+        </h1>
+        <p class="text-sm opacity-80">{DESCRIPTION}</p>
+      </div>
+
+      <div class="animate not-prose overflow-x-auto rounded-lg border border-black/15 p-4 text-sm dark:border-white/20">
+        <Code code={source} lang="python" theme="css-variables" />
+      </div>
+    </div>
+  </Container>
+</Layout>

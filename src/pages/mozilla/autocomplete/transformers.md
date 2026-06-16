@@ -1,9 +1,9 @@
 ---
-layout: ../../../layouts/PontoonDoc.astro
+layout: ../../../layouts/MozillaDoc.astro
 title: Transformers
 description: Self-attention over the whole sequence — the modern default.
 order: 40
-back: /pontoon/autocomplete
+back: /mozilla/autocomplete
 backLabel: Back to Autocomplete
 ---
 

@@ -1,9 +1,9 @@
 ---
-layout: ../../../layouts/PontoonDoc.astro
+layout: ../../../layouts/MozillaDoc.astro
 title: RNNs (LSTM / GRU)
 description: Recurrent models that carry a hidden state across the sequence.
 order: 20
-back: /pontoon/autocomplete
+back: /mozilla/autocomplete
 backLabel: Back to Autocomplete
 ---
 

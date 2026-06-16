@@ -1,10 +1,10 @@
 ---
-// Layout for pontoon research notes (markdown pages under src/pages/pontoon/**).
+// Layout for mozilla research notes (markdown pages under src/pages/mozilla/**).
 // Set it from a note's frontmatter:
-//   layout: ../../../layouts/PontoonDoc.astro
+//   layout: ../../../layouts/MozillaDoc.astro
 //   title: ...
 //   description: ...
-//   back: /pontoon/autocomplete      (optional, defaults to /pontoon)
+//   back: /mozilla/autocomplete      (optional, defaults to /mozilla)
 //   backLabel: Back to Autocomplete  (optional)
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
@@ -14,8 +14,8 @@ import TableOfContents from "@components/TableOfContents.astro";
 const { frontmatter, headings = [] } = Astro.props;
 const title = frontmatter?.title ?? "Untitled";
 const description = frontmatter?.description ?? "";
-const back = frontmatter?.back ?? "/pontoon";
-const backLabel = frontmatter?.backLabel ?? "Back to Pontoon";
+const back = frontmatter?.back ?? "/mozilla";
+const backLabel = frontmatter?.backLabel ?? "Back to Mozilla";
 ---
 
 <Layout title={title} description={description}>

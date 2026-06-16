@@ -5,6 +5,7 @@ import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
 import ArrowCard from "@components/ArrowCard.astro";
 import BackToPrevious from "@components/BackToPrevious.astro";
+import { issueTitle } from "@lib/mozilla-issues";
 
 function titleCase(slug: string): string {
   return slug
@@ -13,26 +14,29 @@ function titleCase(slug: string): string {
     .join(" ");
 }
 
-// Projects = subfolders of src/pages/pontoon (each has its own index.astro).
-const pagesDir = path.resolve("src/pages/pontoon");
+// Projects = subfolders of src/pages/mozilla (each has its own index.astro).
+const pagesDir = path.resolve("src/pages/mozilla");
 const projects = fs
   .readdirSync(pagesDir, { withFileTypes: true })
   .filter((e) => e.isDirectory())
   .map((e) => ({ slug: e.name, title: titleCase(e.name) }))
   .sort((a, b) => a.title.localeCompare(b.title));
 
-// PDFs = anything dropped in public/pontoon/*.pdf (clean, extensionless URLs).
-const pdfDir = path.resolve("public/pontoon");
-const pdfs = fs.existsSync(pdfDir)
+// Issue notes = anything dropped in public/mozilla/*.pdf (clean, extensionless
+// URLs). The file name is the mozilla/pontoon issue number; its title comes from
+// src/lib/mozilla-issues.ts.
+const pdfDir = path.resolve("public/mozilla");
+const notes = fs.existsSync(pdfDir)
   ? fs
       .readdirSync(pdfDir)
       .filter((name) => name.toLowerCase().endsWith(".pdf"))
       .map((name) => name.slice(0, -".pdf".length))
       .sort()
+      .map((id) => ({ id, title: issueTitle(id) }))
   : [];
 ---
 
-<Layout title="Pontoon" description="Projects and PDFs.">
+<Layout title="Mozilla" description="Projects and issue notes.">
   <Container>
     <aside data-pagefind-ignore>
       <div class="space-y-10">
@@ -42,7 +46,7 @@ const pdfs = fs.existsSync(pdfDir)
 
         <div class="space-y-2">
           <h1 class="animate font-semibold text-black dark:text-white">
-            Pontoon
+            Mozilla
           </h1>
         </div>
 
@@ -54,29 +58,33 @@ const pdfs = fs.existsSync(pdfDir)
             <ul class="animate not-prose flex flex-col gap-4">
               {projects.map((p) => (
                 <li>
-                  <ArrowCard href={`/pontoon/${p.slug}`} title={p.title} />
+                  <ArrowCard href={`/mozilla/${p.slug}`} title={p.title} />
                 </li>
               ))}
             </ul>
           </div>
         )}
 
-        {pdfs.length > 0 && (
+        {notes.length > 0 && (
           <div class="space-y-4">
             <h2 class="animate text-sm font-semibold tracking-wide uppercase opacity-70">
-              PDFs
+              Issue notes
             </h2>
             <ul class="animate not-prose flex flex-col gap-4">
-              {pdfs.map((id) => (
+              {notes.map((note) => (
                 <li>
-                  <ArrowCard href={`/pontoon/${id}`} title={id} />
+                  <ArrowCard
+                    href={`/mozilla/${note.id}`}
+                    title={note.title}
+                    description={`Issue #${note.id}`}
+                  />
                 </li>
               ))}
             </ul>
           </div>
         )}
 
-        {projects.length === 0 && pdfs.length === 0 && (
+        {projects.length === 0 && notes.length === 0 && (
           <p class="animate text-sm opacity-70">Nothing here yet.</p>
         )}
       </div>
