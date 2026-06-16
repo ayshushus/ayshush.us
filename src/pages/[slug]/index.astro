@@ -1,4 +1,6 @@
 ---
+import fs from "node:fs";
+import path from "node:path";
 import { getCollection } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
@@ -7,12 +9,24 @@ import BackToPrevious from "@components/BackToPrevious.astro";
 import { getResolvedNav, postHref, sortPosts } from "@lib/nav";
 
 export async function getStaticPaths() {
+  // A slug "owned" by a real static page (e.g. src/pages/mozilla/) must not also
+  // be generated here, or the two would emit the same /<slug>/index.html. Such a
+  // subsection still appears in its parent section's listing — its card just
+  // links to the static page instead of a generated one.
+  const hasStaticPage = (slug: string): boolean => {
+    const dir = path.resolve("src/pages", slug);
+    return (
+      fs.existsSync(path.join(dir, "index.astro")) ||
+      fs.existsSync(`${dir}.astro`)
+    );
+  };
+
   const nav = await getResolvedNav();
   const seen = new Set<string>();
   const paths: any[] = [];
 
   for (const section of nav) {
-    if (!seen.has(section.slug)) {
+    if (!seen.has(section.slug) && !hasStaticPage(section.slug)) {
       seen.add(section.slug);
       paths.push({
         params: { slug: section.slug },
@@ -20,7 +34,7 @@ export async function getStaticPaths() {
       });
     }
     for (const sub of section.subsections) {
-      if (seen.has(sub.urlSlug)) continue;
+      if (seen.has(sub.urlSlug) || hasStaticPage(sub.urlSlug)) continue;
       seen.add(sub.urlSlug);
       paths.push({
         params: { slug: sub.urlSlug },

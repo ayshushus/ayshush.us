@@ -36,7 +36,7 @@ const notes = fs.existsSync(pdfDir)
   : [];
 ---
 
-<Layout title="Mozilla" description="Projects and issue notes.">
+<Layout title="Mozilla" description="Issue notes and projects.">
   <Container>
     <aside data-pagefind-ignore>
       <div class="space-y-10">
@@ -49,21 +49,6 @@ const notes = fs.existsSync(pdfDir)
             Mozilla
           </h1>
         </div>
-
-        {projects.length > 0 && (
-          <div class="space-y-4">
-            <h2 class="animate text-sm font-semibold tracking-wide uppercase opacity-70">
-              Projects
-            </h2>
-            <ul class="animate not-prose flex flex-col gap-4">
-              {projects.map((p) => (
-                <li>
-                  <ArrowCard href={`/mozilla/${p.slug}`} title={p.title} />
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
 
         {notes.length > 0 && (
           <div class="space-y-4">
@@ -78,6 +63,21 @@ const notes = fs.existsSync(pdfDir)
                     title={note.title}
                     description={`Issue #${note.id}`}
                   />
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {projects.length > 0 && (
+          <div class="space-y-4">
+            <h2 class="animate text-sm font-semibold tracking-wide uppercase opacity-70">
+              Projects
+            </h2>
+            <ul class="animate not-prose flex flex-col gap-4">
+              {projects.map((p) => (
+                <li>
+                  <ArrowCard href={`/mozilla/${p.slug}`} title={p.title} />
                 </li>
               ))}
             </ul>
