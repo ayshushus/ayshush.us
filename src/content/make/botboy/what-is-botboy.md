@@ -1,6 +1,6 @@
 ---
 title: What Botboy is
-description: [One-line pitch — what Botboy does and who it's for.]
+description: "[One-line pitch — what Botboy does and who it's for.]"
 date: 2025-09-12
 tags: [botboy, overview, product]
 ---

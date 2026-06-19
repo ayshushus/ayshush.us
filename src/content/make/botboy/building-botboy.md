@@ -1,6 +1,6 @@
 ---
 title: Building Botboy
-description: [One-line subtitle — the approach, the decisions, and the parts that fought back.]
+description: "[One-line subtitle — the approach, the decisions, and the parts that fought back.]"
 date: 2025-10-03
 tags: [botboy, engineering, build-log]
 ---
