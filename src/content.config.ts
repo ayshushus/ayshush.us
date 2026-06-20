@@ -9,9 +9,11 @@ const postSchema = z.object({
   order: z.number().optional(),
   draft: z.boolean().optional(),
   tags: z.array(z.string()).optional(),
-  // Optional PDF artifact served from /public, kept in a per-section assets
-  // folder (e.g. "/mozilla/assets/3291.pdf"). When set, the post's page embeds
-  // the PDF full-width with open/download controls.
+  // Optional PDF artifact co-located with the post in a sibling "assets" folder
+  // and referenced relatively (e.g. "assets/3291.pdf"). Served by the
+  // /pdfs/[...path] endpoint and resolved via resolvePdfUrl() in src/lib/nav.ts.
+  // A leading "/" is treated as a legacy absolute /public path. When set, the
+  // post's page embeds the PDF full-width with open/download controls.
   pdf: z.string().optional(),
   // Optional external source link (e.g. a GitHub issue) shown as a button.
   sourceUrl: z.string().optional(),

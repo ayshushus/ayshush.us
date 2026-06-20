@@ -1,10 +1,9 @@
 ---
-layout: ../../../layouts/MozillaDoc.astro
 title: RNNs (LSTM / GRU)
 description: Recurrent models that carry a hidden state across the sequence.
-order: 20
-back: /mozilla/autocomplete
-backLabel: Back to Autocomplete
+date: 2025-02-11
+order: 30
+tags: [pontoon, mozilla, autocomplete, nlp]
 ---
 
 Recurrent neural networks process tokens one at a time, maintaining a hidden

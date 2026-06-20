@@ -170,6 +170,21 @@ export function postHref(
   return `/${sub.urlSlug}/${localId}`;
 }
 
+// Resolve a post's `pdf` frontmatter into a served URL. PDFs are co-located with
+// their post (e.g. issue-notes/assets/3291.pdf) and referenced relatively
+// (`pdf: assets/3291.pdf`); they are served by /pdfs/[...path] under a URL that
+// mirrors their path within src/content. An absolute value (leading "/") is a
+// legacy /public reference and is passed through unchanged.
+export function resolvePdfUrl(
+  sectionSlug: string,
+  postId: string,
+  pdf: string,
+): string {
+  if (pdf.startsWith("/")) return pdf;
+  const dir = String(postId).split("/").slice(0, -1).join("/");
+  return `/pdfs/${sectionSlug}/${dir}/${pdf}`.replace(/\/{2,}/g, "/");
+}
+
 export function entryHref(
   entry: { collection: string; id: string },
   nav: ResolvedSection[],

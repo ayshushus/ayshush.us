@@ -1,10 +1,9 @@
 ---
-layout: ../../../layouts/MozillaDoc.astro
 title: Transformers
 description: Self-attention over the whole sequence — the modern default.
-order: 40
-back: /mozilla/autocomplete
-backLabel: Back to Autocomplete
+date: 2025-02-25
+order: 10
+tags: [pontoon, mozilla, autocomplete, nlp]
 ---
 
 Transformers replace recurrence and convolution with **self-attention**: every

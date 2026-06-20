@@ -29,10 +29,35 @@ export function discoverSubsectionSlugs(sectionSlug: string): string[] {
 }
 
 // Folders inside a subsection are its named lists (each holds posts). A
-// subsection with no subfolders is a single flat list.
+// subsection with no subfolders is a single flat list. The conventional
+// `assets/` folder (co-located PDFs and other binaries, see discoverContentPdfs)
+// is not a list.
 export function discoverListSlugs(
   sectionSlug: string,
   subsectionDir: string,
 ): string[] {
-  return dirNamesIn(path.join(CONTENT_DIR, sectionSlug, subsectionDir)).sort();
+  return dirNamesIn(path.join(CONTENT_DIR, sectionSlug, subsectionDir))
+    .filter((name) => name !== "assets")
+    .sort();
+}
+
+// Every PDF co-located inside the content tree, as a path relative to
+// src/content (posix, forward slashes). PDFs live next to the posts that embed
+// them — e.g. src/content/experience/mozilla/issue-notes/assets/3291.pdf — so a
+// section's content stays self-contained in one directory. They are served by
+// the /pdfs/[...path] endpoint and referenced from a post's `pdf` frontmatter.
+export function discoverContentPdfs(): string[] {
+  const out: string[] = [];
+  const walk = (dir: string, rel: string) => {
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      const childRel = rel ? `${rel}/${entry.name}` : entry.name;
+      if (entry.isDirectory()) {
+        walk(path.join(dir, entry.name), childRel);
+      } else if (entry.isFile() && entry.name.endsWith(".pdf")) {
+        out.push(childRel);
+      }
+    }
+  };
+  if (fs.existsSync(CONTENT_DIR)) walk(CONTENT_DIR, "");
+  return out.sort();
 }

@@ -9,7 +9,7 @@ import BackToPrevious from "@components/BackToPrevious.astro";
 import PostNavigation from "@components/PostNavigation.astro";
 import TableOfContents from "@components/TableOfContents.astro";
 import Giscus from "@components/Giscus.astro";
-import { entryHref, getResolvedNav, isNumericName, sortPosts } from "@lib/nav";
+import { entryHref, getResolvedNav, isNumericName, resolvePdfUrl, sortPosts } from "@lib/nav";
 import { groupPosts } from "@lib/lists";
 
 // This route serves two kinds of page under a subsection:
@@ -104,7 +104,9 @@ if (kind === "list") {
   const rendered = await render(post);
   Content = rendered.Content;
   headings = rendered.headings;
-  pdf = post.data.pdf;
+  pdf = post.data.pdf
+    ? resolvePdfUrl(section.slug, post.id, post.data.pdf)
+    : undefined;
   sourceUrl = post.data.sourceUrl;
   pageTitle = post.data.title;
   pageDescription = post.data.description;

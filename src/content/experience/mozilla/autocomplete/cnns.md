@@ -1,10 +1,9 @@
 ---
-layout: ../../../layouts/MozillaDoc.astro
 title: CNNs for sequences
 description: Convolutional models that read local windows in parallel.
-order: 30
-back: /mozilla/autocomplete
-backLabel: Back to Autocomplete
+date: 2025-02-18
+order: 20
+tags: [pontoon, mozilla, autocomplete, nlp]
 ---
 
 Convolutional networks slide learnable filters over the token sequence, capturing

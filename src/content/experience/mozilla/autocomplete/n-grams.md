@@ -1,10 +1,9 @@
 ---
-layout: ../../../layouts/MozillaDoc.astro
 title: N-gram language models
 description: The classic statistical baseline — predict the next token from the previous n−1.
-order: 10
-back: /mozilla/autocomplete
-backLabel: Back to Autocomplete
+date: 2025-02-04
+order: 40
+tags: [pontoon, mozilla, autocomplete, nlp]
 ---
 
 The simplest useful autocomplete: estimate the probability of the next token
