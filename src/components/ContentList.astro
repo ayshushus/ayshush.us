@@ -1,0 +1,140 @@
+---
+import ArrowCard from "@components/ArrowCard.astro";
+import { LIST_COLLAPSE_THRESHOLD, type ListItem } from "@lib/lists";
+
+interface Props {
+  items: ListItem[];
+  // Optional H2 label shown above the list (used on multi-list pages).
+  heading?: string;
+  // Render a search box that filters this list as you type. Only actually shown
+  // when the list has enough items to be worth filtering and is not collapsed.
+  searchable?: boolean;
+  // When set and the list is over the threshold, collapse to 2 items + a
+  // "See all" link pointing here (search then lives on the see-all page).
+  seeAllHref?: string;
+  searchPlaceholder?: string;
+  emptyText?: string;
+}
+
+const {
+  items,
+  heading,
+  searchable = false,
+  seeAllHref,
+  searchPlaceholder = "Search this list…",
+  emptyText = "No posts yet.",
+} = Astro.props;
+
+const collapse = !!seeAllHref && items.length > LIST_COLLAPSE_THRESHOLD;
+const visible = collapse ? items.slice(0, LIST_COLLAPSE_THRESHOLD - 1) : items;
+const showSearch = searchable && !collapse && items.length > LIST_COLLAPSE_THRESHOLD;
+
+// Unique id so multiple lists can coexist on one page, each with its own search.
+const seed = `${heading ?? ""}|${items.map((i) => i.href).join("|")}`;
+let hash = 0;
+for (let i = 0; i < seed.length; i++) {
+  hash = (hash * 31 + seed.charCodeAt(i)) | 0;
+}
+const listId = `list-${(hash >>> 0).toString(36)}-${items.length}`;
+
+const searchText = (i: ListItem) =>
+  `${i.title} ${i.description ?? ""}`.toLowerCase();
+---
+
+<div class="space-y-4">
+  {heading && (
+    <h2 class="animate text-sm font-semibold tracking-wide uppercase opacity-70">
+      {heading}
+    </h2>
+  )}
+
+  {showSearch && (
+    <input
+      type="search"
+      placeholder={searchPlaceholder}
+      data-list-search
+      data-target={listId}
+      aria-label={heading ? `Search ${heading}` : "Search this list"}
+      class="animate w-full rounded-sm border border-black/15 bg-transparent px-3 py-1.5 text-sm outline-none transition-colors duration-300 focus:border-black/40 dark:border-white/20 dark:focus:border-white/40"
+    />
+  )}
+
+  {items.length === 0 ? (
+    <p class="animate text-sm opacity-70">{emptyText}</p>
+  ) : (
+    <>
+      <ul id={listId} class="animate not-prose flex flex-col gap-4">
+        {visible.map((item) => (
+          <li data-search-text={searchText(item)}>
+            <ArrowCard
+              href={item.href}
+              title={item.title}
+              description={item.description}
+              external={item.external}
+            />
+          </li>
+        ))}
+        {collapse && (
+          <li>
+            <ArrowCard
+              href={seeAllHref!}
+              title="See all"
+              description={`View all ${items.length}`}
+            />
+          </li>
+        )}
+      </ul>
+      {showSearch && (
+        <p
+          data-list-empty={listId}
+          hidden
+          class="animate text-sm opacity-70"
+        >
+          No matches.
+        </p>
+      )}
+    </>
+  )}
+</div>
+
+<script>
+  function setupListSearch(input: HTMLInputElement) {
+    const targetId = input.dataset.target;
+    if (!targetId) return;
+    const ul = document.getElementById(targetId);
+    if (!ul) return;
+    const items = Array.from(ul.children).filter(
+      (el): el is HTMLLIElement => el.tagName === "LI",
+    );
+    const empty = document.querySelector<HTMLElement>(
+      `[data-list-empty="${targetId}"]`,
+    );
+
+    const apply = () => {
+      const q = input.value.trim().toLowerCase();
+      let shown = 0;
+      for (const li of items) {
+        const text = li.getAttribute("data-search-text") ?? "";
+        const match = q === "" || text.includes(q);
+        li.hidden = !match;
+        if (match) shown += 1;
+      }
+      if (empty) empty.hidden = shown !== 0;
+    };
+
+    input.addEventListener("input", apply);
+    apply();
+  }
+
+  function initListSearch() {
+    document
+      .querySelectorAll<HTMLInputElement>("[data-list-search]")
+      .forEach((input) => {
+        if (input.dataset.wired === "1") return;
+        input.dataset.wired = "1";
+        setupListSearch(input);
+      });
+  }
+
+  document.addEventListener("astro:page-load", initListSearch);
+</script>

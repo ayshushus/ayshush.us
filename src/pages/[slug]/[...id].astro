@@ -2,6 +2,7 @@
 import { getCollection, render } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
+import ContentList from "@components/ContentList.astro";
 import FormattedDate from "@components/FormattedDate.astro";
 import { readingTime } from "@lib/utils";
 import BackToPrevious from "@components/BackToPrevious.astro";
@@ -9,7 +10,12 @@ import PostNavigation from "@components/PostNavigation.astro";
 import TableOfContents from "@components/TableOfContents.astro";
 import Giscus from "@components/Giscus.astro";
 import { entryHref, getResolvedNav, isNumericName, sortPosts } from "@lib/nav";
+import { groupPosts } from "@lib/lists";
 
+// This route serves two kinds of page under a subsection:
+//   kind "list" → /<subsection>/<list>          a list folder's own listing
+//   kind "post" → /<subsection>/<...localId>    an individual post
+// getStaticPaths emits exactly one path per page, so there's no collision.
 export async function getStaticPaths() {
   const nav = await getResolvedNav();
   const paths: any[] = [];
@@ -20,15 +26,50 @@ export async function getStaticPaths() {
     );
     for (const sub of section.subsections) {
       if (sub.conflict) continue;
-      for (const entry of entries as any[]) {
+      const subPosts = (entries as any[]).filter(
+        (e) => String(e.id).split("/")[0] === sub.dirName,
+      );
+      const sortBy = sub.rules.sortBy ?? "date";
+      const groups = groupPosts(section, sub, subPosts, sortBy);
+      const multiList = groups.some((g) => g.key !== "");
+
+      // A listing page for each named list folder.
+      if (multiList) {
+        for (const g of groups) {
+          if (!g.key) continue; // the untitled/flat group has no page of its own
+          paths.push({
+            params: { slug: sub.urlSlug, id: g.key },
+            props: {
+              kind: "list",
+              heading: g.heading,
+              items: g.items,
+              backHref: sub.url,
+              backLabel: sub.name,
+            },
+          });
+        }
+      }
+
+      // A page for each post (URL nests the list folder automatically).
+      for (const entry of subPosts) {
         const segments = String(entry.id).split("/");
-        if (segments[0] !== sub.dirName) continue;
         const localId = segments.slice(1).join("/");
         if (!localId) continue;
         if (sub.rules.pdfOnNumericName && isNumericName(localId)) continue;
+        const listDir = segments.length >= 3 ? segments[1] : "";
+        const listMeta = listDir
+          ? sub.lists.find((l) => l.dirName === listDir)
+          : undefined;
         paths.push({
           params: { slug: sub.urlSlug, id: localId },
-          props: { section, subsection: sub, post: entry },
+          props: {
+            kind: "post",
+            section,
+            subsection: sub,
+            post: entry,
+            backHref: listMeta?.url ?? sub.url,
+            backLabel: listMeta?.name ?? sub.name,
+          },
         });
       }
     }
@@ -36,70 +77,206 @@ export async function getStaticPaths() {
   return paths;
 }
 
-const { section, subsection, post } = Astro.props;
-const { Content, headings } = await render(post);
+const { kind, backHref, backLabel } = Astro.props as any;
 
-const all = await getCollection(
-  section.slug as any,
-  ({ data }: any) => !data.draft,
-);
-const peers = sortPosts(
-  (all as any[]).filter((e) => e.id.split("/")[0] === subsection.dirName),
-  subsection.rules.sortBy ?? "date",
-);
+let pageTitle: string;
+let pageDescription: string;
 
-const nav = await getResolvedNav();
-const idx = peers.findIndex((p: any) => p.id === post.id);
-const toNavPost = (p: any) =>
-  p ? { href: entryHref(p, nav), title: p.data.title } : undefined;
-const prevPost = toNavPost(idx > 0 ? peers[idx - 1] : undefined);
-const nextPost = toNavPost(
-  idx >= 0 && idx < peers.length - 1 ? peers[idx + 1] : undefined,
-);
+// list-listing props
+const heading = Astro.props.heading as string | undefined;
+const items = Astro.props.items as any[] | undefined;
+
+// post props
+const post = Astro.props.post as any;
+const subsection = Astro.props.subsection as any;
+let Content: any;
+let headings: any[] = [];
+let prevPost: any;
+let nextPost: any;
+let pdf: string | undefined;
+let sourceUrl: string | undefined;
+
+if (kind === "list") {
+  pageTitle = `${backLabel} · ${heading}`;
+  pageDescription = `All ${heading}.`;
+} else {
+  const section = Astro.props.section as any;
+  const rendered = await render(post);
+  Content = rendered.Content;
+  headings = rendered.headings;
+  pdf = post.data.pdf;
+  sourceUrl = post.data.sourceUrl;
+  pageTitle = post.data.title;
+  pageDescription = post.data.description;
+
+  // Prev/next stay within the post's own list.
+  const segments = String(post.id).split("/");
+  const listKey = segments.length >= 3 ? segments[1] : "";
+  const all = await getCollection(
+    section.slug as any,
+    ({ data }: any) => !data.draft,
+  );
+  const peers = sortPosts(
+    (all as any[]).filter((e) => {
+      const s = String(e.id).split("/");
+      return s[0] === subsection.dirName && (s.length >= 3 ? s[1] : "") === listKey;
+    }),
+    subsection.rules.sortBy ?? "date",
+  );
+  const nav = await getResolvedNav();
+  const idx = peers.findIndex((p: any) => p.id === post.id);
+  const toNavPost = (p: any) =>
+    p ? { href: entryHref(p, nav), title: p.data.title } : undefined;
+  prevPost = toNavPost(idx > 0 ? peers[idx - 1] : undefined);
+  nextPost = toNavPost(idx >= 0 && idx < peers.length - 1 ? peers[idx + 1] : undefined);
+}
+
+const pdfButtonClass =
+  "not-prose flex items-center gap-1.5 rounded-sm border border-black/15 px-3 py-1.5 text-sm transition-colors duration-300 ease-in-out hover:bg-black/5 hover:text-black focus-visible:bg-black/5 focus-visible:text-black dark:border-white/20 dark:hover:bg-white/5 dark:hover:text-white dark:focus-visible:bg-white/5 dark:focus-visible:text-white";
 ---
 
-<Layout title={post.data.title} description={post.data.description}>
-  <Container>
-    <div class="animate">
-      <BackToPrevious href={subsection.url}>
-        Back to {subsection.name}
-      </BackToPrevious>
-    </div>
-    <div class="my-10 space-y-1">
-      <div class="animate flex items-center gap-1.5">
-        <div class="font-base text-sm">
-          <FormattedDate date={post.data.date} />
+<Layout title={pageTitle} description={pageDescription}>
+  {kind === "list" ? (
+    <Container>
+      <aside data-pagefind-ignore>
+        <div class="space-y-10">
+          <div class="animate">
+            <BackToPrevious href={backHref}>Back to {backLabel}</BackToPrevious>
+          </div>
+          <div class="space-y-2">
+            <h1 class="animate font-semibold text-black dark:text-white">
+              {heading}
+            </h1>
+          </div>
+          <ContentList items={items ?? []} searchable />
         </div>
-        &bull;
-        {post.body && (
-          <div class="font-base text-sm">{readingTime(post.body)}</div>
+      </aside>
+    </Container>
+  ) : (
+    <>
+    <Container>
+      <div class="animate">
+        <BackToPrevious href={backHref}>Back to {backLabel}</BackToPrevious>
+      </div>
+      <div class="my-10 space-y-1">
+        <div class="animate flex items-center gap-1.5">
+          <div class="font-base text-sm">
+            <FormattedDate date={post.data.date} />
+          </div>
+          &bull;
+          {post.body && (
+            <div class="font-base text-sm">{readingTime(post.body)}</div>
+          )}
+        </div>
+        <h1 class="animate text-3xl font-semibold text-black dark:text-white">
+          {post.data.title}
+        </h1>
+        {post.data.tags && post.data.tags.length > 0 && (
+          <div class="animate flex gap-2 pt-1">
+            {post.data.tags.map((tag: string) => (
+              <a
+                href={`/tags/${tag}`}
+                class="rounded-sm border border-black/15 px-2 py-1 text-sm transition-colors duration-300 ease-in-out hover:bg-black/5 hover:text-black focus-visible:bg-black/5 focus-visible:text-black dark:border-white/20 dark:hover:bg-white/5 dark:hover:text-white dark:focus-visible:bg-white/5 dark:focus-visible:text-white"
+              >
+                {tag}
+              </a>
+            ))}
+          </div>
         )}
       </div>
-      <h1 class="animate text-3xl font-semibold text-black dark:text-white">
-        {post.data.title}
-      </h1>
-      {post.data.tags && post.data.tags.length > 0 && (
-        <div class="animate flex gap-2 pt-1">
-          {post.data.tags.map((tag: string) => (
+      {(sourceUrl || pdf) && (
+        <div class="animate mt-6 flex flex-wrap gap-2">
+          {sourceUrl && (
             <a
-              href={`/tags/${tag}`}
-              class="rounded-sm border border-black/15 px-2 py-1 text-sm transition-colors duration-300 ease-in-out hover:bg-black/5 hover:text-black focus-visible:bg-black/5 focus-visible:text-black dark:border-white/20 dark:hover:bg-white/5 dark:hover:text-white dark:focus-visible:bg-white/5 dark:focus-visible:text-white"
+              class={pdfButtonClass}
+              href={sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
             >
-              {tag}
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-none stroke-current stroke-2">
+                <path d="M15 3h6v6"></path>
+                <path d="M10 14 21 3"></path>
+                <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path>
+              </svg>
+              Source
             </a>
-          ))}
+          )}
+          {pdf && (
+            <a
+              class={pdfButtonClass}
+              href={pdf}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-none stroke-current stroke-2">
+                <path d="M15 3h6v6"></path>
+                <path d="M10 14 21 3"></path>
+                <path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path>
+              </svg>
+              Open PDF
+            </a>
+          )}
+          {pdf && (
+            <a class={pdfButtonClass} href={pdf} download>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="size-4 fill-none stroke-current stroke-2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <path d="M7 10l5 5 5-5"></path>
+                <path d="M12 15V3"></path>
+              </svg>
+              Download
+            </a>
+          )}
         </div>
       )}
-    </div>
-    {headings.length > 0 && <TableOfContents headings={headings} />}
-    <article class="animate">
-      <Content />
-      <div class="mt-24">
-        <PostNavigation prevPost={prevPost} nextPost={nextPost} />
-      </div>
-      <div class="mt-24">
-        <Giscus />
-      </div>
-    </article>
-  </Container>
+      {headings.length > 0 && <TableOfContents headings={headings} />}
+      <article class="animate">
+        <Content />
+        {!pdf && (
+          <>
+            <div class="mt-24">
+              <PostNavigation prevPost={prevPost} nextPost={nextPost} />
+            </div>
+            <div class="mt-24">
+              <Giscus />
+            </div>
+          </>
+        )}
+      </article>
+    </Container>
+
+    {pdf && (
+      <>
+        <div class="mx-auto mt-10 w-full max-w-5xl px-3">
+          <div class="animate overflow-hidden rounded-lg border border-black/15 bg-white dark:border-white/20 dark:bg-neutral-950">
+            <object data={pdf} type="application/pdf" class="pdf-frame">
+              <iframe src={pdf} class="pdf-frame" title={post.data.title}></iframe>
+              <div class="p-6 text-sm">
+                Your browser can't display this PDF inline.{" "}
+                <a href={pdf} class="underline">Download the PDF</a>.
+              </div>
+            </object>
+          </div>
+        </div>
+        <Container>
+          <div class="mt-24">
+            <PostNavigation prevPost={prevPost} nextPost={nextPost} />
+          </div>
+          <div class="mt-24">
+            <Giscus />
+          </div>
+        </Container>
+      </>
+    )}
+    </>
+  )}
 </Layout>
+
+<style>
+  .pdf-frame {
+    display: block;
+    width: 100%;
+    height: calc(100vh - 18rem);
+    min-height: 28rem;
+    border: 0;
+  }
+</style>

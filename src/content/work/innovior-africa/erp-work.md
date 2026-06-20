@@ -3,6 +3,7 @@ title: An ERP project — problem, approach, impact
 description: A deeper look at [project name] — the integration/migration I built and what it changed
 date: 2023-09-05
 tags: [erp, integration, data-migration, case-study]
+order: 0
 ---
 
 Beyond day-to-day maintenance, I owned [a project / integration / migration] on the ERP side at INNOVIOR Africa Group. This entry walks through one piece of that work end to end. (Every bracket is a placeholder — swap in the real story.)

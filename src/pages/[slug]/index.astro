@@ -1,26 +1,17 @@
 ---
-import fs from "node:fs";
-import path from "node:path";
 import { getCollection } from "astro:content";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
-import ArrowCard from "@components/ArrowCard.astro";
+import ContentList from "@components/ContentList.astro";
 import BackToPrevious from "@components/BackToPrevious.astro";
-import { getResolvedNav, postHref, sortPosts } from "@lib/nav";
+import { getResolvedNav } from "@lib/nav";
+import { groupPosts, hasStaticPage, type NamedList } from "@lib/lists";
 
 export async function getStaticPaths() {
   // A slug "owned" by a real static page (e.g. src/pages/mozilla/) must not also
   // be generated here, or the two would emit the same /<slug>/index.html. Such a
   // subsection still appears in its parent section's listing — its card just
   // links to the static page instead of a generated one.
-  const hasStaticPage = (slug: string): boolean => {
-    const dir = path.resolve("src/pages", slug);
-    return (
-      fs.existsSync(path.join(dir, "index.astro")) ||
-      fs.existsSync(`${dir}.astro`)
-    );
-  };
-
   const nav = await getResolvedNav();
   const seen = new Set<string>();
   const paths: any[] = [];
@@ -48,8 +39,11 @@ export async function getStaticPaths() {
 const { kind, section, sub } = Astro.props;
 const slug = Astro.params.slug;
 
-let posts: any[] = [];
-let parentSection = section;
+// Subsection posts, grouped by the list FOLDER they live in. No folders => a
+// single flat list (with a search box once it's large enough); one or more list
+// folders => each renders collapsed with its own "See all" → /<subsection>/<list>.
+let groups: NamedList[] = [];
+let multiList = false;
 if (kind === "subsection" && sub) {
   const all = await getCollection(
     section.slug as any,
@@ -58,8 +52,19 @@ if (kind === "subsection" && sub) {
   const filtered = (all as any[]).filter(
     (e) => e.id.split("/")[0] === sub.dirName,
   );
-  posts = sortPosts(filtered, sub.rules.sortBy ?? "date");
+  groups = groupPosts(section, sub, filtered, sub.rules.sortBy ?? "date");
+  multiList = groups.some((g) => g.key !== "");
 }
+
+// Section page lists its subsections as a single list.
+const subsectionItems =
+  kind === "section"
+    ? section.subsections.map((s: any) => ({
+        href: s.url,
+        title: s.name,
+        description: s.description,
+      }))
+    : [];
 
 const conflict = kind === "section" ? section.conflict : sub?.conflict;
 const pageTitle = kind === "section" ? section.name : sub!.name;
@@ -75,17 +80,15 @@ const pageDescription =
       <div class="space-y-10">
         {kind === "subsection" && (
           <div class="animate">
-            <BackToPrevious href={parentSection.url}>
-              Back to {parentSection.name}
+            <BackToPrevious href={section.url}>
+              Back to {section.name}
             </BackToPrevious>
           </div>
         )}
 
         {kind === "section" && (
           <div class="animate">
-            <BackToPrevious href="/">
-              Back to Home
-            </BackToPrevious>
+            <BackToPrevious href="/">Back to Home</BackToPrevious>
           </div>
         )}
 
@@ -123,39 +126,31 @@ const pageDescription =
         </div>
 
         {kind === "section" && (
-          <ul class="animate not-prose flex flex-col gap-4">
-            {section.subsections.map((s: any) => (
-              <li>
-                <ArrowCard
-                  href={s.url}
-                  title={s.name}
-                  description={s.description}
-                />
-              </li>
-            ))}
-          </ul>
+          <ContentList items={subsectionItems} searchable />
         )}
 
-        {kind === "subsection" && (
-          posts.length === 0 ? (
-            <p class="animate text-sm opacity-70">No posts yet.</p>
-          ) : (
-            <ul class="animate not-prose flex flex-col gap-4">
-              {posts.map((post: any) => {
-                const href = postHref(parentSection.slug, sub!, post.id);
-                return (
-                  <li>
-                    <ArrowCard
-                      href={href}
-                      title={post.data.title}
-                      description={post.data.description}
-                      external={href.endsWith(".pdf")}
-                    />
-                  </li>
-                );
-              })}
-            </ul>
-          )
+        {kind === "subsection" && groups.length === 0 && (
+          <p class="animate text-sm opacity-70">No posts yet.</p>
+        )}
+
+        {kind === "subsection" && !multiList && groups.length === 1 && (
+          <ContentList items={groups[0].items} searchable />
+        )}
+
+        {kind === "subsection" && multiList && (
+          <div class="space-y-10">
+            {groups.map((g) =>
+              g.key === "" ? (
+                <ContentList items={g.items} searchable />
+              ) : (
+                <ContentList
+                  heading={g.heading}
+                  items={g.items}
+                  seeAllHref={`${sub!.url}/${g.key}`}
+                />
+              ),
+            )}
+          </div>
         )}
       </div>
     </aside>

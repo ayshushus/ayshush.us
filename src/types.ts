@@ -28,6 +28,18 @@ export type ConflictClaim = {
   source: string;
 };
 
+// A named list inside a subsection — a folder of posts. Mirrors the
+// section→subsection→post shape one level deeper, so the list shows in the URL
+// (/<subsection>/<list>/<post>) and gets its own listing page (/<subsection>/<list>).
+export type ResolvedList = {
+  dirName: string;
+  urlSlug: string;
+  name: string;
+  description?: string;
+  order: number; // smaller = higher
+  url: string;
+};
+
 export type ResolvedSubsection = {
   dirName: string;
   urlSlug: string;
@@ -36,6 +48,8 @@ export type ResolvedSubsection = {
   order: number;
   url: string;
   rules: SubsectionRules;
+  // Folder-defined lists, resolved from each list folder's _config.md, ordered.
+  lists: ResolvedList[];
   conflict?: ConflictClaim[];
 };
 

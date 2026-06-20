@@ -1,5 +1,5 @@
 ---
-title: Know
-description: Topics I'm digging into.
+title: Research
+description: I document any learning about how computers work
 order: 1
 ---

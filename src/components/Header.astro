@@ -5,30 +5,32 @@ import { SITE } from "@consts";
 import { getResolvedNav } from "@lib/nav";
 
 const nav = await getResolvedNav();
+
+const linkClass =
+  "rounded-sm px-1 py-0.5 hover:text-black focus-visible:text-black dark:hover:text-white dark:focus-visible:text-white";
+const controlClass =
+  "flex items-center rounded-md border border-black/15 bg-neutral-100 px-2.5 py-1 text-xs transition-colors duration-300 ease-in-out hover:bg-black/5 hover:text-black focus-visible:bg-black/5 focus-visible:text-black dark:border-white/20 dark:bg-neutral-900 dark:hover:bg-white/5 dark:hover:text-white dark:focus-visible:bg-white/5 dark:focus-visible:text-white";
 ---
 
 <header transition:persist>
   <Container>
-    <div class="flex flex-wrap items-center justify-between gap-y-3">
+    <div class="flex items-center justify-between gap-3">
+      <!-- Wordmark — brand + the way home, always visible -->
       <Link href="/" underline={false}>
-        <div class="font-semibold tracking-tight">
-          {SITE.TITLE}
-        </div>
+        <div class="font-semibold tracking-tight">{SITE.TITLE}</div>
       </Link>
-      <nav class="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-        {nav.map((section) => (
-          <a
-            href={section.url}
-            class="rounded-sm px-1 py-0.5 hover:text-black focus-visible:text-black dark:hover:text-white dark:focus-visible:text-white"
-          >
-            {section.name}
-          </a>
-        ))}
-        <button
-          id="magnifying-glass"
-          aria-label="Search"
-          class="flex items-center rounded-md border border-black/15 bg-neutral-100 px-2.5 py-1 text-xs transition-colors duration-300 ease-in-out hover:bg-black/5 hover:text-black focus-visible:bg-black/5 focus-visible:text-black dark:border-white/20 dark:bg-neutral-900 dark:hover:bg-white/5 dark:hover:text-white dark:focus-visible:bg-white/5 dark:focus-visible:text-white"
-        >
+
+      <div class="flex items-center gap-3">
+        <!-- Inline nav — shown when there's room -->
+        <nav class="hidden items-center gap-x-5 text-sm sm:flex">
+          {nav.map((section) => (
+            <a href={section.url} class={linkClass}>
+              {section.name}
+            </a>
+          ))}
+        </nav>
+
+        <button id="magnifying-glass" aria-label="Search" class={controlClass}>
           <svg
             height="14"
             stroke-linejoin="round"
@@ -43,7 +45,65 @@ const nav = await getResolvedNav();
           >
           &nbsp;Search
         </button>
-      </nav>
+
+        <!-- Accordion toggle — only when the inline nav is collapsed -->
+        <button
+          id="nav-toggle"
+          type="button"
+          aria-label="Toggle menu"
+          aria-controls="primary-nav"
+          aria-expanded="false"
+          class={`${controlClass} sm:hidden`}
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          >
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
     </div>
+
+    <!-- Accordion panel — small screens only, toggled open -->
+    <nav id="primary-nav" class="hidden flex-col gap-1 pt-3 text-sm sm:hidden">
+      {nav.map((section) => (
+        <a href={section.url} class={linkClass}>
+          {section.name}
+        </a>
+      ))}
+    </nav>
   </Container>
 </header>
+
+<script>
+  function setMobileNav(open: boolean) {
+    const panel = document.getElementById("primary-nav");
+    const toggle = document.getElementById("nav-toggle");
+    if (!panel || !toggle) return;
+    panel.classList.toggle("hidden", !open);
+    panel.classList.toggle("flex", open);
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+  }
+
+  // Delegated so it survives view transitions (the header is transition:persist).
+  document.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement;
+    if (target.closest?.("#nav-toggle")) {
+      const panel = document.getElementById("primary-nav");
+      setMobileNav(panel?.classList.contains("hidden") ?? true);
+    } else if (target.closest?.("#primary-nav a")) {
+      setMobileNav(false);
+    }
+  });
+
+  // Always start closed after a navigation.
+  document.addEventListener("astro:page-load", () => setMobileNav(false));
+</script>

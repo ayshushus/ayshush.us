@@ -3,6 +3,7 @@ title: Role overview at INNOVIOR Africa Group
 description: My role, team, and the ERP landscape I worked in — [fill in the specifics]
 date: 2023-04-12
 tags: [erp, software-engineering, role-overview]
+order: 1
 ---
 
 I joined INNOVIOR Africa Group to do software engineering work centered on ERP systems. This entry is the high-level overview — the role, the team, and the ground I covered. (Replace every bracket below with the real details.)

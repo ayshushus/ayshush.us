@@ -27,3 +27,12 @@ export function discoverSectionSlugs(): string[] {
 export function discoverSubsectionSlugs(sectionSlug: string): string[] {
   return dirNamesIn(path.join(CONTENT_DIR, sectionSlug)).sort();
 }
+
+// Folders inside a subsection are its named lists (each holds posts). A
+// subsection with no subfolders is a single flat list.
+export function discoverListSlugs(
+  sectionSlug: string,
+  subsectionDir: string,
+): string[] {
+  return dirNamesIn(path.join(CONTENT_DIR, sectionSlug, subsectionDir)).sort();
+}

@@ -9,6 +9,12 @@ const postSchema = z.object({
   order: z.number().optional(),
   draft: z.boolean().optional(),
   tags: z.array(z.string()).optional(),
+  // Optional PDF artifact served from /public, kept in a per-section assets
+  // folder (e.g. "/mozilla/assets/3291.pdf"). When set, the post's page embeds
+  // the PDF full-width with open/download controls.
+  pdf: z.string().optional(),
+  // Optional external source link (e.g. a GitHub issue) shown as a button.
+  sourceUrl: z.string().optional(),
 });
 
 const rulesSchema = z
@@ -19,6 +25,8 @@ const rulesSchema = z
   })
   .optional();
 
+// Shared by subsection AND list folders — a list folder's _config.md uses the
+// same fields (title / order / slug / description) one level deeper.
 const subsectionConfigSchema = z.object({
   slug: z.string().optional(),
   title: z.string().optional(),

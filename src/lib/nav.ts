@@ -1,7 +1,12 @@
 import { getCollection } from "astro:content";
-import { discoverSectionSlugs, discoverSubsectionSlugs } from "@lib/content-fs";
+import {
+  discoverListSlugs,
+  discoverSectionSlugs,
+  discoverSubsectionSlugs,
+} from "@lib/content-fs";
 import type {
   ConflictClaim,
+  ResolvedList,
   ResolvedSection,
   ResolvedSubsection,
   SortBy,
@@ -62,6 +67,24 @@ export async function getResolvedNav(): Promise<ResolvedSection[]> {
             label: `Subsection "${name}" in ${sectionName}`,
             source: `src/content/${sectionSlug}/${dirName}/_config.md`,
           });
+
+          // Resolve the subsection's list folders (each with its own _config.md).
+          // A list's URL slug is its folder name, so posts nest as
+          // /<subsection>/<list>/<post>. Ordered by `order` (smaller = higher).
+          const lists: ResolvedList[] = discoverListSlugs(sectionSlug, dirName)
+            .map((listDir) => {
+              const lcfg = configs.get(`${sectionSlug}/${dirName}/${listDir}`) ?? {};
+              return {
+                dirName: listDir,
+                urlSlug: listDir,
+                name: lcfg.title ?? titleCase(listDir),
+                description: lcfg.description,
+                order: lcfg.order ?? Number.MAX_SAFE_INTEGER,
+                url: `/${urlSlug}/${listDir}`,
+              };
+            })
+            .sort((a, b) => a.order - b.order || a.name.localeCompare(b.name));
+
           return {
             dirName,
             urlSlug,
@@ -70,6 +93,7 @@ export async function getResolvedNav(): Promise<ResolvedSection[]> {
             order: cfg.order ?? 0,
             url: `/${urlSlug}`,
             rules,
+            lists,
           };
         })
         .filter((sub) => !sub.rules.hidden)

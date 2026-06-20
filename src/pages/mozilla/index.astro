@@ -1,42 +1,15 @@
 ---
-import fs from "node:fs";
-import path from "node:path";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
-import ArrowCard from "@components/ArrowCard.astro";
+import ContentList from "@components/ContentList.astro";
 import BackToPrevious from "@components/BackToPrevious.astro";
-import { issueTitle } from "@lib/mozilla-issues";
+import { getMozillaLists } from "@lib/mozilla-lists";
 
-function titleCase(slug: string): string {
-  return slug
-    .split("-")
-    .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
-    .join(" ");
-}
-
-// Projects = subfolders of src/pages/mozilla (each has its own index.astro).
-const pagesDir = path.resolve("src/pages/mozilla");
-const projects = fs
-  .readdirSync(pagesDir, { withFileTypes: true })
-  .filter((e) => e.isDirectory())
-  .map((e) => ({ slug: e.name, title: titleCase(e.name) }))
-  .sort((a, b) => a.title.localeCompare(b.title));
-
-// Issue notes = anything dropped in public/mozilla/*.pdf (clean, extensionless
-// URLs). The file name is the mozilla/pontoon issue number; its title comes from
-// src/lib/mozilla-issues.ts.
-const pdfDir = path.resolve("public/mozilla");
-const notes = fs.existsSync(pdfDir)
-  ? fs
-      .readdirSync(pdfDir)
-      .filter((name) => name.toLowerCase().endsWith(".pdf"))
-      .map((name) => name.slice(0, -".pdf".length))
-      .sort()
-      .map((id) => ({ id, title: issueTitle(id) }))
-  : [];
+const lists = await getMozillaLists();
+const isEmpty = lists.every((l) => l.items.length === 0);
 ---
 
-<Layout title="Mozilla" description="Issue notes and projects.">
+<Layout title="Mozilla" description="Articles, issue notes, and projects.">
   <Container>
     <aside data-pagefind-ignore>
       <div class="space-y-10">
@@ -50,41 +23,15 @@ const notes = fs.existsSync(pdfDir)
           </h1>
         </div>
 
-        {notes.length > 0 && (
-          <div class="space-y-4">
-            <h2 class="animate text-sm font-semibold tracking-wide uppercase opacity-70">
-              Issue notes
-            </h2>
-            <ul class="animate not-prose flex flex-col gap-4">
-              {notes.map((note) => (
-                <li>
-                  <ArrowCard
-                    href={`/mozilla/${note.id}`}
-                    title={note.title}
-                    description={`Issue #${note.id}`}
-                  />
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+        {lists.map((list) => (
+          <ContentList
+            heading={list.heading}
+            items={list.items}
+            seeAllHref={`/mozilla/${list.key}`}
+          />
+        ))}
 
-        {projects.length > 0 && (
-          <div class="space-y-4">
-            <h2 class="animate text-sm font-semibold tracking-wide uppercase opacity-70">
-              Projects
-            </h2>
-            <ul class="animate not-prose flex flex-col gap-4">
-              {projects.map((p) => (
-                <li>
-                  <ArrowCard href={`/mozilla/${p.slug}`} title={p.title} />
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {projects.length === 0 && notes.length === 0 && (
+        {isEmpty && (
           <p class="animate text-sm opacity-70">Nothing here yet.</p>
         )}
       </div>
