@@ -20,7 +20,7 @@ export function getStaticPaths() {
 }
 
 export const GET: APIRoute = ({ props }) => {
-  const body = fs.readFileSync((props as { file: string }).file);
+  const body = new Uint8Array(fs.readFileSync((props as { file: string }).file));
   return new Response(body, {
     headers: {
       "Content-Type": "application/pdf",
