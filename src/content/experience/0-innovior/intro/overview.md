@@ -7,11 +7,7 @@ order: 0
 ---
 
 ## Company Information
-- **Name** - INNOVIOR Africa Group
-- **Website** - https://www.innoviorafrica.com/
-- **Industry** - Cross Industry Software & IT Consulting
-- **Size** - Mid, 5 countries, 15+ locations, 51-200 employees
-- **Description** - "INNOVIOR Africa is a multiple award-winning company that prides itself in Business Management Software implementation in Kenya, Uganda, Tanzania, Rwanda, Nigeria, and Ghana. We are the leading East and West Africa partner in the implementation of Microsoft Dynamics 365, Oracle NETSUITE, and Business Intelligence products to provide end to end ERP (Enterprise Resource Planning) and CRM (Customer Relationship Management) business solutions to our clients." <br> Source: https://www.innoviorafrica.com/profile/about
+The company's name is **INNOVIOR Africa Group**. Their website is https://www.innoviorafrica.com/. The company is in 2 industries, the first is Software and the second is IT Consulting. The comapny is mid-sized and operates in 5 countries with 15+ locations and has 51-200 employees. "INNOVIOR Africa is a multiple award-winning company that prides itself in Business Management Software implementation in Kenya, Uganda, Tanzania, Rwanda, Nigeria, and Ghana. We are the leading East and West Africa partner in the implementation of Microsoft Dynamics 365, Oracle NETSUITE, and Business Intelligence products to provide end to end ERP (Enterprise Resource Planning) and CRM (Customer Relationship Management) business solutions to our clients." <br> Source: https://www.innoviorafrica.com/profile/about
 
 ## Position Information
 - **Title** — Software Engineer, ERP Consultant

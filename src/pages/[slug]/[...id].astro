@@ -10,7 +10,7 @@ import PostNavigation from "@components/PostNavigation.astro";
 import TableOfContents from "@components/TableOfContents.astro";
 import Giscus from "@components/Giscus.astro";
 import { entryHref, getResolvedNav, isNumericName, resolvePdfUrl, sortPosts } from "@lib/nav";
-import { groupPosts } from "@lib/lists";
+import { groupPosts, LIST_COLLAPSE_THRESHOLD } from "@lib/lists";
 
 // This route serves two kinds of page under a subsection:
 //   kind "list" → /<subsection>/<list>          a list folder's own listing
@@ -33,10 +33,14 @@ export async function getStaticPaths() {
       const groups = groupPosts(section, sub, subPosts, sortBy);
       const multiList = groups.some((g) => g.key !== "");
 
-      // A listing page for each named list folder.
+      // A listing page for each named list folder — but only once the list is
+      // large enough to collapse behind a "See all" on the subsection page. A
+      // small list renders inline there, so it has no page of its own (and a
+      // post in it backs out to the subsection, not to a near-empty list page).
       if (multiList) {
         for (const g of groups) {
           if (!g.key) continue; // the untitled/flat group has no page of its own
+          if (g.items.length <= LIST_COLLAPSE_THRESHOLD) continue;
           paths.push({
             params: { slug: sub.urlSlug, id: g.key },
             props: {
@@ -57,9 +61,16 @@ export async function getStaticPaths() {
         if (!localId) continue;
         if (sub.rules.pdfOnNumericName && isNumericName(localId)) continue;
         const listDir = segments.length >= 3 ? segments[1] : "";
-        const listMeta = listDir
-          ? sub.lists.find((l) => l.dirName === listDir)
+        // Only back out to the list's own page when that page exists (i.e. the
+        // list is large enough to collapse on the subsection page); otherwise
+        // back out to the subsection itself.
+        const listGroup = listDir
+          ? groups.find((g) => g.key === listDir)
           : undefined;
+        const listMeta =
+          listGroup && listGroup.items.length > LIST_COLLAPSE_THRESHOLD
+            ? sub.lists.find((l) => l.dirName === listDir)
+            : undefined;
         paths.push({
           params: { slug: sub.urlSlug, id: localId },
           props: {
@@ -231,7 +242,7 @@ const pdfButtonClass =
         </div>
       )}
       {headings.length > 0 && <TableOfContents headings={headings} />}
-      <article class="animate">
+      <article class="animate prose-p:text-justify prose-li:text-justify">
         <Content />
         {!pdf && (
           <>
