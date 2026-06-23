@@ -2,5 +2,5 @@
 slug: tueely
 title: Tueely
 description: Software Engineering for Restaurant Intelligence
-order: 11
+order: 8
 ---
