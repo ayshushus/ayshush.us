@@ -5,7 +5,7 @@ date: 2026-01-20
 tags: [binary-search, monotonic-predicate, optimization, search]
 ---
 
-Binary search is not really about sorted arrays — it is about **monotonic predicates**. The moment a yes/no question flips exactly once across a range, you can find the boundary in logarithmic time, even when there is no array in sight.
+Binary search is not really about sorted arrays. It is about **monotonic predicates**. The moment a yes/no question flips exactly once across a range, you can find the boundary in logarithmic time, even when there is no array in sight.
 
 ## The real requirement
 
@@ -43,7 +43,7 @@ The loop maintains a single invariant: the boundary is always within `[lo, hi]`.
 
 The powerful move is to binary-search the *answer itself* when checking a candidate is easier than computing the optimum directly.
 
-**Example — minimum capacity to ship packages in D days.** Weights must ship in order; pick the smallest daily capacity that finishes within `D` days. Higher capacity is always feasible if a lower one was, so feasibility is monotonic.
+**Example: minimum capacity to ship packages in D days.** Weights must ship in order; pick the smallest daily capacity that finishes within `D` days. Higher capacity is always feasible if a lower one was, so feasibility is monotonic.
 
 ```python
 def ship_within_days(weights, D):

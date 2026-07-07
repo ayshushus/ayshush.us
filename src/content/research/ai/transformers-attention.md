@@ -1,11 +1,11 @@
 ---
 title: How transformer self-attention actually works
-description: Q/K/V projections, causal masking, and why the KV-cache makes generation fast.
+description: Q/K/V projections, causal masking and why the KV-cache makes generation fast.
 date: 2025-03-11
 tags: [transformers, attention, inference, kv-cache]
 ---
 
-Self-attention is the mechanism that lets every token in a sequence look at every other token and decide what to pull in. This note walks through the math, the causal mask that makes decoding work, and the KV-cache that makes it cheap.
+Self-attention is the mechanism that lets every token in a sequence look at every other token and decide what to pull in. This note walks through the math, then the two tricks behind fast decoding: the causal mask and the KV-cache.
 
 ## Queries, keys, and values
 
@@ -51,7 +51,7 @@ t3  [  0  |  0   |  0   |  0   ]
 
 ## The KV-cache
 
-At generation time you produce one token at a time. Naively, generating token `n` recomputes K and V for all `n` previous tokens — `O(n²)` wasted work across a sequence. But past keys and values never change. So you cache them.
+At generation time you produce one token at a time. Naively, generating token `n` recomputes K and V for all `n` previous tokens, which is `O(n²)` of wasted work across a sequence. But past keys and values never change. So you cache them.
 
 ```python
 # step n: only the new token needs fresh Q, K, V

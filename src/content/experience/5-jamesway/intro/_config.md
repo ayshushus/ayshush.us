@@ -1,5 +1,5 @@
 ---
 title: Intro
-description: Orientation — the role, the team, the scope.
+description: Orientation on the role and the team.
 order: 1
 ---

@@ -1,11 +1,11 @@
 ---
 title: Agentic loops and tool use
-description: The think→act→observe cycle, how tool calling works, and when a loop beats a single prompt.
+description: The think→act→observe cycle, how tool calling works and when a loop beats a single prompt.
 date: 2026-01-28
 tags: [agents, tool-use, llm, orchestration]
 ---
 
-An agent is a language model placed inside a loop with access to tools. Instead of producing one answer, it reasons, takes an action, observes the result, and repeats until done. This note covers the mechanics and when the extra machinery actually pays off.
+An agent is a language model placed inside a loop with access to tools. Instead of producing one answer, it reasons, takes an action, observes the result and repeats until done. This note covers the mechanics and when the extra machinery actually pays off.
 
 ## The loop
 
@@ -68,19 +68,19 @@ Two things keep this safe in production: a **max-iterations cap** so a confused 
 
 ## When a loop beats a single prompt
 
-A loop adds latency, cost, and failure surface. Use one only when the task genuinely needs it.
+A loop adds cost and failure surface. Use one only when the task genuinely needs it.
 
-- **Unknown number of steps.** "Find the bug and fix it" — you can't know upfront how many files to read.
+- **Unknown number of steps.** With "find the bug and fix it," you can't know upfront how many files to read.
 - **The model needs ground truth it can't have.** Live data, code execution, search results. A single prompt can only guess.
 - **Error recovery.** A test fails, the agent reads the output and tries again. Single prompts can't observe their own mistakes.
 
-Conversely, prefer a single prompt when the task is **bounded and self-contained** — summarize this text, classify this ticket, rewrite this paragraph. No external state means no reason to loop, and the loop only adds ways to go wrong.
+Conversely, prefer a single prompt when the task is **bounded and self-contained**: summarize this text or classify this ticket. No external state means no reason to loop, and the loop only adds ways to go wrong.
 
 ## Failure modes
 
-- **Looping without progress** — same tool, same args, same result. Detect repetition and break.
-- **Context bloat** — every observation accumulates; long tasks blow the window. Summarize or prune old turns.
-- **Over-eager tool use** — the model calls tools when it already knows the answer. Sharpen tool descriptions and system guidance.
+- **Looping without progress**: same tool, same args, same result. Detect repetition and break.
+- **Context bloat**: every observation accumulates; long tasks blow the window. Summarize or prune old turns.
+- **Over-eager tool use**: the model calls tools when it already knows the answer. Sharpen tool descriptions and system guidance.
 
 ## Wrap up
 

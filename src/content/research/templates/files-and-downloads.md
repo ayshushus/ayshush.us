@@ -13,7 +13,7 @@ any other URL.
 ## PDFs
 
 - [Read the design doc (PDF)](/papers/design-doc.pdf)
-- [Annotated paper (PDF)](https://arxiv.org/pdf/1706.03762) — external PDFs work too.
+- [Annotated paper (PDF)](https://arxiv.org/pdf/1706.03762). External PDFs work too.
 
 The `download` attribute forces a save dialog instead of opening in-browser:
 
@@ -33,7 +33,7 @@ The `download` attribute forces a save dialog instead of opening in-browser:
 
 ## Datasets & spreadsheets
 
-- [results.csv](/data/results.csv) — raw data behind the charts.
+- [results.csv](/data/results.csv) holds the raw data behind the charts.
 - [View in Google Sheets](https://docs.google.com/spreadsheets/d/EXAMPLE/edit)
 
 ## Archives & misc

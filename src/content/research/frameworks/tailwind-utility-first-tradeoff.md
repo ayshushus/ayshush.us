@@ -5,11 +5,11 @@ date: 2026-01-19
 tags: [tailwind, css, utility-first, design-tokens, maintainability]
 ---
 
-Tailwind replaces hand-written CSS with small, single-purpose utility classes applied directly in markup. It looks noisy at first — and that noise is exactly the trade-off worth understanding before you commit to it.
+Tailwind replaces hand-written CSS with small, single-purpose utility classes applied directly in markup. It looks noisy at first, and that noise is exactly the trade-off worth understanding before you commit to it.
 
 ## Why utilities at all
 
-The traditional pain of CSS isn't writing it; it's maintaining it. Semantic class names (`.card`, `.btn-primary`) drift from what they actually do, stylesheets grow append-only because nobody dares delete a rule, and specificity wars compound. Utility classes sidestep all of that: each class does one thing, has flat specificity, and is safe to delete because it lives where it's used.
+The traditional pain of CSS isn't writing it; it's maintaining it. Semantic class names (`.card`, `.btn-primary`) drift from what they actually do, and stylesheets grow append-only because nobody dares delete a rule. Utility classes sidestep that: each class does one thing, and it's safe to delete because it lives where it's used.
 
 ```html
 <button class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700">
@@ -19,11 +19,11 @@ The traditional pain of CSS isn't writing it; it's maintaining it. Semantic clas
 
 > The cost is verbose markup. The payoff is that styling becomes local: you change appearance by editing the element, never by hunting through a global stylesheet for a name you hope is unique.
 
-There's a build-time win too. Tailwind scans your source, generates only the utilities you actually use, and ships the rest as nothing. The CSS file stays small regardless of how large the design system is.
+There's a build-time win too. Tailwind scans your source and generates only the utilities you actually use, nothing more. The CSS file stays small regardless of how large the design system is.
 
 ## The repetition problem and @apply
 
-The obvious objection: a button repeated across twenty places means twenty copies of the same class string. The first answer is almost always **components**, not CSS — extract a `<Button>` in your framework and the markup lives once.
+The obvious objection: a button repeated across twenty places means twenty copies of the same class string. The first answer is almost always **components**, not CSS. Extract a `<Button>` in your framework and the markup lives once.
 
 When you genuinely need a CSS class (third-party HTML you don't control, or a markdown-rendered surface), `@apply` lets you compose utilities into one rule:
 
@@ -36,7 +36,7 @@ When you genuinely need a CSS class (third-party HTML you don't control, or a ma
 }
 ```
 
-`@apply` is an escape hatch, not the default. Lean on it and you've reinvented semantic CSS — the indirection and naming problems come right back. Use components for reuse; use `@apply` only where component boundaries can't reach.
+`@apply` is an escape hatch, not the default. Lean on it and you've reinvented semantic CSS; the indirection and naming problems come right back. Use components for reuse; use `@apply` only where component boundaries can't reach.
 
 ## Tokens, not arbitrary values
 
@@ -57,10 +57,10 @@ Arbitrary values (`p-[13px]`) exist for one-offs, but each one is a small crack 
 }
 ```
 
-Now `bg-brand` and `p-gutter` are first-class utilities. Change the token, change everywhere — which is the maintainability you'd otherwise have lost by going utility-first.
+Now `bg-brand` and `p-gutter` are first-class utilities. Change the token, change everywhere, which is the maintainability you'd otherwise have lost by going utility-first.
 
 ## Wrap up
 
-- Utilities trade verbose markup for local, low-specificity, deletable styles and a tiny generated stylesheet.
+- Utilities trade verbose markup for local, deletable styles and a tiny generated stylesheet.
 - Solve repetition with components first; reserve `@apply` for HTML you don't control.
-- Stay on the scale and define brand decisions as theme tokens — arbitrary values should be rare, deliberate exceptions.
+- Stay on the scale and define brand decisions as theme tokens; arbitrary values should be rare, deliberate exceptions.

@@ -41,7 +41,7 @@ for short, high-frequency phrases; weak once context matters beyond a few words.
 | Strength                     | Weakness                                  |
 | :--------------------------- | :---------------------------------------- |
 | Trivial to train, very fast  | No long-range context (fixed window)      |
-| Interpretable counts         | Sparse — needs smoothing for unseen grams |
+| Interpretable counts         | Sparse, needs smoothing for unseen grams  |
 | Tiny memory at low n         | Table explodes as n grows                 |
 
 ## References

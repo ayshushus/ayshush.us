@@ -1,11 +1,11 @@
 ---
 title: Union-Find · the near-O(1) set merger
-description: Path compression and union by rank, and why the amortized cost is almost constant.
+description: Path compression, union by rank and why the amortized cost is almost constant.
 date: 2025-03-14
 tags: [union-find, dsu, amortized-analysis, graphs]
 ---
 
-A disjoint-set union (DSU) answers two questions blazingly fast: *are these two elements in the same group?* and *merge their groups.* It is the quiet workhorse behind Kruskal's MST, connected-components, and cycle detection.
+A disjoint-set union (DSU) answers two questions fast: *are these two elements in the same group?* and *merge their groups.* It is the quiet workhorse behind Kruskal's MST, connected-components and cycle detection.
 
 ## The structure
 
@@ -55,7 +55,7 @@ def union(self, a, b):
 
 > With both path compression and union by rank, a sequence of *m* operations on *n* elements runs in **O(m · α(n))**, where α is the inverse Ackermann function.
 
-α(n) grows so absurdly slowly that for any conceivable input — atoms in the universe included — it is at most 4. So each operation is effectively constant. Use just one optimization and you get O(log n) amortized; use rank-by-size instead of rank-by-height for an equivalent bound.
+α(n) grows so absurdly slowly that for any conceivable input (atoms in the universe included) it is at most 4. So each operation is effectively constant. Use just one optimization and you get O(log n) amortized; use rank-by-size instead of rank-by-height for an equivalent bound.
 
 | Variant | Amortized per op |
 | :--- | :--- |
@@ -68,15 +68,15 @@ def union(self, a, b):
 
 Reach for DSU whenever you are incrementally **merging** equivalence classes and never need to split them:
 
-- Kruskal's MST — `union` edges in weight order, skip any that would form a cycle.
+- Kruskal's MST: `union` edges in weight order, skip any that would form a cycle.
 - Connected components in a static or growing graph.
 - "Number of islands"-style grid flooding without recursion.
 - Detecting cycles in an undirected graph: a cycle exists the first time `union` returns `False`.
 
-The one thing DSU cannot do cheaply is *delete* an edge or split a set — those need link-cut trees or offline tricks.
+The one thing DSU cannot do cheaply is *delete* an edge or split a set. Those need link-cut trees or offline tricks.
 
 ## Wrap up
 
-- Two ideas — path compression and union by rank — collapse the cost from O(n) to inverse-Ackermann amortized.
+- Two ideas, path compression and union by rank, collapse the cost from O(n) to inverse-Ackermann amortized.
 - It models monotonically growing equivalence classes; it does not support splits.
-- The go-to tool for MST, cycle detection, and connected components.
+- The go-to tool for MST, cycle detection and connected components.

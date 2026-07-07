@@ -5,7 +5,7 @@ date: 2026-01-22
 tags: [distributed-systems, sharding, caching, hashing, partitioning]
 ---
 
-The naive way to spread keys across N servers is `hash(key) % N`. It works until N changes — then almost every key remaps and your cache or shard cluster melts down. Consistent hashing fixes exactly this.
+The naive way to spread keys across N servers is `hash(key) % N`. It works until N changes. Then almost every key remaps and your cache or shard cluster melts down. Consistent hashing fixes exactly this.
 
 ## The modulo problem
 
@@ -18,7 +18,7 @@ Changing the divisor changes nearly *every* result. For a 4→5 node move, rough
 
 ## The ring
 
-Consistent hashing maps both keys and nodes onto the same circular space — say a 32-bit ring, `0` to `2^32 - 1`. A key is owned by the first node found walking clockwise from the key's position.
+Consistent hashing maps both keys and nodes onto the same circular space, say a 32-bit ring from `0` to `2^32 - 1`. A key is owned by the first node found walking clockwise from the key's position.
 
 ```text
         0/2^32
@@ -32,7 +32,7 @@ Consistent hashing maps both keys and nodes onto the same circular space — say
 
 > Locality invariant: a key's owner only changes when a node is added or removed *in the arc immediately preceding that key*. Everything else stays put.
 
-Add a node and it slots into one spot on the ring, stealing keys only from its clockwise successor. Remove a node and its keys fall to the next node clockwise. On average only **K/N** keys move when you add or remove one of N nodes holding K keys — instead of nearly all of them.
+Add a node and it slots into one spot on the ring, stealing keys only from its clockwise successor. Remove a node and its keys fall to the next node clockwise. On average only **K/N** keys move when you add or remove one of N nodes holding K keys, instead of nearly all of them.
 
 | Scheme              | Keys moved when N → N+1        |
 | :------------------ | :---------------------------- |
@@ -54,19 +54,19 @@ for i := 0; i < V; i++ {
 sortKeys(ring) // keep positions sorted for binary search on lookup
 ```
 
-With ~100–200 vnodes per server, the ring approximates a uniform distribution, so load variance drops sharply. Better still, when one physical node leaves, its many small arcs spread across *many* successors rather than crushing one. Weighting is free too: give a beefier machine more vnodes to hand it a larger share.
+With ~100-200 vnodes per server, the ring approximates a uniform distribution, so load variance drops sharply. Better still, when one physical node leaves, its many small arcs spread across *many* successors rather than crushing one. Weighting is free too: give a beefier machine more vnodes to hand it a larger share.
 
 ## Lookups
 
-Store the ring as a sorted array of hash positions. A lookup is a binary search for the first position `>= hash(key)`, wrapping to index 0 if you run off the end — `O(log V·N)`.
+Store the ring as a sorted array of hash positions. A lookup is a binary search for the first position `>= hash(key)`, wrapping to index 0 if you run off the end, at `O(log V·N)`.
 
 ## Where it shows up
 
 - **Caches**: memcached client libraries and CDNs use it so a node failure invalidates only its slice, not the whole cache.
-- **Datastores**: Amazon Dynamo, Cassandra, and Riak partition data over a consistent-hash ring; the next R nodes clockwise hold replicas.
+- **Datastores**: Amazon Dynamo, Cassandra and Riak partition data over a consistent-hash ring; the next R nodes clockwise hold replicas.
 - **Load balancers**: consistent hashing with bounded loads pins clients to backends with minimal churn during scale events.
 
-A common refinement is **bounded-load consistent hashing**, which caps any node at a small factor over the average and spills overflow to the next node — combining ring locality with a hard fairness guarantee.
+A common refinement is **bounded-load consistent hashing**, which caps any node at a small factor over the average and spills overflow to the next node, combining ring locality with a hard fairness guarantee.
 
 ## Wrap up
 

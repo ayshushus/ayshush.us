@@ -27,17 +27,17 @@ The [Astro docs][astro] are great, and so is the [MDN reference][mdn].
 
 ## A curated link list
 
-- [Astro](https://astro.build) — the framework this site is built on.
-- [Tailwind CSS](https://tailwindcss.com) — utility-first styling.
-- [Pagefind](https://pagefind.app) — the static search that powers the search box.
+- [Astro](https://astro.build) is the framework this site is built on.
+- [Tailwind CSS](https://tailwindcss.com) handles the styling.
+- [Pagefind](https://pagefind.app) is the static search that powers the search box.
 
 ## Annotated bibliography / further reading
 
 > **Further reading**
 >
-> - **"Attention Is All You Need"** — the transformer paper. [PDF](https://arxiv.org/pdf/1706.03762).
+> - **"Attention Is All You Need"**, the transformer paper. [PDF](https://arxiv.org/pdf/1706.03762).
 >   *Why it matters:* the architecture behind basically everything in modern ML.
-> - **"A Plan for Spam"** by Paul Graham — [essay](http://www.paulgraham.com/spam.html).
+> - **"A Plan for Spam"** by Paul Graham. [essay](http://www.paulgraham.com/spam.html).
 >   *Why it matters:* a clean, readable walkthrough of naive Bayes in the wild.
 
 ## Footnotes

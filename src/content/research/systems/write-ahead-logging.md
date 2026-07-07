@@ -1,6 +1,6 @@
 ---
 title: Write-ahead logging
-description: How databases survive crashes by writing the intent before the change — and what fsync really costs.
+description: How databases survive crashes by writing the intent before the change, and what fsync really costs.
 date: 2025-11-03
 tags: [databases, durability, wal, crash-recovery, storage]
 ---
@@ -13,11 +13,11 @@ The name *is* the protocol: write the log record describing a change before you 
 
 > WAL invariant: a modification to a data page must not reach durable storage until the log record describing that modification is already durable.
 
-This inverts the obvious approach. Instead of carefully updating data files in place and praying the machine doesn't die mid-write, you append a compact record of *intent* to a sequential log, flush that, and only then are you free to update the actual pages whenever it's convenient.
+This inverts the obvious approach. Instead of carefully updating data files in place and praying the machine doesn't die mid-write, you append a compact record of *intent* to a sequential log, flush that and only then are you free to update the actual pages whenever it's convenient.
 
 ## Why a log is faster than the data
 
-Data pages are scattered across the file — updating them means random I/O. The WAL is a single file you only ever append to, which is sequential I/O. Sequential writes are dramatically faster on both spinning disks (no seeks) and SSDs (friendlier to the FTL), so the durability barrier sits on the cheapest possible write pattern.
+Data pages are scattered across the file, and updating them means random I/O. The WAL is a single file you only ever append to, which is sequential I/O. Sequential writes are dramatically faster on both spinning disks (no seeks) and SSDs (friendlier to the FTL), so the durability barrier sits on the cheapest possible write pattern.
 
 ```text
 TXN: UPDATE accounts SET bal = bal - 100 WHERE id = 7
@@ -30,7 +30,7 @@ TXN: UPDATE accounts SET bal = bal - 100 WHERE id = 7
 
 ## The fsync cost
 
-A `write()` only copies bytes into the OS page cache. Until the kernel flushes them, a power loss loses them. `fsync()` forces those bytes — and the disk's own cache, if `FUA`/barriers are honored — onto stable media. It is the expensive part.
+A `write()` only copies bytes into the OS page cache. Until the kernel flushes them, a power loss loses them. `fsync()` forces those bytes (and the disk's own cache, if `FUA`/barriers are honored) onto stable media. It is the expensive part.
 
 ```c
 write(wal_fd, record, len);   // cheap: into page cache
@@ -48,7 +48,7 @@ A single `fsync` can take from tens of microseconds (battery-backed cache) to se
 
 ## Crash recovery
 
-On restart the engine doesn't trust the data files. It replays the WAL from the last **checkpoint** — a marker saying "everything before here is already safely in the data files." Recovery follows the ARIES phases:
+On restart the engine doesn't trust the data files. It replays the WAL from the last **checkpoint**, a marker saying "everything before here is already safely in the data files." Recovery follows the ARIES phases:
 
 ```text
 [ Analysis ] -> rebuild which txns were live / which pages dirty
@@ -65,5 +65,5 @@ PostgreSQL calls it the WAL; SQLite has a WAL journal mode; InnoDB has the redo 
 ## Wrap up
 
 - Log the intent before the data; the log's sequential append is the only thing you must make durable on the hot path.
-- `fsync` is the real cost of durability — amortize it with group commit.
+- `fsync` is the real cost of durability; amortize it with group commit.
 - Recovery = replay from checkpoint (redo), then undo uncommitted work; LSNs keep replay idempotent.

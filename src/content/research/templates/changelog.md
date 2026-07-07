@@ -44,6 +44,6 @@ group by version or by date.
 
 When there are no version numbers, just lead with dates:
 
-- **2026-05-01** — Shipped the new search.
-- **2026-04-12** — Added the RSS feed.
-- **2026-03-20** — Went live.
+- **2026-05-01**: Shipped the new search.
+- **2026-04-12**: Added the RSS feed.
+- **2026-03-20**: Went live.
