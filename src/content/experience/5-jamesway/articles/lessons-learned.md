@@ -1,21 +1,23 @@
 ---
-title: Lessons from JamesWay
-description: The things I'd carry forward from my time at [JamesWay].
+title: Lessons from Jamesway
+description: The things I would carry forward from my time at Jamesway.
 date: 2023-10-04
 tags: [reflection, software-engineering, jamesway]
 ---
 
-Looking back, a few things stuck with me from [JamesWay] — both technical and not.
+[template]
+
+Looking back, a few things stuck with me from Jamesway, technical and otherwise.
 
 ## What worked
 
-- [A practice or decision that paid off] — because [why].
-- [Another one].
+- Keeping the collector and the view separate paid off, because I could change one without touching the other.
+- Talking to the operators early meant I built the thing they actually wanted.
 
-## What I'd do differently
+## What I would do differently
 
-- [Something I'd change] — [the reasoning].
+- I would write the mock hardware sooner. I spent too long testing against real machines before I had a fake one.
 
 ## The takeaway
 
-The biggest thing: [one-sentence lesson]. I apply it now by [how].
+The biggest thing was that software near hardware has to expect the hardware to fail. I still design for that now, well before I write the happy path.

@@ -1,24 +1,28 @@
 ---
 title: Onboarding and the codebase
-description: How I got up to speed at [JamesWay] and what the codebase looked like.
+description: How I got up to speed at Jamesway and what the codebase looked like.
 date: 2023-06-02
 tags: [onboarding, software-engineering, jamesway]
 ---
 
-First weeks are mostly reading. Here's how I ramped up on [JamesWay]'s stack and where the bodies were buried.
+[template]
+
+The first weeks were mostly reading. Here is how I ramped up on the Jamesway stack and where the tricky parts turned out to be.
 
 ## The stack
 
-The system was [one-line description of the stack — language, framework, datastore]. Day one I set up [local environment / tooling] by [the steps it took].
+The system was a TypeScript service sitting in front of the incubation hardware, backed by a small datastore. On day one I got a local environment running by cloning the repo and pointing it at a mock version of the machines.
 
 ## Where things lived
 
-- **[Service / module A]** — [what it did].
-- **[Service / module B]** — [what it did].
-- **[The part everyone warned me about]** — [why].
+- The collector read state off the machines.
+- The view layer turned that state into something operators could read.
+- The hardware interface was the part everyone warned me about, because the machines did not always report cleanly.
 
 ## First contribution
 
-My first merged change was [what it was], which taught me [the lesson]. The review process was [how it worked].
+My first merged change was a small fix to how gaps in the readings were handled. It taught me that the hardware was the source of most surprises, not the code. Reviews went through a single senior engineer who knew the machines well.
 
-**Code walkthrough:** [Watch on YouTube](#) — placeholder; replace with the real link.
+## Code walkthrough
+
+I kept notes as I read through the service, and those notes became the map I used for the rest of the term.

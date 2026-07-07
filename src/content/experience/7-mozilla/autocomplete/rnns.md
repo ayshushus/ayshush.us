@@ -35,7 +35,7 @@ x3 → [RNN] → h3 → ŷ3
 ## How it applies to autocomplete
 
 Feed the typed prefix through the RNN; the final hidden state encodes the
-context and the softmax gives ranked completions. Naturally streaming — you
+context and the softmax gives ranked completions. Naturally streaming: you
 update the state token-by-token as the user types.
 
 ## Trade-offs

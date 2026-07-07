@@ -1,51 +1,39 @@
 ---
 title: Role overview at Jamesway
-description: what I did | who I worked with | scope of my time
+description: What I did, who I worked with and the scope of my time
 date: 2026-1-5
 tags: [overview, software-engineering, jamesway]
 order: 100
 ---
 
-I worked as a Software Engineering Co-Op student at Jamesway Chickmaster Incubator Inc (JCMI). My Co-Op term was 4 months, from (May to August, 2025). I also worked casually from (September to December, 2025) for fun on my project (Agent James) associated with JCMI.
+[template]
 
+I worked as a Software Engineering Co-Op student at Jamesway Chickmaster Incubator Inc (JCMI). The Co-Op term ran four months, from May to August 2025. After that I kept working casually from September to December on a side project called Agent James that grew out of the same team.
 
 ## What I Did
 
-I 
+Most of my time went into building and maintaining internal software that supported the incubation hardware. The work sat between the embedded side of the business and the tools the operations team used every day.
 
 ## Background
 
-Set up the problem. Link out to [prior art](/know/templates/links-and-resources)
-and drop a callout when something deserves emphasis.
+Incubators run for weeks at a time and the software has to keep pace with the machines without interruption. The problem I picked up was making that data easier to read and act on for people who were not engineers.
 
 ## The main thing
 
-Show the work. Mix prose with [code blocks](/know/templates/code-blocks),
-[diagrams](/know/templates/images-and-diagrams), and
-[tables](/know/templates/tables) — whatever carries the idea fastest.
-
-```ts
-// A small, runnable snippet beats three paragraphs of description.
-export function greet(name: string): string {
-  return `hello, ${name}`;
-}
-```
+I shipped a set of services that pulled readings off the machines and turned them into something the team could actually use. The interesting part was the mismatch between how the hardware reported state and how a human wanted to see it.
 
 ## Walkthrough / demo
 
-Embed a [video](/know/templates/videos) or link a
-[file/PDF](/know/templates/files-and-downloads) when a live artifact explains
-it better than text.
+The clearest way to explain the flow is to trace one reading from the machine through to the dashboard. That path touched almost every piece I worked on.
 
 ## Wrap up
 
-Summarize the takeaway in two or three bullets:
+Two things stuck with me:
 
-- What you built or learned.
-- The one gotcha worth remembering.
-- Where to go next.
+- How to build software that has to tolerate hardware being flaky.
+- The value of talking to the people who use the tool before writing any of it.
 
 ## References
 
-1. [A link list / annotated bibliography](/know/templates/links-and-resources)
-2. [A downloadable PDF or dataset](/know/templates/files-and-downloads)
+1. Internal design notes kept by the team.
+2. The hardware documentation that came with the incubators.

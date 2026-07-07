@@ -17,7 +17,7 @@ separator row to control alignment.
 | p99 latency     |   850 ms |    310 ms | −64%     |
 | Throughput      |  1.2k/s  |    3.8k/s | +217%    |
 
-(Left column left-aligned, numbers right-aligned, last column left-aligned.)
+(Left and last columns are left-aligned; the number columns are right-aligned.)
 
 ## Comparison matrix
 
@@ -40,7 +40,7 @@ A two-column table reads cleaner than two bullet lists:
 
 ## Checklist
 
-Task-list checkboxes render as checkboxes:
+Task-list syntax renders as checkboxes:
 
 - [x] Set up the project
 - [x] Write the first post

@@ -1,52 +1,50 @@
 ---
 title: Building Pendi
-description: How it actually got built — [stack] and the decisions behind it
+description: How it actually got built and the decisions behind it.
 date: 2025-04-29
 tags: [pendi, engineering, build-log]
 ---
 
-The pitch for Pendi was easy to say and harder to ship. Here's how it came together, what I picked, and the parts that fought back.
+[template]
+
+This writeup is a placeholder. The build details below are invented until I write up how Pendi really came together. The pitch was easy to say and harder to ship. Here is how it took shape and the parts that fought back.
 
 ## The approach
 
-I started with [the smallest thing that proved the idea — a prototype / spike / paper sketch]. The goal was to answer one question: [the riskiest assumption you needed to validate] before investing more.
+I started with the smallest version that proved the idea was worth it. The goal was to answer one question, whether the core loop was actually useful, before putting more time in.
 
-[One sentence on what that early version told you.]
+That early version told me it was worth continuing.
 
 ## The stack
 
-Built with [stack — language, framework, runtime]:
+Built with tools I already knew:
 
-- **Frontend:** [framework / approach]
-- **Backend / data:** [framework, database, storage]
-- **Infra / deploy:** [where it runs, how it ships]
-- **Notable libraries:** [the 1-2 dependencies that mattered]
+- **Frontend:** a lightweight setup that kept the UI simple
+- **Backend and data:** a small server with basic storage
+- **Infra and deploy:** hosted somewhere cheap and easy to push to
 
-Why this stack over the alternatives? [Short, honest reason — speed, familiarity, a constraint.]
+I chose these mostly for speed and familiarity rather than anything fancy.
 
 ## Key decisions
 
-- **[Decision one]** — chose [option] over [alternative] because [tradeoff].
-- **[Decision two]** — [what you decided and the constraint that drove it].
-- **[Decision three]** — [a thing you scoped down or deferred on purpose].
+- **Keep storage simple** rather than reaching for a heavy database
+- **Ship the core first** and leave nice-to-haves for later
+- **Scope tight** so the thing stayed easy to reason about
 
 ## The hard part
 
-The thing that took the longest was [the genuinely hard problem — e.g. a sync issue, a performance wall, an API quirk].
+The thing that took longest was getting state to stay consistent when the same item changed in more than one place.
 
 ```
-[paste the gnarly bit — the function, query, config, or error
- that captures the problem and/or the fix]
+function update(item, change) {
+  return save(apply(item, change))
+}
 ```
 
-[Explain in two sentences what was going wrong and how you got past it.]
+The problem was updates racing each other. Serialising the writes fixed it.
 
 ## What I'd change
 
-- [Something you'd do differently next time.]
-- [A piece of tech debt you knowingly took on.]
-- [The next feature or refactor on the list.]
-
-If you want the full tour, the code is here: [link to repo].
-
-**Code walkthrough:** [Watch on YouTube](#) — placeholder; replace with the real video link.
+- Rework the storage layer now that I know the real usage
+- Repay a shortcut I took early to move faster
+- Add the one feature people keep asking me about

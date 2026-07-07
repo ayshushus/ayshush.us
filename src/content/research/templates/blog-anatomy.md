@@ -10,7 +10,7 @@ This is the kitchen-sink template. Duplicate this file, rename it, rewrite the
 frontmatter, and start deleting sections you don't need. Every other entry in
 **Know / Templates** is a deeper dive on one of the pieces below.
 
-> **Frontmatter cheat sheet** — `title` and `description` show up on the listing
+> **Frontmatter cheat sheet.** `title` and `description` show up on the listing
 > card and at the top of the page; `date` drives ordering (newest first);
 > `order` (optional) is a tiebreaker that floats a post above others on the same
 > day; `tags` render as clickable chips; `draft: true` hides a post from the site.
@@ -29,8 +29,8 @@ and drop a callout when something deserves emphasis.
 ## The main thing
 
 Show the work. Mix prose with [code blocks](/know/templates/code-blocks),
-[diagrams](/know/templates/images-and-diagrams), and
-[tables](/know/templates/tables) — whatever carries the idea fastest.
+[diagrams](/know/templates/images-and-diagrams) and
+[tables](/know/templates/tables), whatever carries the idea fastest.
 
 ```ts
 // A small, runnable snippet beats three paragraphs of description.

@@ -1,51 +1,49 @@
 ---
 title: What Pendi is
-description: The short pitch — [one-line description of Pendi]
+description: A short pitch for what Pendi does.
 date: 2025-02-11
 tags: [pendi, overview, product]
 ---
 
-Pendi is [one-line description of what it does]. If you've ever [the moment of pain it targets — e.g. "lost track of X" / "had to do Y by hand"], that's the itch it scratches.
+[template]
+
+This writeup is a placeholder. Pendi is a side project and the details here are invented while I put the real story together. Pendi is a small tool that takes a chore off your plate. If you have ever lost track of something you meant to keep on top of, that is the itch it goes after.
 
 ## The problem
 
-[Describe the problem in one short paragraph. What were people — or you — doing before Pendi? Why was that annoying, slow, or error-prone?]
+Before Pendi, keeping this particular thing organised meant doing it by hand and hoping I remembered. It was slow and easy to let slip.
 
-The frustrating part: [the specific failure mode that pushed you to build something].
+The frustrating part was how often a small miss turned into a bigger mess later.
 
 ## What it does
 
-At its core, Pendi [the single most important thing it does]. Around that:
+Pendi keeps the thing in order for you. Around that:
 
-- **[Feature one]** — [what it does for the user].
-- **[Feature two]** — [what it does for the user].
-- **[Feature three]** — [what it does for the user].
+- **Tracking** so nothing quietly falls through
+- **Reminders** that surface what needs attention
+- **A simple view** of where everything stands
 
-It explicitly does *not* try to [non-goal / thing you deliberately left out], because [reason].
+It does not try to be a full planner, because that was never the point.
 
 ## Who it's for
 
 | Audience | Why they'd use it |
 | --- | --- |
-| [Primary audience] | [their main reason] |
-| [Secondary audience] | [their main reason] |
-| [Maybe-later audience] | [stretch use case] |
+| Anyone juggling the same chore I was | It handles the tracking for them |
+| People who like things tidy | It keeps state clear |
 
 ## In one screen
 
-Here's roughly the shape of using it:
+Here is roughly the shape of using it:
 
 ```
-[paste a real example — a command, a config snippet,
- a sample input/output, or a flow of screens]
+add "thing to track"
+list
+done "thing to track"
 ```
 
-[One sentence on what just happened in that example and why it's the "aha" moment.]
+You add something, check the list and mark it off. That is the whole loop.
 
 ## Where it lives
 
-- Try it: [link to demo / hosted app]
-- Code: [link to repo]
-- Status: [alpha / beta / shipped / side-project], built [solo / with whom].
-
-**Code walkthrough:** [Watch on YouTube](#) — placeholder; replace with the real video link.
+- Status: side project, built solo

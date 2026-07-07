@@ -1,58 +1,57 @@
 ---
 title: What Soopy is
-description: The short pitch — [one-line description of what Soopy does]
+description: A short pitch for what Soopy does.
 date: 2025-09-14
 tags: [soopy, intro, product]
 ---
 
-Most projects start with a small annoyance that wouldn't go away. Soopy started with [the specific itch / moment that kicked it off].
+[template]
+
+This writeup is a placeholder. Soopy is a side project and the details here are invented while I write up the real story. Most projects start with a small annoyance that will not go away, and Soopy was no different.
 
 ## The one-liner
 
-Soopy is [one-line description of what it is]. It helps [target user] do [core job] without [the usual pain or friction].
+Soopy is a small tool that takes something you give it and turns it into something more useful. It helps you do a common job without the usual fuss.
 
-If that sounds vague, here's the sharper version: [a crisper two-sentence pitch, with the concrete thing it produces or replaces].
+If that sounds vague, the sharper version is that it produces a concrete result you would otherwise assemble by hand.
 
 ## The problem
 
-Today, anyone trying to [do the thing Soopy addresses] has to:
+Today, doing the thing Soopy handles means:
 
-- [pain point #1 — current clunky workaround]
-- [pain point #2 — what breaks or gets tedious]
-- [pain point #3 — the hidden cost / time sink]
+- A clunky workaround that mostly works
+- Steps that get tedious the tenth time
+- Time lost that you never really notice going
 
-None of these are hard on their own. Stacked together, they're [why this adds up to a real problem].
+None of these are hard alone. Stacked together they add up to a real drag.
 
 ## Who it's for
 
 | Audience | What they get out of Soopy |
 | --- | --- |
-| [primary user, e.g. "indie hackers"] | [main benefit for them] |
-| [secondary user] | [benefit] |
-| [edge / future audience] | [aspirational benefit] |
+| People doing this task often | The main time saving |
+| Occasional users | A quicker path than doing it by hand |
 
-The sweet spot is someone who [describe the ideal user's situation in one line].
+The sweet spot is someone who hits this job regularly enough to feel the friction.
 
 ## What it actually does
 
-In practice, you [first concrete action a user takes], and Soopy [what it returns or does in response]. A quick mental model:
+You give Soopy an input, and it hands back a finished result. A quick mental model:
 
 ```
-[input the user provides]
-        ↓
-   [ Soopy ]   ← [the core transformation / magic step]
-        ↓
-[output the user gets]
+input the user provides
+        |
+      Soopy   (the core step that does the work)
+        |
+output the user gets
 ```
 
-That's the whole loop. Everything else is [supporting features — list a couple, e.g. "history, sharing, export"].
+That is the whole loop. Everything else supports it.
 
 ## Why now
 
-[Reason this is worth building today — a shift in tooling, cost, behavior, or a gap competitors leave open.] Existing options like [alternative #1] and [alternative #2] either [their limitation #1] or [their limitation #2].
+Building this got easier and cheaper than it used to be, which is part of why I finally did. Existing options either do too much or stop short of the part I cared about.
 
 ## Where it's going
 
-Right now Soopy is [current stage — prototype / private beta / live]. Near-term, I want to [next milestone]. Longer term, the bet is that [the bigger vision in one sentence].
-
-**Code walkthrough:** [Watch on YouTube](#) — placeholder; replace with the real video link.
+Right now Soopy is an early project. Near term I want to make it steadier. Longer term the bet is that the core loop is useful to more than just me.

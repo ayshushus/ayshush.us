@@ -12,12 +12,12 @@ around.
 ## Inline links
 
 The everyday kind: [a regular link](https://example.com), an
-[internal link to another post](/know/templates/code-blocks), and a
+[internal link to another post](/know/templates/code-blocks) and a
 [mailto link](mailto:hello@example.com).
 
 ## Reference-style links
 
-Handy when the same URL shows up repeatedly or you want clean prose — the
+Handy when the same URL shows up repeatedly or you want clean prose. The
 definitions live at the bottom of the file and don't render:
 
 The [Astro docs][astro] are great, and so is the [MDN reference][mdn].

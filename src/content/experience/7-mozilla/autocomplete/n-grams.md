@@ -1,6 +1,6 @@
 ---
 title: N-gram language models
-description: The classic statistical baseline — predict the next token from the previous n−1.
+description: The classic statistical baseline. Predict the next token from the previous n−1.
 date: 2025-02-04
 order: 40
 tags: [pontoon, mozilla, autocomplete, nlp]
@@ -8,7 +8,7 @@ tags: [pontoon, mozilla, autocomplete, nlp]
 
 The simplest useful autocomplete: estimate the probability of the next token
 from the counts of short token sequences seen in training data. No neural
-network, fast to train, and a strong baseline to beat.
+network, and fast to train. A strong baseline to beat.
 
 ## Key idea
 

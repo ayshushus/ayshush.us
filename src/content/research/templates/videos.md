@@ -31,9 +31,9 @@ Drop the `embed/<VIDEO_ID>` URL into an iframe. The wrapper keeps it responsive.
 
 Sometimes a link is all you need:
 
-- 📺 **Full walkthrough:** [Watch on YouTube](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
-- ⏱ **Jump to the demo:** [Watch from 4:12](https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=252s) — append `&t=252s` (seconds) to deep-link a timestamp.
-- 🎞 **Playlist:** [The whole series](https://www.youtube.com/playlist?list=PLxxxxxx)
+- **Full walkthrough:** [Watch on YouTube](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
+- **Jump to the demo:** [Watch from 4:12](https://www.youtube.com/watch?v=dQw4w9WgXcQ&t=252s). Append `&t=252s` (seconds) to deep-link a timestamp.
+- **Playlist:** [The whole series](https://www.youtube.com/playlist?list=PLxxxxxx)
 
 ## Loom / Vimeo
 

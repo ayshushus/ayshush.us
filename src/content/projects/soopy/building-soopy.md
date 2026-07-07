@@ -1,51 +1,52 @@
 ---
 title: Building Soopy
-description: The build log — stack, decisions, and the parts that fought back
+description: The build log covering stack, decisions and the parts that fought back.
 date: 2025-11-02
 tags: [soopy, engineering, build-log]
 ---
 
-The pitch is easy to write. The build is where the assumptions get tested. Here's how Soopy actually came together — including the parts I'd do differently.
+[template]
+
+This writeup is a placeholder. The build details below are invented until I write up how Soopy really came together. The pitch is easy to write. The build is where the assumptions get tested. Here is how it took shape, including the parts I would do differently.
 
 ## The stack
 
-Soopy is built with [stack — language / framework]. The pieces that matter:
+Soopy is built with tools I already knew. The pieces that matter:
 
-- **Frontend:** [framework + why]
-- **Backend / API:** [runtime + framework]
-- **Data:** [database / storage + why that one]
-- **Infra / hosting:** [where it runs]
-- **Notable libraries:** [the 1-2 dependencies doing real work]
+- **Frontend:** a light setup for a simple UI
+- **Backend and API:** a small server doing the coordination
+- **Data:** basic storage that was enough for the job
+- **Infra and hosting:** somewhere cheap and easy to deploy to
 
-I picked these mostly because [the honest reason — familiarity, speed, cost, or a specific constraint].
+I picked these mostly for familiarity and speed.
 
 ## The approach
 
-I started by [the very first thing you built — the riskiest assumption or the core loop]. The goal was to prove [the one thing that had to work] before building anything around it.
+I started by building the core loop, the riskiest bit, first. The goal was to prove that one thing worked before building anything around it.
 
 Rough order of work:
 
-1. [milestone 1 — the spike / proof of concept]
-2. [milestone 2 — making it usable]
-3. [milestone 3 — the part that made it shareable]
+1. A quick proof of concept
+2. Making it usable day to day
+3. The part that made it shareable
 
 ## Decisions worth noting
 
 | Decision | What I chose | Why |
 | --- | --- | --- |
-| [decision area, e.g. "auth"] | [the choice] | [tradeoff accepted] |
-| [decision area] | [the choice] | [tradeoff accepted] |
-| [decision area] | [the choice] | [tradeoff accepted] |
+| Auth | Kept it minimal | Less to get wrong early |
+| Storage | Something simple | Enough for the scale I had |
 
-The one I went back and forth on most was [the contested decision] — [the tension between the two options].
+The one I went back and forth on most was storage, where the pull was between simple now and scalable later.
 
 ## The core of it
 
 The heart of Soopy is roughly this:
 
 ```
-[pseudocode or shape of the central function/flow —
- the thing that does the actual work]
+function process(input) {
+  return transform(input)
+}
 ```
 
 Everything else is plumbing around that.
@@ -54,18 +55,15 @@ Everything else is plumbing around that.
 
 A few things were harder than expected:
 
-- **[hard problem #1]** — [why it was tricky and how you got around it].
-- **[hard problem #2]** — [the gotcha that cost real time].
-- **[performance / edge case]** — [what broke at scale or in the weird input].
+- **Odd inputs** that did not fit the happy path
+- **A performance snag** that showed up only with bigger inputs
 
-The fix for [the worst one] was [the eventual solution], which in hindsight [whether it was the right call].
+The fix for the worst one was to handle the edge cases explicitly up front, which in hindsight was the right call.
 
 ## What I'd change
 
-If I rebuilt it tomorrow, I'd [the biggest do-over]. I'd also probably skip [the thing that wasn't worth it] and lean harder into [the thing that paid off].
+If I rebuilt it tomorrow, I would rethink the storage layer. I would also skip a feature that was not worth it and lean harder into the core loop that paid off.
 
 ## What's next
 
-Open threads: [TODO #1], [TODO #2], and figuring out [the unresolved question].
-
-**Code walkthrough:** [Watch on YouTube](#) — placeholder; replace with the real video link.
+Open threads: a couple of rough edges to smooth and one design question I have not settled.

@@ -1,54 +1,55 @@
 ---
 title: Building Botboy
-description: "[One-line subtitle — the approach, the decisions, and the parts that fought back.]"
+description: The approach, the decisions and the parts that fought back.
 date: 2025-10-03
 tags: [botboy, engineering, build-log]
 ---
 
-The pitch was simple. The build was not. Here's how Botboy actually came together — what I chose, what I'd change, and where it nearly fell apart.
+[template]
+
+This writeup is a placeholder. The build details below are invented until I write up how Botboy really came together. The pitch was simple. The build was not. Here is how it came together and where it nearly fell apart.
 
 ## The stack
 
-Botboy is built with [stack — language, framework, key libraries, hosting].
+Botboy is built with tools I already reach for.
 
-- **[Layer one]** — [what it handles and why this choice.]
-- **[Layer two]** — [what it handles and why this choice.]
-- **[Layer three]** — [what it handles and why this choice.]
+- **Runner** kicks off the task on a trigger
+- **Core logic** does the actual work
+- **Storage** keeps track of what ran and when
 
 ## The approach
 
-I started with [starting point / first prototype] and grew it toward [end goal]. The guiding idea was [core design principle].
+I started with a rough script and grew it toward something I trusted to run on its own. The guiding idea was to keep it dumb and predictable.
 
-1. [Step one — what you built first and why.]
-2. [Step two — what you layered on next.]
-3. [Step three — how it reached something usable.]
+1. Got the core task working by hand first
+2. Wrapped it so it could run on a trigger
+3. Added enough logging to trust it unattended
 
 ## Decisions worth noting
 
 | Decision | Alternative considered | Why I chose this |
 | --- | --- | --- |
-| [Choice A] | [Alternative A] | [Reasoning A] |
-| [Choice B] | [Alternative B] | [Reasoning B] |
-| [Choice C] | [Alternative C] | [Reasoning C] |
+| Simple script | A full framework | Less to maintain |
+| Local storage | A hosted database | Cheaper and enough |
 
 ## The hard parts
 
-[Describe the gnarliest problem — the bug, the constraint, or the design dead-end that ate the most time.]
+The gnarliest problem was making the thing safe to run repeatedly without doubling up work.
 
 ```
-[Replace with the load-bearing snippet — the function, query, or config that captures the tricky bit.]
+if not alreadyDone(task):
+    run(task)
+    markDone(task)
 ```
 
-[Explain what finally made it click, and what the fix taught you.]
+Making each run idempotent is what finally made it click, and it taught me to design for repeats from the start.
 
 ## What I'd do differently
 
-- [Thing you'd rethink given a second pass.]
-- [Shortcut you took that you'd repay.]
-- [Idea you parked for later.]
+- Rethink how it tracks state
+- Repay a shortcut I took to ship sooner
+- Build out an idea I parked for later
 
 ## Status
 
-[Where the project stands now — and the next thing on the list.]
-
-**Code walkthrough:** [Watch on YouTube](#) — placeholder; replace with the real video link.
+Early but working, and I use it myself. Next up is hardening the edges.

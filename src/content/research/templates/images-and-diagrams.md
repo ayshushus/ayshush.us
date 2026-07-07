@@ -11,7 +11,7 @@ Images in `public/` are served from the root, so `public/y-wing.jpeg` is just
 
 ## Basic image
 
-Always write real alt text — it's read aloud and shown when the image fails.
+Always write real alt text. It's read aloud and shown when the image fails.
 
 ![A y-wing starfighter](/y-wing.jpeg)
 
@@ -39,7 +39,7 @@ Use a `<figure>` when the image needs a caption:
 
 ## ASCII / box diagrams
 
-No plugin needed — a fenced block keeps the spacing exact:
+No plugin needed. A fenced block keeps the spacing exact:
 
 ```text
    ┌──────────┐      ┌──────────┐      ┌──────────┐
@@ -51,5 +51,5 @@ No plugin needed — a fenced block keeps the spacing exact:
 
 > **On Mermaid diagrams:** this site doesn't have a Mermaid integration wired
 > up, so ```` ```mermaid ```` blocks render as plain code. Either add the
-> integration, paste a pre-rendered SVG/PNG into `public/`, or stick with ASCII
-> for quick sketches.
+> integration or paste a pre-rendered SVG/PNG into `public/`. For quick
+> sketches, stick with ASCII.

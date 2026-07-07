@@ -6,8 +6,8 @@ order: 10
 tags: [sample, template, reference]
 ---
 
-Cheatsheets optimize for scanning, not reading. Keep prose to a minimum, lean on
-tables and short code blocks, and group by task.
+Cheatsheets optimize for scanning, not reading. Keep prose to a minimum and lean
+on tables and short code blocks, grouped by task.
 
 ## Git
 

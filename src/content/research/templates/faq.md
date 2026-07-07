@@ -20,11 +20,11 @@ No. Posts are plain Markdown. The only time you reach for a component is a
 ### How does ordering work?
 
 Newest `date` first. Add an `order` number to a post's frontmatter to float it
-above others — higher wins.
+above others. Higher wins.
 
 ### Can I hide a post while I draft it?
 
-Yes — set `draft: true` in the frontmatter and it disappears from the site.
+Yes. Set `draft: true` in the frontmatter and it disappears from the site.
 
 ## Collapsible details
 

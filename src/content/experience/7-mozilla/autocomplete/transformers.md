@@ -1,6 +1,6 @@
 ---
 title: Transformers
-description: Self-attention over the whole sequence — the modern default.
+description: Self-attention over the whole sequence, the modern default.
 date: 2025-02-25
 order: 10
 tags: [pontoon, mozilla, autocomplete, nlp]
@@ -38,7 +38,7 @@ tokens + positions
 ## How it applies to autocomplete
 
 Run the prefix through the decoder; the last position's logits rank
-completions. KV-caching makes incremental typing cheap — reuse past keys/values
+completions. KV-caching makes incremental typing cheap: reuse past keys/values
 and only compute the new token. This is the strongest quality option, at higher
 compute cost.
 
@@ -54,8 +54,8 @@ compute cost.
 
 How you turn logits into a suggestion matters as much as the model:
 
-- **Greedy / top-k / top-p (nucleus)** — speed vs. diversity trade-off.
-- **Beam search** — better for short, high-confidence completions.
+- **Greedy / top-k / top-p (nucleus)**: speed vs. diversity trade-off.
+- **Beam search**: better for short, high-confidence completions.
 
 ## References
 

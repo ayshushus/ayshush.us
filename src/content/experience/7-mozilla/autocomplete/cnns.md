@@ -7,14 +7,14 @@ tags: [pontoon, mozilla, autocomplete, nlp]
 ---
 
 Convolutional networks slide learnable filters over the token sequence, capturing
-local patterns (character or word n-gram-like features) — but computed in
+local patterns (character or word n-gram-like features), but computed in
 parallel across the whole sequence rather than step-by-step.
 
 ## Key idea
 
 Stack 1-D convolutions; each layer widens the **receptive field**, so deep
 stacks (or dilated convolutions) can see long contexts. **Causal** convolutions
-mask future tokens so the model only conditions on the past — required for
+mask future tokens so the model only conditions on the past. This is required for
 next-token prediction.
 
 > Receptive field grows with depth × kernel size (× dilation), not with

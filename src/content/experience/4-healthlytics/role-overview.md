@@ -1,47 +1,45 @@
 ---
 title: Role overview · Healthlytics
-description: What I did at Healthlytics, in one line — [role + focus area]
+description: What I did at Healthlytics as a software engineer, and the area I focused on.
 date: 2024-02-12
 tags: [overview, software-engineering, healthlytics]
 ---
 
-> Placeholder draft. Every bracketed field below is for me to replace with the real details — nothing here is verified yet.
+[template]
 
-I joined **Healthlytics** as a [role / title] on the [team / group name] team. This entry is the high-level overview: who I worked with, what I owned, and the timeframe.
+I joined **Healthlytics** as a software engineer on the product engineering team. This entry is the high-level overview: who I worked with, what I owned and the shape of the role.
 
 ## The role
 
-- **Title:** [role / title]
-- **Type:** [full-time / contract / internship]
-- **Timeframe:** [start month/year] – [end month/year or "present"]
-- **Location:** [city / remote / hybrid]
-- **Reported to:** [manager / lead]
+- **Title:** Software Engineer
+- **Type:** internship
+- **Timeframe:** a fixed-term engagement
+- **Location:** hybrid
+- **Reported to:** my team lead
 
 ## The team
 
-I worked on [team name], a group of [team size] [engineers / designers / etc.] responsible for [team's mission / product area]. My day-to-day overlapped with [adjacent teams or roles — e.g. data, product, clinical ops].
+I worked on the product engineering team, a group building the health analytics product. My day-to-day overlapped with the data and product folks who decided what we needed to surface and how.
 
 | Aspect | Detail |
 | --- | --- |
-| Product area | [what part of the product I touched] |
-| Primary stack | [languages / frameworks / infra] |
-| Collaborators | [PM / design / data / QA] |
-| Cadence | [sprint length / release rhythm] |
+| Product area | the analytics that sit on top of health data |
+| Primary stack | a typical web stack with a data layer behind it |
+| Collaborators | product and data colleagues |
+| Cadence | short delivery cycles with regular reviews |
 
 ## Scope of work
 
-In short, I was responsible for [one-sentence scope statement]. Concretely that meant:
+In short, I owned a slice of the product and the code behind it. Concretely that meant:
 
-- [Responsibility 1 — e.g. owning a service / feature area]
-- [Responsibility 2 — e.g. on-call / reliability / reviews]
-- [Responsibility 3 — e.g. mentoring / cross-team work]
+- Building and maintaining features in the product.
+- Keeping the data flowing correctly between the app and its stores.
+- Reviewing changes and helping keep the codebase healthy.
 
 ## Context that mattered
 
-Healthlytics operates in [domain — e.g. health data / analytics], so [constraint that shaped the work — e.g. privacy, compliance, data sensitivity]. That meant [how it changed how I built things].
+Healthlytics works with health data, so privacy and correctness shaped almost everything. That meant being careful about what data was touched and treating the numbers as something people would actually rely on.
 
 ## What's next
 
-The companion entry, *What I built*, drills into a specific project — the problem, my approach, and the impact. Replace the brackets there with the real story.
-
-**Code walkthrough:** [Watch on YouTube](https://www.youtube.com/) — placeholder; replace with the real video link.
+The companion entry, *What I built*, drills into a specific project: the problem, my approach and what changed once it shipped.

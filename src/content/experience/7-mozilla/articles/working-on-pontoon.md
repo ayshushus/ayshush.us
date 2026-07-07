@@ -1,47 +1,45 @@
 ---
-title: Working on Pontoon — [Feature / Area]
-description: Shipping [feature/area] on Pontoon, and what it took to get there.
-date: 2025-04-22
+title: Prototyping localization autocomplete
+description: Building an autocomplete prototype for Pontoon, and what it took to get there.
+date: 2026-06-20
 tags: [mozilla, pontoon, localization, engineering]
 ---
 
-Localization tooling has a deceptively hard job: it has to feel fast for translators doing thousands of small edits, while staying correct across many locales and edge cases. This is the story of [feature/area] I worked on.
+Localization tooling is harder than it looks. It has to stay fast for translators making thousands of small edits and stay correct across every locale. The project I want to write about here is a localization autocomplete prototype for Pontoon. This work is still in progress and I am still learning as I go.
 
 ## The problem
 
-[Describe the problem — e.g. translators were slowed down by X / a workflow was missing Y / a system didn't scale to Z]. Concretely, [the pain point], which affected [who — e.g. a specific locale team / all reviewers / the community at large].
+Translators retype a lot of text that the system has already seen. Similar strings, shared phrases and repeated UI labels show up again and again across products. Pontoon has translation memory to help, but it matches whole strings rather than suggesting the next few words as you type. That gap is where autocomplete fits.
 
-The signal that this mattered: [how the problem surfaced — bug reports / community feedback / a metric].
+The signal that this mattered came from the sheer volume. Mozilla has more than five million strings across its locales, and a lot of the typing on top of them is predictable.
 
 ## The approach
 
-I tackled it by [high-level approach]. The work touched:
+I started by evaluating the corpus itself. Before any model, I needed to know what the data looked like, how clean it was and how much repetition it held. That evaluation covered the full five million strings and shaped every later choice.
 
-- **[Component 1]** — [what changed].
-- **[Component 2]** — [what changed].
-- **[Component 3]** — [what changed].
+From there I benchmarked model families against each other:
 
-The trickiest part was [the hard part — e.g. handling translation memory consistency / a performance constraint / backwards compatibility]. I resolved it by [solution].
+- **N-gram baselines** gave me a fast, cheap floor to beat.
+- **LSTMs** carried context across a full sequence and set a stronger bar.
+- **Autoencoders** helped me study how the strings cluster in a learned space.
+- **Transformers** gave the best quality and became the direction I leaned toward.
+
+Each note on this site goes deeper into one of these. The short story is that the modeling only works once the data work is done.
 
 ## Trade-offs
 
 | Option | Pro | Con | Chose? |
 | --- | --- | --- | --- |
-| [Option A] | [pro] | [con] | [yes/no] |
-| [Option B] | [pro] | [con] | [yes/no] |
+| N-gram model | Trivial to train, very fast | No long-range context | Baseline only |
+| LSTM | Streams naturally, compact | Slow to train, weaker on long spans | Considered |
+| Transformer | Best quality, long context | Heavier compute footprint | Leaning toward |
 
-I went with [chosen option] because [reasoning].
+I leaned toward the transformer because quality mattered more than raw latency for a first prototype, and KV-caching keeps incremental typing cheap enough to feel live.
 
-## Shipping it
+## Where it stands
 
-The change rolled out [how — e.g. behind a flag / to a single locale first / all at once] in [ship date]. Because Pontoon is open source, the work landed publicly: [link to PR / issue].
+The prototype is not shipped. It is a research effort, and the honest status is in progress. Because Pontoon is open source, the pieces that do land show up publicly on GitHub.
 
-## Impact
+## What I would do differently
 
-- [Metric 1 — e.g. reduced X by N%].
-- [Metric 2 — e.g. unblocked workflow for N locales].
-- [Qualitative — e.g. positive feedback from the community].
-
-## What I'd do differently
-
-In hindsight, [reflection — e.g. I'd have invested in tests earlier / scoped the rollout tighter]. [Optional next step or follow-up work that came out of it.]
+If I started over I would spend even more time on data evaluation before touching a model. Most of the early wins came from understanding the strings, not from swapping architectures. That is the lesson I keep relearning.

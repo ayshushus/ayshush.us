@@ -5,38 +5,37 @@ date: 2024-02-20
 tags: [grant-thornton, projects, shipping]
 ---
 
-This entry focuses on the core initiatives I shipped at Grant Thornton and the value they created.
+[template]
 
-## Project one: [project name]
+This entry focuses on the work I shipped at Grant Thornton and why it mattered.
 
-**The problem.** [Describe the problem or gap].
+## Project one: data models over large datasets
 
-**What I built.** [One-line description of the solution]. I was responsible for [your specific part].
+**The problem.** The practice had datasets that were too big and too raw to model directly, and the analysis on top of them was slow to trust.
 
-**Approach.** I started with [discovery / requirements], then built [solution] using [technology]. The hardest part was [challenge], which I solved by [approach].
+**What I built.** A pipeline that cleaned and represented the data, then fed it into mathematical models and neural networks. I owned the data preparation and the model plumbing.
 
-**Impact.** [Outcome or result].
+**Approach.** I started with the data itself, working out how to represent it in a form the models could use. Then I built the modelling steps in Python and tested them against real datasets. The hardest part was performance, which I handled by rethinking how the data was queried and stored.
 
-## Project two: [project name]
+**Impact.** The models ran on the full dataset rather than a sample, so the analysis leaned on more of the real picture.
+
+## Project two: scaling the database work
 
 | | |
 | --- | --- |
-| Problem | [problem statement] |
-| My role | [what you owned] |
-| Stack | [languages / frameworks / services] |
-| Shipped | [date or delivery status] |
-| Outcome | [impact or change] |
+| Problem | queries slowed down badly as row counts grew |
+| My role | reworking how the data was stored and read |
+| Stack | SQL and Python |
+| Outcome | the work stayed usable at millions of rows |
 
-A short version: [two or three sentences summarizing why it mattered]. The piece I’m proudest of was [specific detail], because [reason].
+A short version: as the data grew, the naive approach stopped holding up, so I reworked the storage and access patterns until it stayed fast. The piece I am proudest of was catching the problem before it reached the people relying on the numbers.
 
 ## How I worked
 
-- Collaborated with [roles] to [goal]
-- Shipped via [process — e.g. PRs, code review, staged rollout]
-- Measured success by [metric or signal]
+- Paired with data and consulting colleagues to agree on what the output needed to show.
+- Shipped in short cycles with regular reviews.
+- Judged success by whether the work held up at full scale.
 
 ## What I'd do differently
 
-Looking back, I’d [reflection]. The practice I’d repeat is [what worked best].
-
-> Replace the bracketed placeholders above with the real project details and outcomes.
+Looking back, I would spend more time on the data representation up front, since most of the later pain traced back to decisions made early. The habit I would keep is testing against real volumes, not small samples.

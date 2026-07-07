@@ -6,8 +6,8 @@ order: 20
 tags: [sample, template, tutorial]
 ---
 
-Tutorials follow a predictable shape: tell people what they'll have at the end,
-list what they need, then walk one step at a time with a checkpoint after each.
+Tutorials follow a predictable shape. Tell people what they'll have at the end
+and what they need, then walk one step at a time with a checkpoint after each.
 
 ## What you'll build
 
@@ -22,7 +22,7 @@ the finished result. Readers decide whether to keep going based on this.
 > - A terminal and a code editor
 > - ~15 minutes
 
-## Step 1 — Scaffold the project
+## Step 1: Scaffold the project
 
 Describe the action, then show the exact command:
 
@@ -34,7 +34,7 @@ cd my-app
 **Checkpoint:** running `npm run dev` opens a starter page at
 `http://localhost:4321`.
 
-## Step 2 — Add the feature
+## Step 2: Add the feature
 
 Explain *why* before the *how*, then the code:
 
@@ -46,10 +46,10 @@ export const greet = (name: string) => `hello, ${name}`;
 **Checkpoint:** importing `greet` and calling `greet("world")` returns
 `"hello, world"`.
 
-## Step 3 — Verify
+## Step 3: Verify
 
-Show how to confirm it actually works — a test, a screenshot, an expected
-output. Don't make readers guess.
+Show how to confirm it actually works, whether a test or an expected output.
+Don't make readers guess.
 
 ```bash
 npm run build

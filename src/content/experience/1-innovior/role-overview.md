@@ -1,40 +1,36 @@
 ---
 title: Role overview at INNOVIOR Africa Group
-description: My role, team, and the ERP landscape I worked in — [fill in the specifics]
+description: My role, team and the ERP landscape I worked in at INNOVIOR Africa Group.
 date: 2023-04-12
 tags: [erp, software-engineering, role-overview]
 order: 1
 ---
 
-I joined INNOVIOR Africa Group to do software engineering work centered on ERP systems. This entry is the high-level overview — the role, the team, and the ground I covered. (Replace every bracket below with the real details.)
+I joined INNOVIOR Africa Group as a software engineering intern to work on ERP systems. This is the high-level overview of the role, the team and the ground I covered.
 
 ## The role
 
-I worked as a [role, e.g. Software Engineer / ERP Developer / Integration Engineer] at INNOVIOR Africa Group from [start date, e.g. Jan 2023] to [end date, or "present"]. I reported to [manager / team lead] and sat within the [team / department, e.g. ERP Engineering / Digital Solutions] team of [team size] people.
+I worked as a Software Engineer intern at INNOVIOR Africa Group from May 2023 to August 2023, based in Nairobi. I reported to Peter Kirui and was mentored by Abel Too, sitting inside the ERP Implementation and Consultancy team of 17 people spread across the Kenya and Nigeria offices.
 
-My focus was [one-line summary of mandate, e.g. building and maintaining ERP integrations / customizing modules / supporting client rollouts].
+My time split across the front end and the back end. On the front end I took part in consultancy and demoed our products to end users. On the back end I built full-stack systems, including an MVP web application that presented a database management system to C-suite executives.
 
 ## The ERP context
 
-The core platform was [which ERP, e.g. SAP / Odoo / Microsoft Dynamics / NetSuite], deployed for [internal use / client engagements / both]. The modules most relevant to my work were:
+The core platforms were Oracle NetSuite and Microsoft Dynamics 365, which INNOVIOR implements for clients across East and West Africa as end-to-end ERP and CRM solutions. The areas most relevant to my work were:
 
-| Area | What I touched | Notes |
-|------|----------------|-------|
-| [Finance / Accounting] | [e.g. GL, AP/AR config] | [bracket detail] |
-| [Inventory / Supply chain] | [e.g. stock, procurement] | [bracket detail] |
-| [HR / Payroll] | [module work] | [bracket detail] |
-| [Sales / CRM] | [module work] | [bracket detail] |
+| Area | What I touched |
+|------|----------------|
+| ERP platforms | Oracle NetSuite and Microsoft Dynamics 365 |
+| Full-stack build | An MVP web application for presenting a DBMS |
+| Edge computing | Data storage and propagation at the edge |
 
 ## How I worked
 
-Day to day, the work spanned a few recurring themes:
+Day to day the work fell into a couple of recurring themes:
 
-- **Customization** — extending [ERP] with [custom modules / scripts / configurations] in [language/framework, e.g. Python, ABAP, X++].
-- **Integration** — connecting the ERP to [external systems, e.g. payment gateways, third-party APIs, in-house tools].
-- **Support** — troubleshooting [issues, e.g. data discrepancies, failed jobs] for [internal users / clients].
+- **Consultancy:** demoing products to potential users and breaking concepts down so stakeholders could follow the ideas.
+- **Engineering:** building a full-stack MVP with edge data storage and propagation, backed by relational databases.
 
 ## Why it mattered
 
-INNOVIOR Africa Group serves [describe market / client base, e.g. enterprises across the region]. Getting the ERP right meant [impact in one line, e.g. cleaner financial reporting, faster procurement, fewer manual steps] for [whom].
-
-The deeper dive on a specific project lives in the companion entry. Replace the brackets here once the details are confirmed.
+INNOVIOR is an award-winning implementer of business management software across six African countries. Getting the ERP right meant clients could run their operations on systems they trusted. The deeper look at the MVP itself lives in the companion entry.

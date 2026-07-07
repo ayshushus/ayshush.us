@@ -1,51 +1,51 @@
 ---
-title: What I built at JamesWay
-description: The main project I shipped — the problem, the approach, and the impact [to fill in].
+title: What I built at Jamesway
+description: The main project I shipped, framed as the problem, the approach and the outcome.
 date: 2023-09-21
 tags: [project, shipped, software-engineering, jamesway]
 ---
 
-The work I'm proudest of from JamesWay, framed as problem → approach → outcome. Swap each bracket for the real story.
+[template]
+
+Here is the work I am proudest of from Jamesway, told as problem, approach and outcome.
 
 ## The problem
 
-When I started, [describe the pain point / gap / opportunity]. This mattered because [who it affected and why].
+When I started, the readings coming off the incubators were hard for anyone but an engineer to make sense of. That mattered because the people watching the machines were operators, not programmers.
 
-In numbers: [baseline metric, e.g. "X requests/day", "Y minutes of manual work", "Z% error rate"].
+Getting a clear picture of a running batch meant reading raw values by hand, which was slow and easy to get wrong.
 
 ## What I built
 
-The main project: **[project name]** — [one-line description of what it is].
+The main project was a service that collected machine readings and presented them in a form the operations team could use.
 
 Key pieces:
 
-- [Component / feature 1 and what it does]
-- [Component / feature 2 and what it does]
-- [Component / feature 3 and what it does]
+- A collector that pulled state off the machines on a schedule.
+- A small store that kept recent readings so trends were visible.
+- A view layer that turned those readings into something readable.
 
 ## The approach
 
-- Design: [key design decision and the tradeoff behind it]
-- Stack: [languages / frameworks / services used here]
-- Hard part: [the trickiest technical challenge and how you solved it]
-- Collaboration: [who you worked with — review, design, cross-team]
+- Design: I kept the collector separate from the view so either could change without breaking the other.
+- Stack: mostly TypeScript on the service side with a lightweight datastore behind it.
+- Hard part: the machines did not report state consistently, so the collector had to tolerate gaps and duplicates.
+- Collaboration: I worked closely with the operations team on what they actually needed to see.
 
 ## Before and after
 
 | Dimension | Before | After |
 | --- | --- | --- |
-| [metric, e.g. latency] | [before value] | [after value] |
-| [metric, e.g. manual steps] | [before value] | [after value] |
-| [metric, e.g. coverage] | [before value] | [after value] |
+| Reading machine state | manual, by hand | on a live view |
+| Spotting a bad batch | slow | much faster |
+| Who could do it | engineers only | operators too |
 
 ## Impact
 
-- [Quantified outcome, e.g. "cut processing time from X to Y"]
-- [Adoption / usage outcome]
-- [Anything that shipped to production / customers]
+- Operators could check a batch without pulling in an engineer.
+- Problems showed up sooner because trends were visible.
+- The service ran in front of the real machines by the end of my term.
 
 ## What I learned
 
-[A lesson or two — technical or about how the team worked — that you carried forward.]
-
-> Note: this is a placeholder draft. Replace every bracketed item with the real details before publishing.
+Software that talks to hardware has to assume the hardware will misbehave. Designing for that from the start saved me a lot of rework later.

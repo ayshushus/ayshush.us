@@ -12,34 +12,34 @@ any other URL.
 
 ## PDFs
 
-- 📄 [Read the design doc (PDF)](/papers/design-doc.pdf)
-- 📄 [Annotated paper (PDF)](https://arxiv.org/pdf/1706.03762) — external PDFs work too.
+- [Read the design doc (PDF)](/papers/design-doc.pdf)
+- [Annotated paper (PDF)](https://arxiv.org/pdf/1706.03762) — external PDFs work too.
 
 The `download` attribute forces a save dialog instead of opening in-browser:
 
 <p>
-  <a href="/papers/design-doc.pdf" download>⬇ Download the design doc (PDF)</a>
+  <a href="/papers/design-doc.pdf" download>Download the design doc (PDF)</a>
 </p>
 
-> **Tip:** this site also has a built-in PDF mode — a subsection whose
+> **Tip:** this site also has a built-in PDF mode. A subsection whose
 > `_config.md` sets `rules: { pdfOnNumericName: true }` will serve numerically
 > named entries (e.g. `1.md`) straight from `/pdfs/<section>/<sub>/1.pdf`. Use
 > that when a whole project is really just a stack of PDFs.
 
 ## Slide decks
 
-- 🖥 [Slides (PDF export)](/decks/talk-2026.pdf)
-- 🖥 [Live deck on Google Slides](https://docs.google.com/presentation/d/EXAMPLE/edit)
+- [Slides (PDF export)](/decks/talk-2026.pdf)
+- [Live deck on Google Slides](https://docs.google.com/presentation/d/EXAMPLE/edit)
 
 ## Datasets & spreadsheets
 
-- 📊 [results.csv](/data/results.csv) — raw data behind the charts.
-- 📊 [View in Google Sheets](https://docs.google.com/spreadsheets/d/EXAMPLE/edit)
+- [results.csv](/data/results.csv) — raw data behind the charts.
+- [View in Google Sheets](https://docs.google.com/spreadsheets/d/EXAMPLE/edit)
 
 ## Archives & misc
 
-- 🗜 [starter-project.zip](/downloads/starter-project.zip)
-- 🧩 [VS Code settings (JSON)](/configs/settings.json)
+- [starter-project.zip](/downloads/starter-project.zip)
+- [VS Code settings (JSON)](/configs/settings.json)
 
 ## A download table
 

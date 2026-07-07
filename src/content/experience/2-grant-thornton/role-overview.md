@@ -5,39 +5,39 @@ date: 2023-09-12
 tags: [grant-thornton, software-engineering, overview]
 ---
 
-This page captures the shape of my Grant Thornton engagement: the role, the team, and the responsibilities I owned.
+[template]
+
+This page captures the shape of my Grant Thornton engagement: the role, the team and what I owned.
 
 ## The role
 
-I worked as a [role title] at Grant Thornton from [start month/year] to [end month/year], based in [location / remote]. I was part of [team or practice name], working on [core focus area].
+I worked as a software engineer intern at Grant Thornton, part of the dGTl (AI First Transformation) practice. My focus was applied data and machine learning work, mostly turning large datasets into models and analysis the consulting side could use.
 
-In one line: [one-sentence summary of the job’s main focus].
+In one line: I built and ran the data plumbing behind the practice's AI work.
 
 ## The team
 
-- **Team:** [team name and primary responsibility]
-- **Report line:** [manager / lead title]
-- **Collaborators:** [designers, analysts, consultants, engineers, stakeholders]
-- **Engagement model:** [project-based / retainer / embedded consulting]
+- **Team:** dGTl (AI First Transformation)
+- **Report line:** my practice lead
+- **Collaborators:** data engineers and consulting colleagues
+- **Engagement model:** project-based work on client and internal datasets
 
 ## Scope and ownership
 
 | Area | What I owned |
 | --- | --- |
-| Primary product / service | [feature area or system] |
-| Technology | [languages, frameworks, services] |
-| Delivery | [project cadence, releases, sprint process] |
-| Stakeholders | [internal teams, clients, leadership] |
+| Primary focus | data representation and applied ML models |
+| Technology | Python, SQL and common ML frameworks |
+| Delivery | iterative work in short cycles with regular reviews |
+| Stakeholders | internal data teams and consulting leads |
 
 ## What I was responsible for
 
-- [Responsibility 1 — e.g. designed and built feature components]
-- [Responsibility 2 — e.g. supported delivery for client engagements]
-- [Responsibility 3 — e.g. maintained integrations and data flows]
-- [Responsibility 4 — e.g. documented solutions and aligned cross-functional teams]
+- Preparing and representing large datasets so they were usable for modelling.
+- Building and testing mathematical models and neural networks against those datasets.
+- Making database work hold up as row counts grew into the millions.
+- Documenting what I built so colleagues could pick it up.
 
 ## The impact
 
-The most important result was [outcome or business impact]. I learned [key lesson], and the part I’m most proud of was [meaningful contribution].
-
-> Replace each bracketed placeholder with the real details from your Grant Thornton engagement.
+The result I care about most was learning to reason about scale: a choice that looks fine on a small sample can fall over on millions of rows. The part I am proudest of was making that kind of work repeatable rather than one-off.

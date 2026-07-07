@@ -53,5 +53,5 @@ These rarely survive a static build cleanly. Safest is a blockquote with a link:
 </iframe>
 
 > **Rule of thumb:** if an embed needs a `<script>`, test the production build
-> (`npm run build && npm run preview`) before trusting it — client scripts
+> (`npm run build && npm run preview`) before trusting it. Client scripts
 > behave differently than in dev.

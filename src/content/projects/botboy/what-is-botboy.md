@@ -1,50 +1,48 @@
 ---
 title: What Botboy is
-description: "[One-line pitch — what Botboy does and who it's for.]"
+description: A short pitch for what Botboy does and who it's for.
 date: 2025-09-12
 tags: [botboy, overview, product]
 ---
 
-Most people meet a tool before they understand why it exists. So before the how, here's the why: Botboy is [one-line description of what Botboy is].
+[template]
+
+This writeup is a placeholder. Botboy is a side project and the details here are invented while I write up the real story. Most people meet a tool before they understand why it exists. So before the how, here is the why: Botboy is a small automation helper that runs a task for you.
 
 ## The problem
 
-[Describe the pain point Botboy solves — the annoying, repetitive, or impossible thing it removes.]
+There was a job I kept doing by hand that a machine should have been doing all along.
 
-- [Pain point #1 — the thing you kept doing manually.]
-- [Pain point #2 — where existing tools fell short.]
-- [Pain point #3 — the cost of not having this.]
+- The thing I kept repeating manually
+- The gap where existing tools stopped short
 
 ## What it does
 
-In short, Botboy [core capability in plain language]. It takes [input] and produces [output], so you can [outcome].
+Botboy takes an input, does the work and hands back a result, so you do not have to babysit it.
 
-- **[Feature one]** — [what it does in a sentence.]
-- **[Feature two]** — [what it does in a sentence.]
-- **[Feature three]** — [what it does in a sentence.]
+- **Runs on a trigger** so the task happens without you starting it
+- **Handles the boring middle** that used to be manual
+- **Reports back** so you know it worked
 
 ## Who it's for
 
 | Audience | Why they'd use it |
 | --- | --- |
-| [Audience A] | [Reason A] |
-| [Audience B] | [Reason B] |
-| [Audience C] | [Reason C] |
+| People with a repetitive task | Botboy runs it for them |
+| Tinkerers | It is easy to bend to a new job |
 
 ## A quick look
 
-Here's roughly what using Botboy looks like in practice:
+Here is roughly what using Botboy looks like:
 
 ```
-[Replace with a real example — a command, config snippet, or sample input/output that shows Botboy at work.]
+botboy run task
 ```
 
 ## Why I built it
 
-[Personal motivation — the moment or frustration that kicked this off, and what you wanted to learn or prove.]
+I wanted to stop doing a repetitive job by hand and learn a bit more about automation along the way.
 
 ## Where it's headed
 
-[Short note on the current state — prototype, in use daily, shipped — and what comes next.]
-
-**Code walkthrough:** [Watch on YouTube](#) — placeholder; replace with the real video link.
+Right now it is an early project that I use myself. Next up is smoothing the rough edges.

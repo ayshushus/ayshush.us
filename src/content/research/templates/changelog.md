@@ -6,10 +6,10 @@ order: 3
 tags: [sample, template, changelog]
 ---
 
-Great for "what's new," release notes, or a build-in-public journal. Newest
-entry on top; group by version or by date.
+Great for release notes or a build-in-public journal. Newest entry on top;
+group by version or by date.
 
-## v1.2.0 — 2026-05-01
+## v1.2.0 (2026-05-01)
 
 **Added**
 
@@ -24,7 +24,7 @@ entry on top; group by version or by date.
 
 - Bumped the request timeout from 1s to 5s.
 
-## v1.1.0 — 2026-04-12
+## v1.1.0 (2026-04-12)
 
 **Added**
 
@@ -34,9 +34,9 @@ entry on top; group by version or by date.
 
 - The old `/blog` route now redirects to `/know`.
 
-## v1.0.0 — 2026-03-20
+## v1.0.0 (2026-03-20)
 
-- 🎉 First public release.
+- First public release.
 
 ---
 

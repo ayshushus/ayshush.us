@@ -1,50 +1,47 @@
 ---
 title: What Typer is
-description: The elevator pitch — [one line on what Typer does and who it's for].
+description: A short overview of what Typer does and who might want it.
 date: 2024-10-02
 tags: [typer, overview, intro]
 ---
 
-Typer started because [the moment / frustration that kicked it off — e.g. "I kept doing X by hand and it drove me up the wall"]. The short version: Typer is [one-line description of what Typer does].
+[template]
+
+This writeup is a placeholder. Typer is one of my side projects and the details below are invented while I write up the real story. Typer is a small tool I built to make a task I do often less tedious.
 
 ## The problem
 
-[Describe the pain in one or two short paragraphs. What was broken, slow, or annoying before Typer existed?]
+Before Typer I was repeating the same steps by hand, over and over. It worked, but it was slow and easy to get wrong on a bad day.
 
 The friction showed up as:
 
-- [Pain point #1 — concrete, e.g. "manual repetition of X"]
-- [Pain point #2 — e.g. "tools that did Y but not Z"]
-- [Pain point #3 — the one that finally made me build something]
+- Manual repetition of something that never really changed
+- Tools that solved part of the job but left the annoying half to me
 
 ## What it actually does
 
-In plain terms, Typer [does the core thing — verb + object]. You give it [input], and it [output / result].
+Typer takes the repetitive work and does it for you. You give it a bit of input, and it hands back the result you were going to type out anyway.
 
-The headline features:
+The main features:
 
 | Feature | What it gives you |
 | :--- | :--- |
-| [Feature 1] | [Benefit in one line] |
-| [Feature 2] | [Benefit in one line] |
-| [Feature 3] | [Benefit in one line] |
+| Automation | The repeated steps happen on their own |
+| Simple input | You describe what you want in a compact form |
+| Fast output | The result comes back quickly |
 
 ## Who it's for
 
-Typer is aimed at [primary audience — e.g. developers / writers / a specific niche]. If you [recognizable situation], it's probably for you. If you [the opposite case], it's probably not — and that's fine.
+Typer is mostly for people who hit the same repetitive task I did. If that sounds familiar, it might help. If your work is more varied, it probably will not fit, and that is fine.
 
 A rough sense of the shape of it:
 
 ```ts
-// [snippet — a tiny example of using/calling Typer]
+const result = typer.run(input)
 ```
 
 ## Why it exists at all
 
-There are other tools that get close — [name one or two alternatives, if any]. Typer is different because [the one opinionated decision that sets it apart]. That trade-off cost me [what it cost — flexibility? scope?], but it's the thing I'd defend.
+Other tools get close. Typer is different because I made one opinionated choice about how it should behave and stuck with it. That choice cost me some flexibility, but it is the part I would defend.
 
-Where it stands today: [current status — e.g. "used daily by me", "X users", "still a prototype"].
-
-**Code walkthrough:** [Watch on YouTube](#) — placeholder; replace with the real video link.
-
-Try it: [link to live demo / repo](#) — replace with the real link.
+Where it stands today: still a personal project that I keep coming back to.
