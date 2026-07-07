@@ -3,7 +3,7 @@ import Layout from "@layouts/Layout.astro";
 import Container from "@components/Container.astro";
 import Link from "@components/Link.astro";
 import ArrowCard from "@components/ArrowCard.astro";
-import { SITE, HOME, SOCIALS } from "@consts";
+import { HOME } from "@consts";
 import { getResolvedNav } from "@lib/nav";
 
 const nav = await getResolvedNav();
@@ -44,21 +44,19 @@ const nav = await getResolvedNav();
           <h2 class="font-semibold text-black dark:text-white">About Me</h2>
           <article class="space-y-4">
             <p>
-              I started coding when I was 5 years old (cliche, I'm aware). My family moved from Tanzania to Kenya and that gave me a change in preschools, a good change to boot.
-              In my new preschool, we got the opportunity to visit what we called an Information Computing & Technology (ICT) lab. I remember it like it was yesterday.
-              
+              I started coding when I was five. My family had just moved from Tanzania to Kenya, and the new preschool there had something the old one did not. It had an Information and Communication Technology lab, and I still remember the first time I walked into it.
             </p>
             <p>
-              The ICT lab was just a bunch of PCs. It was also air conditioned, which actually makes a difference when you live in Africa next to the equator. I'd never really interacted with a full blown PC until this point in my life but to be fair I was 5 years old lol. We were learning how to design a webpage in CSS.
+              The lab was a room full of PCs and it was air conditioned, which is a bigger deal than it sounds when you live near the equator. I had never really used a computer before that day. We were there to learn how to build a webpage in CSS.
             </p>
             <p>
-              Looking back, it's kinda weird to have a 5 year old cohort learn how to code, especially in CSS like c'mon why not python, but that's precisely why this course was more of a leisure one by the academy allowing kids to see their interests instead of grading them based on their performance in it.
+              Handing CSS to a room of five year olds is a strange idea, and that was rather the point. The class was meant to be play. It gave kids a way to find what they were drawn to instead of grading them on it.
             </p>
             <p>
-              I ended up coding for 3 hours straight and solved our problem statement fully, all my friends left and no one had really solved the problem (it got very boring), so it was just the lab supervisor and I in the room at the end. That was the one time in my life (so far) I'd actually spent that long on a problem.
+              I spent three hours straight on the exercise and finished it. Everyone else had drifted off long before, so by the end it was just me and the lab supervisor in the room. It was the first time I lost track of the clock on a problem.
             </p>
             <p>
-              I think I have ADHD (I'm not diagnosed, just a thought, even now) so this ICT thing was a big deal for my 5 year-old self. It turns out I like working with machines because they listen to me without getting frustrated like most people do lol (I yap a lot). And conversations still make me happy to this day.
+              That afternoon stuck with me. I like working with machines because they hear me out without getting frustrated, and I have been chasing that feeling ever since.
             </p>
           </article>
         </section>
@@ -68,31 +66,37 @@ const nav = await getResolvedNav();
             Let's Connect
           </h2>
           <article>
-            <p>
-              I'm active on linkedin and github. If you want to get in touch quickly, send me an email and I'll respond in 3 business days (send a reminder if I don't).
-            </p>
+            <p>Please feel free to reach out:</p>
           </article>
-          <ul class="not-prose flex flex-wrap gap-2">
-            {
-              SOCIALS.map((SOCIAL) => (
-                <li class="flex gap-x-2 text-nowrap">
-                  <Link
-                    href={SOCIAL.HREF}
-                    external
-                    aria-label={`${SITE.TITLE} on ${SOCIAL.NAME}`}
-                  >
-                    {SOCIAL.NAME}
-                  </Link>
-                  {"/"}
-                </li>
-              ))
-            }
-            <li class="line-clamp-1">
-              <Link
-                href={`mailto:${SITE.EMAIL}`}
-                aria-label={`Email ${SITE.TITLE}`}
-              >
-                {SITE.EMAIL}
+          <ul class="not-prose flex flex-col gap-2">
+            <li class="flex gap-x-2">
+              <span>GitHub -</span>
+              <Link href="https://github.com/ayshushus" external aria-label="Ayush Ranjan on GitHub">
+                @ayshushus
+              </Link>
+            </li>
+            <li class="flex gap-x-2">
+              <span>LinkedIn -</span>
+              <Link href="https://linkedin.com/in/ayshushus" external aria-label="Ayush Ranjan on LinkedIn">
+                @ayshushus
+              </Link>
+            </li>
+            <li class="flex gap-x-2">
+              <span>YouTube -</span>
+              <Link href="https://youtube.com/@ayshushus" external aria-label="Ayush Ranjan on YouTube">
+                @ayshushus
+              </Link>
+            </li>
+            <li class="flex gap-x-2">
+              <span>Website -</span>
+              <Link href="https://ayshush.us" external aria-label="Ayush Ranjan's website">
+                https://ayshush.us
+              </Link>
+            </li>
+            <li class="flex gap-x-2">
+              <span>Email -</span>
+              <Link href="mailto:ayshushus@gmail.com" aria-label="Email Ayush Ranjan">
+                ayshushus@gmail.com
               </Link>
             </li>
           </ul>
