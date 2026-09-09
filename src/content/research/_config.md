@@ -1,5 +1,5 @@
 ---
 title: Research
-description: I document any learning about how computers work
+description: My learning about how computers work.
 order: 1
 ---

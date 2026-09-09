@@ -1,5 +1,5 @@
 ---
 title: Experience
-description: I document my applied engineering career in industry
+description: My applied engineering career in industry.
 order: 3
 ---

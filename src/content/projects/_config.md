@@ -1,5 +1,5 @@
 ---
 title: Projects
-description: I document some of the things I programmed for fun
+description: My creations and stuff I worked on.
 order: 2
 ---
