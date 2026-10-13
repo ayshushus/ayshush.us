@@ -116,7 +116,7 @@ if (kind === "list") {
   Content = rendered.Content;
   headings = rendered.headings;
   pdf = post.data.pdf
-    ? resolvePdfUrl(section.slug, post.id, post.data.pdf)
+    ? resolvePdfUrl(subsection.urlSlug, post.id, post.data.pdf)
     : undefined;
   sourceUrl = post.data.sourceUrl;
   pageTitle = post.data.title;

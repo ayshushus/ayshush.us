@@ -10,8 +10,8 @@ const postSchema = z.object({
   draft: z.boolean().optional(),
   tags: z.array(z.string()).optional(),
   // Optional PDF artifact co-located with the post in a sibling "assets" folder
-  // and referenced relatively (e.g. "assets/3291.pdf"). Served by the
-  // /pdfs/[...path] endpoint and resolved via resolvePdfUrl() in src/lib/nav.ts.
+  // and referenced relatively (e.g. "assets/3291.pdf"). Served under the
+  // subsection's public URL and resolved via resolvePdfUrl() in src/lib/nav.ts.
   // A leading "/" is treated as a legacy absolute /public path. When set, the
   // post's page embeds the PDF full-width with open/download controls.
   pdf: z.string().optional(),

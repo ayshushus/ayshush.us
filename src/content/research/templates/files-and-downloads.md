@@ -23,8 +23,8 @@ The `download` attribute forces a save dialog instead of opening in-browser:
 
 > **Tip:** this site also has a built-in PDF mode. A subsection whose
 > `_config.md` sets `rules: { pdfOnNumericName: true }` will serve numerically
-> named entries (e.g. `1.md`) straight from `/pdfs/<section>/<sub>/1.pdf`. Use
-> that when a whole project is really just a stack of PDFs.
+> named entries (e.g. `1.md`) as `<subsection>/<list>/1.pdf`. Use that when a
+> whole project is really just a stack of PDFs.
 
 ## Slide decks
 

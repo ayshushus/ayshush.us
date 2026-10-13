@@ -170,19 +170,33 @@ export function postHref(
   return `/${sub.urlSlug}/${localId}`;
 }
 
-// Resolve a post's `pdf` frontmatter into a served URL. PDFs are co-located with
-// their post (e.g. issue-notes/assets/3291.pdf) and referenced relatively
-// (`pdf: assets/3291.pdf`); they are served by /pdfs/[...path] under a URL that
-// mirrors their path within src/content. An absolute value (leading "/") is a
-// legacy /public reference and is passed through unchanged.
+// Remove the internal content-only `assets/` directory from public PDF paths.
+export function contentPdfUrl(subsectionSlug: string, relativePath: string): string {
+  const publicPath = relativePath
+    .split("/")
+    .filter((part) => part && part !== "assets")
+    .join("/");
+  return `/${subsectionSlug}/${publicPath}`;
+}
+
+// Resolve a post's `pdf` frontmatter into its public URL. Relative PDFs are
+// co-located with the post and served under the subsection's public URL. An
+// absolute value (leading "/") is a legacy /public reference.
 export function resolvePdfUrl(
-  sectionSlug: string,
+  subsectionSlug: string,
   postId: string,
   pdf: string,
 ): string {
   if (pdf.startsWith("/")) return pdf;
-  const dir = String(postId).split("/").slice(0, -1).join("/");
-  return `/pdfs/${sectionSlug}/${dir}/${pdf}`.replace(/\/{2,}/g, "/");
+  const postPath = postId.split("/");
+  const subsectionDir = postPath[0];
+  const relativePath = [
+    ...postPath.slice(1, -1),
+    ...pdf.split("/"),
+  ]
+    .filter((part) => part && part !== "assets")
+    .join("/");
+  return contentPdfUrl(subsectionSlug || subsectionDir, relativePath);
 }
 
 export function entryHref(

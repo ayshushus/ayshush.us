@@ -45,7 +45,7 @@ export function discoverListSlugs(
 // src/content (posix, forward slashes). PDFs live next to the posts that embed
 // them — e.g. src/content/experience/mozilla/issue-notes/assets/3291.pdf — so a
 // section's content stays self-contained in one directory. They are served by
-// the /pdfs/[...path] endpoint and referenced from a post's `pdf` frontmatter.
+// the PDF endpoints and referenced from a post's `pdf` frontmatter.
 export function discoverContentPdfs(): string[] {
   const out: string[] = [];
   const walk = (dir: string, rel: string) => {
