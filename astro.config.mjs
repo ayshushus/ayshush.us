@@ -17,6 +17,6 @@ export default defineConfig({
     },
   },
   redirects: {
-    "/resume": "/resume/resume.pdf",
+    "/resume": "/resume.pdf",
   },
 });
