@@ -16,4 +16,7 @@ export default defineConfig({
       theme: "css-variables",
     },
   },
+  redirects: {
+    "/resume": "/resume/resume.pdf",
+  },
 });
